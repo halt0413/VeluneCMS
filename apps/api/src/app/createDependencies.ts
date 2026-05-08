@@ -1,28 +1,36 @@
 import { createApp } from "../createApp";
 import type { ApiEnv } from "../config/env";
 import type { CreateAppDependencies } from "./types";
-import { InMemoryOAuthStateRepository } from "../infrastructure/auth/InMemoryOAuthStateRepository";
-import { InMemorySessionRepository } from "../infrastructure/auth/InMemorySessionRepository";
-import { GitHubOAuthApi } from "../infrastructure/github/GitHubOAuthApi";
-import { OctokitGitHubIssueGateway } from "../infrastructure/github/OctokitGitHubIssueGateway";
-import { InMemoryPageRepository } from "../infrastructure/page/InMemoryPageRepository";
-import type { PageRepository } from "../services/ports";
-import { completeGitHubLogin } from "../services/auth/completeGitHubLogin";
-import { getCurrentUser } from "../services/auth/getCurrentUser";
-import { logout } from "../services/auth/logout";
-import { startGitHubLogin } from "../services/auth/startGitHubLogin";
-import { createIssue } from "../services/github/createIssue";
-import { getIssue } from "../services/github/getIssue";
-import { listIssues } from "../services/github/listIssues";
-import { updateIssue } from "../services/github/updateIssue";
-import { updateIssueLabels } from "../services/github/updateIssueLabels";
-import { createPage } from "../services/page/createPage";
-import { deletePage } from "../services/page/deletePage";
-import { getPage } from "../services/page/getPage";
-import { getPagePreview } from "../services/page/getPagePreview";
-import { getPagePreviewById } from "../services/page/getPagePreviewById";
-import { listPages } from "../services/page/listPages";
-import { updatePage } from "../services/page/updatePage";
+import {
+  InMemoryOAuthStateRepository,
+  InMemorySessionRepository
+} from "../infrastructure/authRepository";
+import { OctokitGitHubIssueGateway } from "../infrastructure/github/issueGateway";
+import { GitHubOAuthApi } from "../infrastructure/github/oauthGateway";
+import { InMemoryPageRepository } from "../infrastructure/pageRepository";
+import type { PageRepository } from "../usecase/page";
+import {
+  completeGitHubLogin,
+  getCurrentUser,
+  logout,
+  startGitHubLogin
+} from "../usecase/auth";
+import {
+  createIssue,
+  getIssue,
+  listIssues,
+  updateIssue,
+  updateIssueLabels
+} from "../usecase/github";
+import {
+  createPage,
+  deletePage,
+  getPage,
+  getPagePreview,
+  getPagePreviewById,
+  listPages,
+  updatePage
+} from "../usecase/page";
 
 type RuntimeDependencies = {
   createId: () => string;
@@ -34,7 +42,7 @@ export function createApiDependencies(
   env: ApiEnv,
   { createId, getNow, pageRepository = new InMemoryPageRepository() }: RuntimeDependencies
 ): CreateAppDependencies {
-  // Infrastructureの実装をここで束ねて、HTTP層へはusecaseだけを渡す
+  // Infrastructureの実装をここで束ねて、Presentation層へはusecaseだけを渡す
   const sessionRepository = new InMemorySessionRepository();
   const oAuthStateRepository = new InMemoryOAuthStateRepository();
   const gitHubIssueGateway = new OctokitGitHubIssueGateway(env.github);

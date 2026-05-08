@@ -1,21 +1,25 @@
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import type { ContentfulStatusCode } from "hono/utils/http-status";
-import { createAuthController } from "./controllers/auth/createAuthController";
-import { createContentsController } from "./controllers/content/createContentsController";
-import { createGitHubController } from "./controllers/github/createGitHubController";
-import { createPreviewController } from "./controllers/page/createPreviewController";
-import { createSystemController } from "./controllers/system/createSystemController";
 import type { CreateAppDependencies } from "./app/types";
-import { createWebhookController } from "./controllers/webhook/createWebhookController";
+import {
+  createAuthController,
+  createContentsController,
+  createGitHubController,
+  createPreviewController,
+  createSystemController,
+  createWebhookController
+} from "./presentation/controllers";
 import { AppError } from "./lib/errors/AppError";
 import { createAuthMiddleware } from "./middleware/auth";
-import { createAuthRouter } from "./routes/auth/createAuthRouter";
-import { createContentsRouter } from "./routes/content/createContentsRouter";
-import { createGitHubRouter } from "./routes/internal/github/createGitHubRouter";
-import { createPreviewRouter } from "./routes/page/createPreviewRouter";
-import { createSystemRouter } from "./routes/system/createSystemRouter";
-import { createWebhookRouter } from "./routes/webhook/createWebhookRouter";
+import {
+  createAuthRouter,
+  createContentsRouter,
+  createGitHubRouter,
+  createPreviewRouter,
+  createSystemRouter,
+  createWebhookRouter
+} from "./presentation/routes";
 import { createOpenApiDocument } from "./docs/openapi";
 import { renderSwaggerUiHtml } from "./docs/swaggerUi";
 

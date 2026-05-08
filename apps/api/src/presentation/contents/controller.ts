@@ -1,0 +1,81 @@
+import { cmsPageSchema, toPageContent } from "@repo/content";
+import type {
+  CmsPageCreateResponse,
+  CmsPageDeleteResponse,
+  CmsPageItemResponse,
+  CmsPageListResponse,
+  CmsPageUpdateResponse,
+  CmsPreviewResponse
+} from "@repo/types";
+import type { Context } from "hono";
+import { requireRouteParam } from "../params";
+import type { ContentsControllerHandlers } from "../types";
+
+const cmsPagePatchSchema = cmsPageSchema.partial();
+
+export function createContentsController({
+  createContent,
+  deleteContent,
+  getContent,
+  getContentPreviewById,
+  listContents,
+  updateContent
+}: ContentsControllerHandlers) {
+  return {
+    async list(c: Context) {
+      const items = await listContents();
+      const response: CmsPageListResponse = {
+        items,
+        total: items.length
+      };
+
+      return c.json(response);
+    },
+    async get(c: Context) {
+      const item = await getContent(requireRouteParam(c, "id"));
+      const response: CmsPageItemResponse = {
+        item
+      };
+
+      return c.json(response);
+    },
+    async create(c: Context) {
+      const payload = await c.req.json();
+      const created = await createContent(cmsPageSchema.parse(payload));
+      const response: CmsPageCreateResponse = {
+        created
+      };
+
+      return c.json(response, 201);
+    },
+    async update(c: Context) {
+      const payload = await c.req.json();
+      const updated = await updateContent(
+        requireRouteParam(c, "id"),
+        cmsPagePatchSchema.parse(payload)
+      );
+      const response: CmsPageUpdateResponse = {
+        updated
+      };
+
+      return c.json(response);
+    },
+    async remove(c: Context) {
+      const response: CmsPageDeleteResponse = await deleteContent(
+        requireRouteParam(c, "id")
+      );
+
+      return c.json(response);
+    },
+    async preview(c: Context) {
+      const page = await getContentPreviewById(requireRouteParam(c, "id"));
+      const response: CmsPreviewResponse = {
+        slug: page.slug,
+        status: "preview",
+        content: toPageContent(page)
+      };
+
+      return c.json(response);
+    }
+  };
+}
