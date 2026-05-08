@@ -1,7 +1,7 @@
 import { getCookie } from "hono/cookie";
 import type { MiddlewareHandler } from "hono";
 import { UnauthorizedError } from "../lib/errors/AppError";
-import type { SessionRepository } from "../services/ports/index";
+import type { SessionRepository } from "../usecase/auth";
 
 type CreateAuthMiddlewareConfig = {
   adminApiToken: string;

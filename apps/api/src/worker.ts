@@ -1,7 +1,7 @@
 import { createApiApp } from "./app/createDependencies";
 import { getApiEnv, type ApiEnvSource } from "./config/env";
 import type { D1Database } from "./infrastructure/db/d1";
-import { D1PageRepository } from "./infrastructure/page/D1PageRepository";
+import { D1PageRepository } from "./infrastructure/pageRepository";
 
 type CloudflareBindings = {
   ADMIN_API_TOKEN: string;

@@ -1,9 +1,11 @@
-import type { SessionRepository } from "../services/ports";
-import type { AuthControllerHandlers } from "../controllers/auth/types";
-import type { ContentsControllerHandlers } from "../controllers/content/types";
-import type { GitHubControllerHandlers } from "../controllers/github/types";
-import type { PreviewControllerHandlers } from "../controllers/page/types";
-import type { MeControllerHandler } from "../controllers/system/types";
+import type { SessionRepository } from "../usecase/auth";
+import type {
+  AuthControllerHandlers,
+  ContentsControllerHandlers,
+  GitHubControllerHandlers,
+  MeControllerHandler,
+  PreviewControllerHandlers
+} from "../presentation/controllers";
 
 export type AppHttpConfig = {
   adminApiToken: string;

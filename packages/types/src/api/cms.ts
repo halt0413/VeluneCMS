@@ -1,6 +1,6 @@
-import type { CmsPage, CmsPageInput, CmsPagePatch } from "../domain/cms";
-import type { PublicContent } from "../domain/content";
-import type { GitHubIssueCreateResult } from "../domain/github";
+import type { CmsPage, CmsPageInput, CmsPagePatch } from "../models/cms";
+import type { PublicContent } from "../models/content";
+import type { GitHubIssueCreateResult } from "../models/github";
 import type { ApiItemResponse, ApiListResponse } from "./common";
 
 export type CmsPageCreateRequest = CmsPageInput;
