@@ -13,8 +13,8 @@ import type {
   GitHubIssueInput,
   GitHubIssueLabel,
   GitHubIssueUpdateInput
-} from "../../domain/github";
-import type { CmsPage } from "../../domain/page";
+} from "../../domain";
+import type { CmsPage } from "../../domain";
 import { ConfigurationError } from "../../lib/errors/AppError";
 
 type OctokitGitHubIssueGatewayConfig = {

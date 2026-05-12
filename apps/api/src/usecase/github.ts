@@ -4,7 +4,7 @@ import type {
   GitHubIssueInput,
   GitHubIssueLabel,
   GitHubIssueUpdateInput
-} from "../domain/github";
+} from "../domain";
 
 export function createIssue(
   gitHubIssueGateway: GitHubIssueGateway,

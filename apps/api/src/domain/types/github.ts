@@ -1,5 +1,4 @@
-import type { CmsPage } from "./page";
-
+// GitHubIssue連携で使うDomainType
 export type GitHubRepoRef = {
   owner: string;
   repo: string;
@@ -59,19 +58,4 @@ export type GitHubIssueLabelsUpdateParams = GitHubRepoRef & {
   token: string;
   issueNumber: number;
   labels: GitHubIssueLabel[];
-};
-
-export type GitHubIssueGateway = {
-  addLabels(
-    issueNumber: number,
-    labels: GitHubIssueLabel[]
-  ): Promise<GitHubIssue>;
-  createFromPage(page: CmsPage): Promise<GitHubIssueCreateResult>;
-  createIssue(input: GitHubIssueInput): Promise<GitHubIssue>;
-  getIssue(issueNumber: number): Promise<GitHubIssue>;
-  listIssues(): Promise<GitHubIssue[]>;
-  updateIssue(
-    issueNumber: number,
-    input: GitHubIssueUpdateInput
-  ): Promise<GitHubIssue>;
 };

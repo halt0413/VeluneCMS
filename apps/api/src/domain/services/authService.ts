@@ -1,12 +1,5 @@
-export type AuthUser = {
-  id: number;
-  login: string;
-  name: string | null;
-  email: string | null;
-  avatarUrl: string;
-  profileUrl: string;
-};
-
+// DomainService 単独のEntityに入れにくいルールを置く
+// Entityに入れるほどでもない認証ルールはここ
 export function isOAuthStateExpired(
   createdAt: string,
   now: string,
