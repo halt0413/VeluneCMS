@@ -20,8 +20,6 @@ import {
   createSystemRouter,
   createWebhookRouter
 } from "./presentation/routes";
-import { createOpenApiDocument } from "./docs/openapi";
-import { renderSwaggerUiHtml } from "./docs/swaggerUi";
 
 export function createApp({
   adminApiToken,
@@ -111,15 +109,6 @@ export function createApp({
       controller: systemController
     })
   );
-  app.get("/openapi.json", (c) =>
-    c.json(
-      createOpenApiDocument({
-        includeGitHubWebhook: Boolean(githubWebhookSecret),
-        sessionCookieName
-      })
-    )
-  );
-  app.get("/docs", (c) => c.html(renderSwaggerUiHtml("/openapi.json")));
   app.route("/auth", createAuthRouter(authController));
 
   // previewと内部GitHub操作は管理トークンまたはログインセッションを要求する
