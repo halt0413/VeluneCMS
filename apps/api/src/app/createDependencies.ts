@@ -8,7 +8,7 @@ import {
 import { OctokitGitHubIssueGateway } from "../infrastructure/github/issueGateway";
 import { GitHubOAuthApi } from "../infrastructure/github/oauthGateway";
 import { InMemoryPageRepository } from "../infrastructure/pageRepository";
-import type { PageRepository } from "../usecase/page";
+import type { PageRepository } from "../domain";
 import {
   completeGitHubLogin,
   getCurrentUser,

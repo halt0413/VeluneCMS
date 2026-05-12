@@ -1,14 +1,16 @@
 import type { LogoutResponse } from "@repo/types";
 import type { CompleteGitHubLoginResult } from "../usecase/auth";
 import type { PagePreview, SyncPageToGitHubResult } from "../usecase/page";
-import type { AuthUser } from "../domain/auth";
 import type {
+  AuthUser,
+  CmsPage,
+  CmsPageInput,
+  CmsPagePatch,
   GitHubIssue,
   GitHubIssueInput,
   GitHubIssueLabel,
   GitHubIssueUpdateInput
-} from "../domain/github";
-import type { CmsPage, CmsPageInput, CmsPagePatch } from "../domain/page";
+} from "../domain";
 
 export type AuthControllerHandlers = {
   completeGitHubLogin: (input: {

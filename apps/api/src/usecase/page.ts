@@ -1,11 +1,12 @@
-import type { GitHubIssueGateway } from "../domain/github";
 import {
   Page,
+  type GitHubIssueGateway,
+  type PageRepository,
   type CmsPage,
   type CmsPageId,
   type CmsPageInput,
   type CmsPagePatch
-} from "../domain/page";
+} from "../domain";
 import { NotFoundError } from "../lib/errors/AppError";
 
 export type PagePreview = CmsPage;
@@ -14,14 +15,6 @@ export type SyncPageToGitHubResult = {
   issue: Awaited<ReturnType<GitHubIssueGateway["createFromPage"]>>;
   pageId: string;
 };
-
-export interface PageRepository {
-  delete(id: CmsPageId): Promise<void>;
-  findById(id: CmsPageId): Promise<Page | undefined>;
-  findBySlug(slug: string): Promise<Page | undefined>;
-  list(): Promise<Page[]>;
-  save(page: Page): Promise<Page>;
-}
 
 type CreatePageDependencies = {
   createId: () => string;

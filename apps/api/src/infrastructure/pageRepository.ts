@@ -1,5 +1,10 @@
-import { Page, Slug, type CmsPageId, type CmsPageInput } from "../domain/page";
-import type { PageRepository } from "../usecase/page";
+import {
+  Page,
+  Slug,
+  type CmsPageId,
+  type CmsPageInput,
+  type PageRepository
+} from "../domain";
 import type { D1Database } from "./db/d1";
 
 type PageRow = {

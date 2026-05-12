@@ -1,9 +1,9 @@
 import type { LogoutResponse } from "@repo/types";
-import type { AuthUser } from "../domain/auth";
+import type { AuthUser } from "../domain";
 import {
   isOAuthStateExpired,
   resolveAuthRedirectUrl
-} from "../domain/auth";
+} from "../domain";
 import { BadRequestError, UnauthorizedError } from "../lib/errors/AppError";
 
 export type GitHubOAuthAuthorizeInput = {

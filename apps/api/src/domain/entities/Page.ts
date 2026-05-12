@@ -1,43 +1,13 @@
-export type CmsContentStatus = "draft" | "published";
+import type {
+  CmsContentStatus,
+  CmsPage,
+  CmsPageId,
+  CmsPageInput,
+  CmsPagePatch
+} from "../types/page";
+import { Slug } from "../valueObjects/Slug";
 
-export type CmsPageId = string;
-
-export type CmsPageInput = {
-  slug: string;
-  title: string;
-  body: string;
-  status: CmsContentStatus;
-};
-
-export type CmsPagePatch = Partial<CmsPageInput>;
-
-export type CmsPageRecord = CmsPageInput & {
-  id: CmsPageId;
-  createdAt: string;
-  updatedAt: string;
-};
-
-export type CmsDraftPage = CmsPageRecord & {
-  status: "draft";
-  publishedAt?: never;
-};
-
-export type CmsPublishedPage = CmsPageRecord & {
-  status: "published";
-  publishedAt: string;
-};
-
-export type CmsPage = CmsDraftPage | CmsPublishedPage;
-
-export type PublicContent = Pick<CmsPageInput, "slug" | "title" | "body">;
-
-export type ContentPreview = PublicContent & {
-  mode: "preview";
-};
-
-export type PublishedContent = PublicContent &
-  Pick<CmsPublishedPage, "publishedAt">;
-
+// DomainEntity ページとして守るルールを持つ
 type PageProps = {
   body: string;
   createdAt: string;
@@ -55,28 +25,7 @@ type CreatePageParams = {
   now: string;
 };
 
-export class Slug {
-  private constructor(private readonly value: string) {}
-
-  static create(input: string): Slug {
-    const value = input
-      .trim()
-      .replace(/[\s_]+/g, "-")
-      .replace(/-+/g, "-")
-      .replace(/^\/+|\/+$/g, "");
-
-    if (!value) {
-      throw new Error("Slug is required");
-    }
-
-    return new Slug(value);
-  }
-
-  toString(): string {
-    return this.value;
-  }
-}
-
+// ページの入力チェックと公開状態の扱いはここで見る
 export class Page {
   private constructor(private readonly props: PageProps) {}
 
@@ -93,6 +42,7 @@ export class Page {
     });
   }
 
+  // 保存済みのデータもそのまま信用せずPageとして組み直す
   static reconstitute(snapshot: CmsPage): Page {
     return new Page({
       id: snapshot.id,
@@ -163,6 +113,7 @@ export class Page {
     };
   }
 
+  // publishedAtは初回公開時だけ 下書きに戻したら消す
   private changeStatus(status: CmsContentStatus, now: string): void {
     if (status === "published") {
       this.props.status = "published";

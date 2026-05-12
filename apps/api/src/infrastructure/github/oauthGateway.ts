@@ -1,4 +1,4 @@
-import type { AuthUser } from "../../domain/auth";
+import type { AuthUser } from "../../domain";
 import type {
   GitHubOAuthAuthorizeInput,
   GitHubOAuthGateway
