@@ -1,7 +1,7 @@
 import { useParams } from "@tanstack/react-router";
 import { LoadingMessage } from "../../components/feedback/LoadingMessage/LoadingMessage";
-import { useContentQuery } from "../../features/contents/hooks/useContentQuery";
-import { ContentDetailPage } from "../../features/contents/ui/detail/cards/ContentDetailPage/ContentDetailPage";
+import { useContentQuery } from "../../features/contentDetail/hooks/useContentQuery";
+import { ContentDetailPage } from "../../features/contentDetail/ui/ContentDetailPage/ContentDetailPage";
 
 export function ContentDetailRoute() {
   const { id } = useParams({ from: "/contents/$id" });
