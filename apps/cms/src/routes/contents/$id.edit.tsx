@@ -1,13 +1,13 @@
 import { useNavigate, useParams } from "@tanstack/react-router";
 import { LoadingMessage } from "../../components/feedback/LoadingMessage/LoadingMessage";
-import { useContentQuery } from "../../features/contents/hooks/useContentQuery";
-import { useUpdateContentMutation } from "../../features/contents/hooks/useUpdateContentMutation";
-import { EditContentPage } from "../../features/contents/ui/editor/components/EditContentPage/EditContentPage";
+import { useEditableContentQuery } from "../../features/contentEdit/hooks/useEditableContentQuery";
+import { useUpdateContentMutation } from "../../features/contentEdit/hooks/useUpdateContentMutation";
+import { EditContentPage } from "../../features/contentEdit/ui/EditContentPage/EditContentPage";
 
 export function EditContentRoute() {
   const navigate = useNavigate();
   const { id } = useParams({ from: "/contents/$id/edit" });
-  const { data: content = null, isPending } = useContentQuery(id);
+  const { data: content = null, isPending } = useEditableContentQuery(id);
   const updateMutation = useUpdateContentMutation(id);
 
   if (isPending) {
