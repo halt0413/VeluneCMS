@@ -10,6 +10,7 @@ import { Slug } from "../valueObjects/Slug";
 // DomainEntity ページとして守るルールを持つ
 type PageProps = {
   body: string;
+  contentType: string;
   createdAt: string;
   id: CmsPageId;
   publishedAt?: string;
@@ -35,6 +36,7 @@ export class Page {
       slug: Slug.create(input.slug).toString(),
       title: normalizeRequiredText(input.title, "Title"),
       body: normalizeRequiredText(input.body, "Body"),
+      contentType: normalizeRequiredText(input.contentType, "Content type"),
       status: input.status,
       createdAt: now,
       updatedAt: now,
@@ -49,6 +51,7 @@ export class Page {
       slug: Slug.create(snapshot.slug).toString(),
       title: normalizeRequiredText(snapshot.title, "Title"),
       body: normalizeRequiredText(snapshot.body, "Body"),
+      contentType: normalizeRequiredText(snapshot.contentType, "Content type"),
       status: snapshot.status,
       createdAt: snapshot.createdAt,
       updatedAt: snapshot.updatedAt,
@@ -82,6 +85,13 @@ export class Page {
       this.props.body = normalizeRequiredText(patch.body, "Body");
     }
 
+    if (patch.contentType !== undefined) {
+      this.props.contentType = normalizeRequiredText(
+        patch.contentType,
+        "Content type"
+      );
+    }
+
     if (patch.status !== undefined) {
       this.changeStatus(patch.status, now);
     }
@@ -95,6 +105,7 @@ export class Page {
       slug: this.props.slug,
       title: this.props.title,
       body: this.props.body,
+      contentType: this.props.contentType,
       createdAt: this.props.createdAt,
       updatedAt: this.props.updatedAt
     };

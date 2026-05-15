@@ -4,6 +4,7 @@ import type { ContentfulStatusCode } from "hono/utils/http-status";
 import type { CreateAppDependencies } from "./app/types";
 import {
   createAuthController,
+  createContentCollectionsController,
   createContentsController,
   createGitHubController,
   createPreviewController,
@@ -14,6 +15,7 @@ import { AppError } from "./lib/errors/AppError";
 import { createAuthMiddleware } from "./middleware/auth";
 import {
   createAuthRouter,
+  createContentCollectionsRouter,
   createContentsRouter,
   createGitHubRouter,
   createPreviewRouter,
@@ -26,6 +28,7 @@ export function createApp({
   addIssueLabels,
   completeGitHubLogin,
   cookieSecure,
+  createContentCollection,
   createContent,
   createIssue,
   deleteContent,
@@ -36,6 +39,7 @@ export function createApp({
   getPagePreviewBySlug,
   githubWebhookSecret,
   listContents,
+  listContentCollections,
   listIssues,
   logout,
   sessionCookieName,
@@ -65,6 +69,10 @@ export function createApp({
     getContentPreviewById,
     listContents,
     updateContent
+  });
+  const contentCollectionsController = createContentCollectionsController({
+    createContentCollection,
+    listContentCollections
   });
   const gitHubController = createGitHubController({
     addIssueLabels,
@@ -121,6 +129,13 @@ export function createApp({
     createContentsRouter({
       auth,
       controller: contentsController
+    })
+  );
+  app.route(
+    "/content-collections",
+    createContentCollectionsRouter({
+      auth,
+      controller: contentCollectionsController
     })
   );
   app.route("/internal/github", createGitHubRouter(gitHubController));

@@ -1,0 +1,50 @@
+import type { ContentCollectionCreateRequest } from "@repo/types";
+import { PageHeader } from "../../../../components/content/PageHeader/PageHeader";
+import styles from "./NewContentCollectionPage.module.css";
+
+type NewContentCollectionPageProps = {
+  isSubmitting?: boolean;
+  onSubmit?: (payload: ContentCollectionCreateRequest) => void | Promise<void>;
+};
+
+export function NewContentCollectionPage({
+  isSubmitting = false,
+  onSubmit
+}: NewContentCollectionPageProps) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    if (!onSubmit) {
+      return;
+    }
+
+    const formData = new FormData(event.currentTarget);
+    await onSubmit({
+      name: String(formData.get("name") ?? ""),
+      slug: String(formData.get("slug") ?? "")
+    });
+  }
+
+  return (
+    <main className={styles.page}>
+      <PageHeader title="コンテンツ追加" />
+      <form className={styles.formCard} onSubmit={handleSubmit}>
+        <label className={styles.field}>
+          <span className={styles.fieldLabel}>名前</span>
+          <input name="name" type="text" />
+        </label>
+        <label className={styles.field}>
+          <span className={styles.fieldLabel}>slug</span>
+          <input name="slug" type="text" />
+        </label>
+        <button
+          className={styles.primaryButton}
+          disabled={isSubmitting}
+          type="submit"
+        >
+          追加する
+        </button>
+      </form>
+    </main>
+  );
+}

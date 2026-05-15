@@ -6,10 +6,16 @@ import { ContentTypeFilter } from "../ContentTypeFilter/ContentTypeFilter";
 import styles from "./ContentsPage.module.css";
 
 type ContentsPageProps = {
+  collectionName: string;
+  collectionSlug: string;
   contents: Content[];
 };
 
-export function ContentsPage({ contents }: ContentsPageProps) {
+export function ContentsPage({
+  collectionName,
+  collectionSlug,
+  contents
+}: ContentsPageProps) {
   const contentTypes = Array.from(
     new Set(contents.map((content) => content.contentType))
   );
@@ -18,7 +24,11 @@ export function ContentsPage({ contents }: ContentsPageProps) {
     <main className={styles.page}>
       <PageHeader
         actions={
-          <Link className={styles.primaryButton} to="/contents/new">
+          <Link
+            className={styles.primaryButton}
+            search={{ collection: collectionSlug }}
+            to="/contents/new"
+          >
             新規作成
           </Link>
         }
@@ -29,7 +39,7 @@ export function ContentsPage({ contents }: ContentsPageProps) {
       <section className={`${styles.panel} ${styles.listPanel}`}>
         <div className={styles.collectionHeader}>
           <div className={styles.collectionIntro}>
-            <h3 className={styles.collectionName}>portfolio</h3>
+            <h3 className={styles.collectionName}>{collectionName}</h3>
           </div>
         </div>
 

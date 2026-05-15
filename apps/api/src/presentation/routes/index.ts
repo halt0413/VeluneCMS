@@ -1,4 +1,5 @@
 export * from "./authRouter";
+export * from "./contentCollectionsRouter";
 export * from "./contentsRouter";
 export * from "./githubRouter";
 export * from "./pagesRouter";

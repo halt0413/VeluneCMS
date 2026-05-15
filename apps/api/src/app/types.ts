@@ -1,6 +1,7 @@
 import type { SessionRepository } from "../usecase/auth";
 import type {
   AuthControllerHandlers,
+  ContentCollectionsControllerHandlers,
   ContentsControllerHandlers,
   GitHubControllerHandlers,
   MeControllerHandler,
@@ -21,6 +22,7 @@ export type AppHttpInfrastructure = {
 
 export type CreateAppDependencies = AppHttpConfig &
   AuthControllerHandlers &
+  ContentCollectionsControllerHandlers &
   ContentsControllerHandlers &
   GitHubControllerHandlers &
   PreviewControllerHandlers &

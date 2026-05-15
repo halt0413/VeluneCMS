@@ -8,7 +8,10 @@ import {
 import { OctokitGitHubIssueGateway } from "../infrastructure/github/issueGateway";
 import { GitHubOAuthApi } from "../infrastructure/github/oauthGateway";
 import { InMemoryPageRepository } from "../infrastructure/pageRepository";
-import type { PageRepository } from "../domain";
+import {
+  InMemoryContentCollectionRepository
+} from "../infrastructure/contentCollectionRepository";
+import type { ContentCollectionRepository, PageRepository } from "../domain";
 import {
   completeGitHubLogin,
   getCurrentUser,
@@ -31,16 +34,26 @@ import {
   listPages,
   updatePage
 } from "../usecase/page";
+import {
+  createContentCollection,
+  listContentCollections
+} from "../usecase/contentCollection";
 
 type RuntimeDependencies = {
   createId: () => string;
   getNow: () => string;
   pageRepository?: PageRepository;
+  contentCollectionRepository?: ContentCollectionRepository;
 };
 
 export function createApiDependencies(
   env: ApiEnv,
-  { createId, getNow, pageRepository = new InMemoryPageRepository() }: RuntimeDependencies
+  {
+    contentCollectionRepository = new InMemoryContentCollectionRepository(),
+    createId,
+    getNow,
+    pageRepository = new InMemoryPageRepository()
+  }: RuntimeDependencies
 ): CreateAppDependencies {
   // Infrastructureの実装をここで束ねて、Presentation層へはusecaseだけを渡す
   const sessionRepository = new InMemorySessionRepository();
@@ -66,6 +79,12 @@ export function createApiDependencies(
         createId,
         getNow
       }),
+    createContentCollection: (input) =>
+      createContentCollection(input, {
+        contentCollectionRepository,
+        createId,
+        getNow
+      }),
     createIssue: (input) => createIssue(gitHubIssueGateway, input),
     deleteContent: (id: string) => deletePage(pageRepository, id),
     getCurrentUser: (sessionId: string | undefined) =>
@@ -76,6 +95,8 @@ export function createApiDependencies(
     getPagePreviewBySlug: (slug: string) => getPagePreview(pageRepository, slug),
     githubWebhookSecret: env.githubWebhookSecret,
     listContents: () => listPages(pageRepository),
+    listContentCollections: () =>
+      listContentCollections(contentCollectionRepository),
     listIssues: () => listIssues(gitHubIssueGateway),
     logout: (sessionId: string | undefined) => logout(sessionId, sessionRepository),
     sessionCookieName: env.session.cookieName,

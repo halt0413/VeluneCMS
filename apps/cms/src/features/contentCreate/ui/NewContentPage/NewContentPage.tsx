@@ -3,31 +3,35 @@ import { ContentEditorPage } from "../../../../components/content/editor/Content
 import { ContentForm } from "../../../../components/content/editor/ContentForm/ContentForm";
 
 type NewContentPageProps = {
+  collectionName?: string;
+  contentType?: string;
   isSubmitting?: boolean;
   onSubmit?: (payload: CmsPageCreateRequest) => void | Promise<void>;
 };
 
 export function NewContentPage({
+  collectionName = "portfolio",
+  contentType = "portfolio",
   isSubmitting = false,
   onSubmit
 }: NewContentPageProps) {
   return (
-    <ContentEditorPage title="コンテンツ新規作成">
+    <ContentEditorPage title={`${collectionName} のコンテンツ追加`}>
       <ContentForm
         defaultValue={{
           slug: "new-content",
           title: "",
           body: "",
-          contentType: "work",
+          contentType,
           status: "draft"
         }}
-        description="CMS から新しいコンテンツを作成するためのフォームです。"
+        description={`${collectionName} に表示するコンテンツを作成します。`}
         endpoint="/contents"
         isSubmitting={isSubmitting}
         method="POST"
         onSubmit={onSubmit}
         showStatus={false}
-        submitLabel="作成する"
+        submitLabel="コンテンツを追加"
       />
     </ContentEditorPage>
   );

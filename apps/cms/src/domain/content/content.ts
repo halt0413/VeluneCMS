@@ -1,12 +1,7 @@
 import type { CmsPage } from "@repo/types";
 
-export type Content = CmsPage & {
-  contentType: string;
-};
+export type Content = CmsPage;
 
 export function toContent(page: CmsPage): Content {
-  return {
-    ...page,
-    contentType: "content"
-  };
+  return page;
 }

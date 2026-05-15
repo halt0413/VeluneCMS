@@ -1,4 +1,8 @@
-import type { LogoutResponse } from "@repo/types";
+import type {
+  ContentCollection,
+  ContentCollectionInput,
+  LogoutResponse
+} from "@repo/types";
 import type { CompleteGitHubLoginResult } from "../usecase/auth";
 import type { PagePreview, SyncPageToGitHubResult } from "../usecase/page";
 import type {
@@ -33,6 +37,13 @@ export type ContentsControllerHandlers = {
   getContentPreviewById: (id: string) => Promise<PagePreview>;
   listContents: () => Promise<CmsPage[]>;
   updateContent: (id: string, payload: CmsPagePatch) => Promise<CmsPage>;
+};
+
+export type ContentCollectionsControllerHandlers = {
+  createContentCollection: (
+    payload: ContentCollectionInput
+  ) => Promise<ContentCollection>;
+  listContentCollections: () => Promise<ContentCollection[]>;
 };
 
 export type GitHubControllerHandlers = {

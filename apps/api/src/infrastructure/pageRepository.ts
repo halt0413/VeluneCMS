@@ -19,8 +19,6 @@ type PageRow = {
   updated_at: string;
 };
 
-const DEFAULT_CONTENT_TYPE = "content";
-
 const seedPages: Array<{ id: string; input: CmsPageInput; now: string }> = [
   {
     id: "seed-welcome",
@@ -28,6 +26,7 @@ const seedPages: Array<{ id: string; input: CmsPageInput; now: string }> = [
       slug: "welcome",
       title: "Welcome",
       body: "Initial CMS page",
+      contentType: "portfolio",
       status: "published"
     },
     now: "2026-03-26T00:00:00.000Z"
@@ -38,6 +37,7 @@ const seedPages: Array<{ id: string; input: CmsPageInput; now: string }> = [
       slug: "roadmap",
       title: "Roadmap",
       body: "Draft page for upcoming updates",
+      contentType: "portfolio",
       status: "draft"
     },
     now: "2026-03-26T00:00:00.000Z"
@@ -127,7 +127,7 @@ export class D1PageRepository implements PageRepository {
         snapshot.slug,
         snapshot.title,
         snapshot.body,
-        DEFAULT_CONTENT_TYPE,
+        snapshot.contentType,
         snapshot.status,
         snapshot.status === "published" ? snapshot.publishedAt : null,
         snapshot.createdAt,
@@ -145,6 +145,7 @@ export class D1PageRepository implements PageRepository {
         slug: row.slug,
         title: row.title,
         body: row.body,
+        contentType: row.content_type,
         status: "published",
         publishedAt: row.published_at,
         createdAt: row.created_at,
@@ -157,6 +158,7 @@ export class D1PageRepository implements PageRepository {
       slug: row.slug,
       title: row.title,
       body: row.body,
+      contentType: row.content_type,
       status: "draft",
       createdAt: row.created_at,
       updatedAt: row.updated_at

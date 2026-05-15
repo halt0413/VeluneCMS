@@ -6,6 +6,7 @@ export type CmsPageInput = {
   slug: string;
   title: string;
   body: string;
+  contentType: string;
   status: CmsContentStatus;
 };
 

@@ -1,4 +1,5 @@
 export * from "./authController";
+export * from "./contentCollectionsController";
 export * from "./contentsController";
 export * from "./githubController";
 export * from "./pageController";

@@ -1,6 +1,7 @@
 import { createApiApp } from "./app/createDependencies";
 import { getApiEnv, type ApiEnvSource } from "./config/env";
 import type { D1Database } from "./infrastructure/db/d1";
+import { D1ContentCollectionRepository } from "./infrastructure/contentCollectionRepository";
 import { D1PageRepository } from "./infrastructure/pageRepository";
 
 type CloudflareBindings = {
@@ -62,6 +63,7 @@ export default {
     const app = createApiApp(getApiEnv(toApiEnvSource(env)), {
       createId: () => crypto.randomUUID(),
       getNow: () => new Date().toISOString(),
+      contentCollectionRepository: new D1ContentCollectionRepository(env.CONTENT_DB),
       pageRepository: new D1PageRepository(env.CONTENT_DB)
     });
 
