@@ -1,16 +1,12 @@
-import { useQuery } from "@tanstack/react-query";
 import { useNavigate, useParams } from "@tanstack/react-router";
-import { getContent } from "./api";
-import { EditContentPage } from "./components/editor/EditContentPage/EditContentPage";
-import { useUpdateContentMutation } from "./hooks/useUpdateContentMutation";
+import { useContentQuery } from "../../features/contents/hooks/useContentQuery";
+import { useUpdateContentMutation } from "../../features/contents/hooks/useUpdateContentMutation";
+import { EditContentPage } from "../../features/contents/ui/editor/components/EditContentPage/EditContentPage";
 
 export function EditContentRoute() {
   const navigate = useNavigate();
   const { id } = useParams({ from: "/contents/$id/edit" });
-  const { data: content = null, isPending } = useQuery({
-    queryFn: () => getContent(id),
-    queryKey: ["contents", id]
-  });
+  const { data: content = null, isPending } = useContentQuery(id);
   const updateMutation = useUpdateContentMutation(id);
 
   if (isPending) {

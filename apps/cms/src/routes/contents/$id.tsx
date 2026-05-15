@@ -1,14 +1,10 @@
-import { useQuery } from "@tanstack/react-query";
 import { useParams } from "@tanstack/react-router";
-import { getContent } from "./api";
-import { ContentDetailPage } from "./components/detail/ContentDetailPage/ContentDetailPage";
+import { useContentQuery } from "../../features/contents/hooks/useContentQuery";
+import { ContentDetailPage } from "../../features/contents/ui/detail/cards/ContentDetailPage/ContentDetailPage";
 
 export function ContentDetailRoute() {
   const { id } = useParams({ from: "/contents/$id" });
-  const { data: content = null, isPending } = useQuery({
-    queryFn: () => getContent(id),
-    queryKey: ["contents", id]
-  });
+  const { data: content = null, isPending } = useContentQuery(id);
 
   if (isPending) {
     return <p>読み込み中...</p>;
