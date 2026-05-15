@@ -1,12 +1,8 @@
-import { useQuery } from "@tanstack/react-query";
-import { listContents } from "./api";
-import { ContentsPage } from "./components/list/ContentsPage/ContentsPage";
+import { useContentsQuery } from "../../features/contents/hooks/useContentsQuery";
+import { ContentsPage } from "../../features/contents/ui/list/components/ContentsPage/ContentsPage";
 
 export function ContentsRoute() {
-  const { data = [] } = useQuery({
-    queryFn: listContents,
-    queryKey: ["contents"]
-  });
+  const { data = [] } = useContentsQuery();
 
   return <ContentsPage contents={data} />;
 }
