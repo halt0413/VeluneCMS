@@ -1,6 +1,7 @@
 import type {
   CmsPageCreateRequest,
   CmsPageCreateResponse,
+  CmsPageDeleteResponse,
   CmsPageItemResponse,
   CmsPageListResponse,
   CmsPageUpdateRequest,
@@ -43,5 +44,11 @@ export const contentApi = {
     );
 
     return toContent(response.updated);
+  },
+
+  async delete(id: string): Promise<CmsPageDeleteResponse> {
+    return cmsFetch<CmsPageDeleteResponse>(`${CONTENT_PATH}/${id}`, {
+      method: "DELETE"
+    });
   }
 };
