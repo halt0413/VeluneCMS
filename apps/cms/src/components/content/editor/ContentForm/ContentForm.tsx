@@ -14,6 +14,8 @@ type ContentFormProps = {
   errorMessage?: string;
   method: "POST" | "PATCH";
   isSubmitting?: boolean;
+  isDeleting?: boolean;
+  onDelete?: () => void | Promise<void>;
   onSubmit?: (value: ContentFormValue) => void | Promise<void>;
   showDelete?: boolean;
   showStatus?: boolean;
@@ -24,8 +26,10 @@ export function ContentForm({
   defaultValue,
   description,
   errorMessage,
+  isDeleting = false,
   isSubmitting = false,
   method,
+  onDelete,
   onSubmit,
   showDelete = false,
   showStatus = true,
@@ -123,8 +127,13 @@ export function ContentForm({
         <div className={styles.formActions}>
           <div className={styles.formActionsLeft}>
             {showDelete ? (
-              <button className={`${styles.secondaryButton} ${styles.deleteButton}`} type="button">
-                削除
+              <button
+                className={`${styles.secondaryButton} ${styles.deleteButton}`}
+                disabled={!onDelete || isSubmitting || isDeleting}
+                onClick={onDelete}
+                type="button"
+              >
+                {isDeleting ? "削除中..." : "削除"}
               </button>
             ) : null}
           </div>
