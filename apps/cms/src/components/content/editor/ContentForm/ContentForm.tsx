@@ -10,6 +10,7 @@ type ContentFormProps = {
   defaultValue: ContentFormValue;
   description: string;
   endpoint: string;
+  errorMessage?: string;
   method: "POST" | "PATCH";
   isSubmitting?: boolean;
   onSubmit?: (value: ContentFormValue) => void | Promise<void>;
@@ -21,6 +22,7 @@ type ContentFormProps = {
 export function ContentForm({
   defaultValue,
   description,
+  errorMessage,
   isSubmitting = false,
   method,
   onSubmit,
@@ -57,6 +59,9 @@ export function ContentForm({
         </div>
 
         <p className={styles.formDescription}>{description}</p>
+        {errorMessage ? (
+          <p className={styles.errorMessage}>{errorMessage}</p>
+        ) : null}
 
         <div className={styles.fieldGrid}>
           <label className={styles.field}>
@@ -102,8 +107,12 @@ export function ContentForm({
             <button className={styles.secondaryButton} disabled={isSubmitting} type="button">
               下書き保存
             </button>
-            <button className={styles.primaryButton} disabled={isSubmitting} type="submit">
-              {submitLabel}
+            <button
+              className={styles.primaryButton}
+              disabled={!onSubmit || isSubmitting}
+              type="submit"
+            >
+              {isSubmitting ? "保存中..." : submitLabel}
             </button>
           </div>
         </div>

@@ -94,7 +94,7 @@ export function createApp({
     cors({
       origin: webOrigin,
       allowHeaders: ["Content-Type", "Authorization"],
-      allowMethods: ["GET", "POST", "OPTIONS"],
+      allowMethods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
       credentials: true
     })
   );

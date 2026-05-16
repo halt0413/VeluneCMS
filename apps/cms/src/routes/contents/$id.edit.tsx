@@ -23,6 +23,11 @@ export function EditContentRoute() {
   return (
     <EditContentPage
       content={content}
+      errorMessage={
+        updateMutation.error
+          ? "更新に失敗しました。ログイン状態と入力内容を確認してください。"
+          : undefined
+      }
       isSubmitting={updateMutation.isPending}
       onSubmit={async (payload) => {
         const updated = await updateMutation.mutateAsync(payload);

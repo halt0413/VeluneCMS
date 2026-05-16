@@ -31,7 +31,7 @@ export function NewContentPage({
         method="POST"
         onSubmit={onSubmit}
         showStatus={false}
-        submitLabel="コンテンツを追加"
+        submitLabel="追加"
       />
     </ContentEditorPage>
   );

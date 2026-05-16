@@ -6,12 +6,14 @@ import styles from "./EditContentPage.module.css";
 
 type EditContentPageProps = {
   content: Content | null;
+  errorMessage?: string;
   isSubmitting?: boolean;
   onSubmit?: (payload: CmsPageUpdateRequest) => void | Promise<void>;
 };
 
 export function EditContentPage({
   content,
+  errorMessage,
   isSubmitting = false,
   onSubmit
 }: EditContentPageProps) {
@@ -31,6 +33,7 @@ export function EditContentPage({
           }}
           description="既存コンテンツを更新するための編集フォームです。"
           endpoint={`/contents/${content.id}`}
+          errorMessage={errorMessage}
           isSubmitting={isSubmitting}
           method="PATCH"
           onSubmit={onSubmit}
@@ -41,7 +44,7 @@ export function EditContentPage({
       ) : (
         <section className={styles.detailCard}>
           <p className={styles.body}>
-            モックデータ上に該当 ID がないため、編集画面を描画できません。
+            指定したコンテンツは存在しないか、取得できませんでした。
           </p>
         </section>
       )}

@@ -27,7 +27,7 @@ export function NewContentCollectionPage({
 
   return (
     <main className={styles.page}>
-      <PageHeader title="コンテンツ追加" />
+      <PageHeader title="コンテンツ種別を追加" />
       <form className={styles.formCard} onSubmit={handleSubmit}>
         <label className={styles.field}>
           <span className={styles.fieldLabel}>名前</span>
@@ -42,7 +42,7 @@ export function NewContentCollectionPage({
           disabled={isSubmitting}
           type="submit"
         >
-          追加する
+          追加
         </button>
       </form>
     </main>

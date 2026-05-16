@@ -29,7 +29,7 @@ export function ContentsPage({
             search={{ collection: collectionSlug }}
             to="/contents/new"
           >
-            新規作成
+            追加
           </Link>
         }
         actionsClassName={styles.toolbar}

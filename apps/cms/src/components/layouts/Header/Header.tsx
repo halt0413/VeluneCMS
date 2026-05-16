@@ -17,7 +17,7 @@ export function Header() {
           <div className={styles.sectionHeader}>
             <p className={styles.sectionTitle}>コンテンツ</p>
             <Link
-              aria-label="コンテンツを新規作成"
+              aria-label="コンテンツ種別を追加"
               className={styles.addButton}
               to="/content-collections/new"
             >
