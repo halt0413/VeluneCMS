@@ -103,6 +103,12 @@
   flex-wrap: wrap;
 }
 
+.pendingMessage {
+  color: #50607c;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
 .secondaryButton {
   display: inline-flex;
   align-items: center;
