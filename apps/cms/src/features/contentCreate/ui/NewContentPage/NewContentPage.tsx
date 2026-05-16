@@ -5,6 +5,7 @@ import { ContentForm } from "../../../../components/content/editor/ContentForm/C
 type NewContentPageProps = {
   collectionName?: string;
   contentType?: string;
+  errorMessage?: string;
   isSubmitting?: boolean;
   onSubmit?: (payload: CmsPageCreateRequest) => void | Promise<void>;
 };
@@ -12,6 +13,7 @@ type NewContentPageProps = {
 export function NewContentPage({
   collectionName = "portfolio",
   contentType = "portfolio",
+  errorMessage,
   isSubmitting = false,
   onSubmit
 }: NewContentPageProps) {
@@ -27,6 +29,7 @@ export function NewContentPage({
         }}
         description={`${collectionName} に表示するコンテンツを作成します。`}
         endpoint="/contents"
+        errorMessage={errorMessage}
         isSubmitting={isSubmitting}
         method="POST"
         onSubmit={onSubmit}

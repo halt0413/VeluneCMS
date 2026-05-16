@@ -66,18 +66,23 @@ export function ContentForm({
         <div className={styles.fieldGrid}>
           <label className={styles.field}>
             <span className={styles.fieldLabel}>タイトル</span>
-            <input defaultValue={defaultValue.title} name="title" type="text" />
+            <input defaultValue={defaultValue.title} name="title" required type="text" />
           </label>
 
           <label className={styles.field}>
             <span className={styles.fieldLabel}>slug</span>
-            <input defaultValue={defaultValue.slug} name="slug" type="text" />
+            <input defaultValue={defaultValue.slug} name="slug" required type="text" />
           </label>
         </div>
 
         <label className={styles.field}>
           <span className={styles.fieldLabel}>種別</span>
-          <input defaultValue={defaultValue.contentType} name="contentType" type="text" />
+          <input
+            defaultValue={defaultValue.contentType}
+            name="contentType"
+            required
+            type="text"
+          />
         </label>
 
         {showStatus ? (
@@ -92,7 +97,7 @@ export function ContentForm({
 
         <label className={styles.field}>
           <span className={styles.fieldLabel}>本文</span>
-          <textarea defaultValue={defaultValue.body} name="body" rows={10} />
+          <textarea defaultValue={defaultValue.body} name="body" required rows={10} />
         </label>
 
         <div className={styles.formActions}>

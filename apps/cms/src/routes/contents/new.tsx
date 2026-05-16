@@ -23,6 +23,7 @@ export function NewContentRoute() {
     <NewContentPage
       collectionName={collection?.name ?? collectionSlug}
       contentType={collectionSlug}
+      errorMessage={createMutation.error?.message}
       isSubmitting={createMutation.isPending}
       onSubmit={async (payload) => {
         const created = await createMutation.mutateAsync(payload);

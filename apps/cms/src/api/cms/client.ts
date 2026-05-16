@@ -13,7 +13,13 @@ export async function cmsFetch<T>(path: string, init?: RequestInit): Promise<T> 
   });
 
   if (!response.ok) {
-    throw new Error(`CMS API request failed: ${response.status}`);
+    const errorBody = await response.json().catch(() => null);
+    const errorMessage =
+      errorBody && typeof errorBody === "object" && "error" in errorBody
+        ? String(errorBody.error)
+        : `CMS API request failed: ${response.status}`;
+
+    throw new Error(errorMessage);
   }
 
   return (await response.json()) as T;

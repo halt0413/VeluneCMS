@@ -100,6 +100,10 @@ export function createApp({
   );
 
   app.onError((error, c) => {
+    if (error.name === "ZodError") {
+      return c.json({ error: "Invalid request body" }, 400);
+    }
+
     if (error instanceof AppError) {
       return c.json(
         { error: error.message },
