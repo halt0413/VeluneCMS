@@ -1,6 +1,10 @@
+import type { AuthUser } from "./auth";
+
 export type CmsContentStatus = "draft" | "published";
 
 export type CmsPageId = string;
+
+export type CmsPageUser = Pick<AuthUser, "id" | "login">;
 
 export type CmsPageInput = {
   slug: string;
@@ -13,7 +17,9 @@ export type CmsPageInput = {
 export type CmsPagePatch = Partial<CmsPageInput>;
 
 export type CmsPageRecord = CmsPageInput & {
+  createdBy?: CmsPageUser;
   id: CmsPageId;
+  updatedBy?: CmsPageUser;
   createdAt: string;
   updatedAt: string;
 };

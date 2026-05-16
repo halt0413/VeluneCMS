@@ -29,9 +29,19 @@ export function ContentMetaCard({ content }: ContentMetaCardProps) {
       <ContentInfoRow label="createdAt">
         <span>{formatDate(content.createdAt)}</span>
       </ContentInfoRow>
+      {content.createdBy ? (
+        <ContentInfoRow label="createdBy">
+          <span>{content.createdBy.login}</span>
+        </ContentInfoRow>
+      ) : null}
       <ContentInfoRow label="updatedAt">
         <span>{formatDate(content.updatedAt)}</span>
       </ContentInfoRow>
+      {content.updatedBy ? (
+        <ContentInfoRow label="updatedBy">
+          <span>{content.updatedBy.login}</span>
+        </ContentInfoRow>
+      ) : null}
       {publishedAt ? (
         <ContentInfoRow label="publishedAt">
           <span>{publishedAt}</span>

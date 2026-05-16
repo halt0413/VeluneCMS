@@ -2,6 +2,7 @@ import {
   Page,
   type GitHubIssueGateway,
   type PageRepository,
+  type AuthUser,
   type CmsPage,
   type CmsPageId,
   type CmsPageInput,
@@ -34,9 +35,16 @@ type SyncPageToGitHubDependencies = {
 
 export async function createPage(
   input: CmsPageInput,
-  { createId, getNow, pageRepository }: CreatePageDependencies
+  { createId, getNow, pageRepository }: CreatePageDependencies,
+  actor?: AuthUser
 ): Promise<CmsPage> {
   const page = Page.create({
+    actor: actor
+      ? {
+          id: actor.id,
+          login: actor.login
+        }
+      : undefined,
     id: createId(),
     input,
     now: getNow()
@@ -133,7 +141,8 @@ export async function syncPageToGitHub(
 export async function updatePage(
   id: CmsPageId,
   patch: CmsPagePatch,
-  { getNow, pageRepository }: UpdatePageDependencies
+  { getNow, pageRepository }: UpdatePageDependencies,
+  actor?: AuthUser
 ): Promise<CmsPage> {
   const current = await pageRepository.findById(id);
 
@@ -141,7 +150,16 @@ export async function updatePage(
     throw new NotFoundError("Page not found");
   }
 
-  current.update(patch, getNow());
+  current.update(
+    patch,
+    getNow(),
+    actor
+      ? {
+          id: actor.id,
+          login: actor.login
+        }
+      : undefined
+  );
   const updated = await pageRepository.save(current);
 
   return updated.toSnapshot();

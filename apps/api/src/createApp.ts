@@ -65,9 +65,11 @@ export function createApp({
   const contentsController = createContentsController({
     createContent,
     deleteContent,
+    getCurrentUser,
     getContent,
     getContentPreviewById,
     listContents,
+    sessionCookieName,
     updateContent
   });
   const contentCollectionsController = createContentCollectionsController({

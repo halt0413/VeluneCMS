@@ -6,11 +6,15 @@ type ContentStatusProps = {
 };
 
 export function ContentStatus({ status }: ContentStatusProps) {
-  const label = status === "draft" ? "draft" : "published";
+  const label = status === "draft" ? "下書き" : "公開中";
+  const dotClassName =
+    status === "draft"
+      ? `${styles.statusDot} ${styles.statusDotDraft}`
+      : styles.statusDot;
 
   return (
     <span className={styles.status}>
-      <span className={styles.statusDot} />
+      <span className={dotClassName} />
       {label}
     </span>
   );

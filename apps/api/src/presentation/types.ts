@@ -28,15 +28,20 @@ export type AuthControllerHandlers = {
 };
 
 export type ContentsControllerHandlers = {
-  createContent: (payload: CmsPageInput) => Promise<CmsPage>;
+  createContent: (payload: CmsPageInput, actor?: AuthUser) => Promise<CmsPage>;
   deleteContent: (id: string) => Promise<{
     deleted: true;
     id: string;
   }>;
+  getCurrentUser: (sessionId: string | undefined) => AuthUser;
   getContent: (id: string) => Promise<CmsPage>;
   getContentPreviewById: (id: string) => Promise<PagePreview>;
   listContents: () => Promise<CmsPage[]>;
-  updateContent: (id: string, payload: CmsPagePatch) => Promise<CmsPage>;
+  updateContent: (
+    id: string,
+    payload: CmsPagePatch,
+    actor?: AuthUser
+  ) => Promise<CmsPage>;
 };
 
 export type ContentCollectionsControllerHandlers = {

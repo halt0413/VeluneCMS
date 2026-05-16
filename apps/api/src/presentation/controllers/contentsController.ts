@@ -8,6 +8,7 @@ import type {
   CmsPreviewResponse
 } from "@repo/types";
 import type { Context } from "hono";
+import { getCookie } from "hono/cookie";
 import { requireRouteParam } from "../params";
 import type { ContentsControllerHandlers } from "../types";
 
@@ -16,11 +17,13 @@ const cmsPagePatchSchema = cmsPageSchema.partial();
 export function createContentsController({
   createContent,
   deleteContent,
+  getCurrentUser,
   getContent,
   getContentPreviewById,
   listContents,
+  sessionCookieName,
   updateContent
-}: ContentsControllerHandlers) {
+}: ContentsControllerHandlers & { sessionCookieName: string }) {
   return {
     async list(c: Context) {
       const items = await listContents();
@@ -41,7 +44,11 @@ export function createContentsController({
     },
     async create(c: Context) {
       const payload = await c.req.json();
-      const created = await createContent(cmsPageSchema.parse(payload));
+      const sessionId = getCookie(c, sessionCookieName);
+      const created = await createContent(
+        cmsPageSchema.parse(payload),
+        sessionId ? getCurrentUser(sessionId) : undefined
+      );
       const response: CmsPageCreateResponse = {
         created
       };
@@ -50,9 +57,11 @@ export function createContentsController({
     },
     async update(c: Context) {
       const payload = await c.req.json();
+      const sessionId = getCookie(c, sessionCookieName);
       const updated = await updateContent(
         requireRouteParam(c, "id"),
-        cmsPagePatchSchema.parse(payload)
+        cmsPagePatchSchema.parse(payload),
+        sessionId ? getCurrentUser(sessionId) : undefined
       );
       const response: CmsPageUpdateResponse = {
         updated

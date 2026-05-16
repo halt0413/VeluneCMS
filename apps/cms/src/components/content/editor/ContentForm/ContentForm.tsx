@@ -1,4 +1,5 @@
 import type { CmsPageInput } from "@repo/types";
+import { useState } from "react";
 import { ContentFormSidebar } from "../ContentFormSidebar/ContentFormSidebar";
 import styles from "./ContentForm.module.css";
 
@@ -30,6 +31,11 @@ export function ContentForm({
   showStatus = true,
   submitLabel
 }: ContentFormProps) {
+  const [submittingIntent, setSubmittingIntent] = useState<"draft" | "save" | null>(
+    null
+  );
+  const pendingIntent = isSubmitting ? submittingIntent : null;
+
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
@@ -37,16 +43,30 @@ export function ContentForm({
       return;
     }
 
+    const submitter = (event.nativeEvent as SubmitEvent).submitter;
+    const intent =
+      submitter instanceof HTMLButtonElement && submitter.value === "draft"
+        ? "draft"
+        : "save";
     const formData = new FormData(event.currentTarget);
-    await onSubmit({
-      body: String(formData.get("body") ?? ""),
-      contentType: String(formData.get("contentType") ?? defaultValue.contentType),
-      slug: String(formData.get("slug") ?? ""),
-      status: showStatus
-        ? (String(formData.get("status") ?? defaultValue.status) as CmsPageInput["status"])
-        : defaultValue.status,
-      title: String(formData.get("title") ?? "")
-    });
+    setSubmittingIntent(intent);
+
+    try {
+      await onSubmit({
+        body: String(formData.get("body") ?? ""),
+        contentType: String(formData.get("contentType") ?? defaultValue.contentType),
+        slug: String(formData.get("slug") ?? ""),
+        status:
+          intent === "draft"
+            ? "draft"
+            : showStatus
+              ? (String(formData.get("status") ?? defaultValue.status) as CmsPageInput["status"])
+              : "published",
+        title: String(formData.get("title") ?? "")
+      });
+    } finally {
+      setSubmittingIntent(null);
+    }
   }
 
   return (
@@ -109,15 +129,26 @@ export function ContentForm({
             ) : null}
           </div>
           <div className={styles.formActionsRight}>
-            <button className={styles.secondaryButton} disabled={isSubmitting} type="button">
-              下書き保存
+            {pendingIntent === "draft" ? (
+              <span className={styles.pendingMessage} role="status">
+                下書きを保存しています...
+              </span>
+            ) : null}
+            <button
+              className={styles.secondaryButton}
+              disabled={!onSubmit || isSubmitting}
+              type="submit"
+              value="draft"
+            >
+              {pendingIntent === "draft" ? "保存中..." : "下書き保存"}
             </button>
             <button
               className={styles.primaryButton}
               disabled={!onSubmit || isSubmitting}
               type="submit"
+              value="save"
             >
-              {isSubmitting ? "保存中..." : submitLabel}
+              {pendingIntent === "save" ? "保存中..." : submitLabel}
             </button>
           </div>
         </div>

@@ -73,12 +73,16 @@ export function createApiDependencies(
         sessionRepository
       }),
     cookieSecure: env.session.cookieSecure,
-    createContent: (input) =>
-      createPage(input, {
-        pageRepository,
-        createId,
-        getNow
-      }),
+    createContent: (input, actor) =>
+      createPage(
+        input,
+        {
+          pageRepository,
+          createId,
+          getNow
+        },
+        actor
+      ),
     createContentCollection: (input) =>
       createContentCollection(input, {
         contentCollectionRepository,
@@ -111,11 +115,16 @@ export function createApiDependencies(
       }),
     addIssueLabels: (issueNumber, labels) =>
       updateIssueLabels(gitHubIssueGateway, issueNumber, labels),
-    updateContent: (id, input) =>
-      updatePage(id, input, {
-        getNow,
-        pageRepository
-      }),
+    updateContent: (id, input, actor) =>
+      updatePage(
+        id,
+        input,
+        {
+          getNow,
+          pageRepository
+        },
+        actor
+      ),
     updateIssue: (issueNumber, input) =>
       updateIssue(gitHubIssueGateway, issueNumber, input),
     webOrigin: new URL(env.cmsUrl).origin

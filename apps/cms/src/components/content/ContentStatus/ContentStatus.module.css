@@ -12,3 +12,7 @@
   border-radius: 999px;
   background: #11adb5;
 }
+
+.statusDotDraft {
+  background: #f2b705;
+}

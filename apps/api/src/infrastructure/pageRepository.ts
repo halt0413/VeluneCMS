@@ -10,12 +10,16 @@ import type { D1Database } from "./db/d1";
 type PageRow = {
   body: string;
   content_type: string;
+  created_by_github_id: number | null;
+  created_by_github_login: string | null;
   created_at: string;
   id: string;
   published_at: string | null;
   slug: string;
   status: "draft" | "published";
   title: string;
+  updated_by_github_id: number | null;
+  updated_by_github_login: string | null;
   updated_at: string;
 };
 
@@ -55,7 +59,9 @@ export class D1PageRepository implements PageRepository {
     const row = await this.database
       .prepare(
         `
-          select id, slug, title, body, status, published_at, created_at, updated_at, content_type
+          select id, slug, title, body, status, published_at, created_at, updated_at, content_type,
+                 created_by_github_id, created_by_github_login,
+                 updated_by_github_id, updated_by_github_login
           from pages
           where id = ?
         `
@@ -71,7 +77,9 @@ export class D1PageRepository implements PageRepository {
     const row = await this.database
       .prepare(
         `
-          select id, slug, title, body, status, published_at, created_at, updated_at, content_type
+          select id, slug, title, body, status, published_at, created_at, updated_at, content_type,
+                 created_by_github_id, created_by_github_login,
+                 updated_by_github_id, updated_by_github_login
           from pages
           where slug = ?
         `
@@ -85,7 +93,9 @@ export class D1PageRepository implements PageRepository {
   async list(): Promise<Page[]> {
     const result = await this.database.prepare(
       `
-        select id, slug, title, body, status, published_at, created_at, updated_at, content_type
+        select id, slug, title, body, status, published_at, created_at, updated_at, content_type,
+               created_by_github_id, created_by_github_login,
+               updated_by_github_id, updated_by_github_login
         from pages
         order by updated_at desc
       `
@@ -106,16 +116,24 @@ export class D1PageRepository implements PageRepository {
             title,
             body,
             content_type,
+            created_by_github_id,
+            created_by_github_login,
+            updated_by_github_id,
+            updated_by_github_login,
             status,
             published_at,
             created_at,
             updated_at
-          ) values (?, ?, ?, ?, ?, ?, ?, ?, ?)
+          ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
           on conflict(id) do update set
             slug = excluded.slug,
             title = excluded.title,
             body = excluded.body,
             content_type = excluded.content_type,
+            created_by_github_id = excluded.created_by_github_id,
+            created_by_github_login = excluded.created_by_github_login,
+            updated_by_github_id = excluded.updated_by_github_id,
+            updated_by_github_login = excluded.updated_by_github_login,
             status = excluded.status,
             published_at = excluded.published_at,
             created_at = excluded.created_at,
@@ -128,6 +146,10 @@ export class D1PageRepository implements PageRepository {
         snapshot.title,
         snapshot.body,
         snapshot.contentType,
+        snapshot.createdBy?.id ?? null,
+        snapshot.createdBy?.login ?? null,
+        snapshot.updatedBy?.id ?? null,
+        snapshot.updatedBy?.login ?? null,
         snapshot.status,
         snapshot.status === "published" ? snapshot.publishedAt : null,
         snapshot.createdAt,
@@ -146,7 +168,9 @@ export class D1PageRepository implements PageRepository {
         title: row.title,
         body: row.body,
         contentType: row.content_type,
+        createdBy: toGitHubUser(row.created_by_github_id, row.created_by_github_login),
         status: "published",
+        updatedBy: toGitHubUser(row.updated_by_github_id, row.updated_by_github_login),
         publishedAt: row.published_at,
         createdAt: row.created_at,
         updatedAt: row.updated_at
@@ -159,11 +183,22 @@ export class D1PageRepository implements PageRepository {
       title: row.title,
       body: row.body,
       contentType: row.content_type,
+      createdBy: toGitHubUser(row.created_by_github_id, row.created_by_github_login),
       status: "draft",
+      updatedBy: toGitHubUser(row.updated_by_github_id, row.updated_by_github_login),
       createdAt: row.created_at,
       updatedAt: row.updated_at
     });
   }
+}
+
+function toGitHubUser(id: number | null, login: string | null) {
+  return id !== null && login
+    ? {
+        id,
+        login
+      }
+    : undefined;
 }
 
 export class InMemoryPageRepository implements PageRepository {

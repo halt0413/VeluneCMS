@@ -3,7 +3,8 @@ import type {
   CmsPage,
   CmsPageId,
   CmsPageInput,
-  CmsPagePatch
+  CmsPagePatch,
+  CmsPageUser
 } from "../types/page";
 import { Slug } from "../valueObjects/Slug";
 
@@ -11,16 +12,19 @@ import { Slug } from "../valueObjects/Slug";
 type PageProps = {
   body: string;
   contentType: string;
+  createdBy?: CmsPageUser;
   createdAt: string;
   id: CmsPageId;
   publishedAt?: string;
   slug: string;
   status: CmsContentStatus;
   title: string;
+  updatedBy?: CmsPageUser;
   updatedAt: string;
 };
 
 type CreatePageParams = {
+  actor?: CmsPageUser;
   id: CmsPageId;
   input: CmsPageInput;
   now: string;
@@ -30,14 +34,16 @@ type CreatePageParams = {
 export class Page {
   private constructor(private readonly props: PageProps) {}
 
-  static create({ id, input, now }: CreatePageParams): Page {
+  static create({ actor, id, input, now }: CreatePageParams): Page {
     return new Page({
       id,
       slug: Slug.create(input.slug).toString(),
       title: normalizeRequiredText(input.title, "Title"),
       body: normalizeRequiredText(input.body, "Body"),
       contentType: normalizeRequiredText(input.contentType, "Content type"),
+      createdBy: actor,
       status: input.status,
+      updatedBy: actor,
       createdAt: now,
       updatedAt: now,
       publishedAt: input.status === "published" ? now : undefined
@@ -52,7 +58,9 @@ export class Page {
       title: normalizeRequiredText(snapshot.title, "Title"),
       body: normalizeRequiredText(snapshot.body, "Body"),
       contentType: normalizeRequiredText(snapshot.contentType, "Content type"),
+      createdBy: snapshot.createdBy,
       status: snapshot.status,
+      updatedBy: snapshot.updatedBy,
       createdAt: snapshot.createdAt,
       updatedAt: snapshot.updatedAt,
       publishedAt:
@@ -72,7 +80,7 @@ export class Page {
     return this.props.updatedAt;
   }
 
-  update(patch: CmsPagePatch, now: string): void {
+  update(patch: CmsPagePatch, now: string, actor?: CmsPageUser): void {
     if (patch.slug !== undefined) {
       this.props.slug = Slug.create(patch.slug).toString();
     }
@@ -96,6 +104,7 @@ export class Page {
       this.changeStatus(patch.status, now);
     }
 
+    this.props.updatedBy = actor ?? this.props.updatedBy;
     this.props.updatedAt = now;
   }
 
@@ -106,7 +115,9 @@ export class Page {
       title: this.props.title,
       body: this.props.body,
       contentType: this.props.contentType,
+      createdBy: this.props.createdBy,
       createdAt: this.props.createdAt,
+      updatedBy: this.props.updatedBy,
       updatedAt: this.props.updatedAt
     };
 

@@ -1,17 +1,21 @@
 import { sql } from "drizzle-orm";
-import { check, index, sqliteTable, text, uniqueIndex } from "drizzle-orm/sqlite-core";
+import { check, index, integer, sqliteTable, text, uniqueIndex } from "drizzle-orm/sqlite-core";
 
 export const pages = sqliteTable(
   "pages",
   {
     body: text("body").notNull(),
     contentType: text("content_type").notNull(),
+    createdByGitHubId: integer("created_by_github_id"),
+    createdByGitHubLogin: text("created_by_github_login"),
     createdAt: text("created_at").notNull(),
     id: text("id").primaryKey(),
     publishedAt: text("published_at"),
     slug: text("slug").notNull(),
     status: text("status").notNull(),
     title: text("title").notNull(),
+    updatedByGitHubId: integer("updated_by_github_id"),
+    updatedByGitHubLogin: text("updated_by_github_login"),
     updatedAt: text("updated_at").notNull()
   },
   (table) => [
