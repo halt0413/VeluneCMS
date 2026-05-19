@@ -1,11 +1,11 @@
 {
-  "name": "my-cms-admin",
+  "name": "velune-cms",
   "private": true,
   "packageManager": "pnpm@10.16.1",
   "scripts": {
-    "dev:cms": "pnpm --filter cms dev",
-    "dev:api": "pnpm --filter api dev",
-    "start:api": "pnpm --filter api start",
+    "dev:cms": "pnpm --filter @velune-cms/console dev",
+    "dev:api": "pnpm --filter @velune-cms/api dev",
+    "start:api": "pnpm --filter @velune-cms/api start",
     "build": "pnpm -r build",
     "lint": "pnpm -r lint",
     "typecheck": "pnpm -r typecheck"
