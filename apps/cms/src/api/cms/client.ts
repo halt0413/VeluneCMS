@@ -7,7 +7,7 @@ export async function cmsFetch<T>(path: string, init?: RequestInit): Promise<T> 
     credentials: init?.credentials ?? "include",
     headers: {
       "Content-Type": "application/json",
-      ...(init?.headers ?? {})
+      ...init?.headers
     },
     cache: "no-store"
   });
