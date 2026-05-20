@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "env TSX_TSCONFIG_PATH=tsconfig.dev.json pnpm exec tsx watch cmd/main.ts",
+    "dev:worker": "wrangler dev",
+    "dev:prod-db": "wrangler dev --remote",
     "build": "pnpm --filter @repo/types build && pnpm --filter @repo/utils build && pnpm --filter @repo/content build && pnpm --filter @repo/github build && tsc -p tsconfig.json",
     "db:generate": "drizzle-kit generate",
     "start": "node dist/cmd/main.js",
