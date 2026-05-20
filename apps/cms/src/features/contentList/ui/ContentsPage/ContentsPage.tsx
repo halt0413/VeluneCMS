@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { useMemo } from "react";
 import { PageHeader } from "../../../../components/content/PageHeader/PageHeader";
 import type { Content } from "../../../../domain/content/content";
 import { ContentCard } from "../ContentCard/ContentCard";
@@ -16,8 +17,15 @@ export function ContentsPage({
   collectionSlug,
   contents
 }: ContentsPageProps) {
-  const contentTypes = Array.from(
-    new Set(contents.map((content) => content.contentType))
+  const contentTypes = useMemo(
+    () => Array.from(new Set(contents.map((content) => content.contentType))),
+    [contents]
+  );
+  const newContentSearch = useMemo(
+    () => ({
+      collection: collectionSlug
+    }),
+    [collectionSlug]
   );
 
   return (
@@ -26,7 +34,7 @@ export function ContentsPage({
         actions={
           <Link
             className={styles.primaryButton}
-            search={{ collection: collectionSlug }}
+            search={newContentSearch}
             to="/contents/new"
           >
             追加

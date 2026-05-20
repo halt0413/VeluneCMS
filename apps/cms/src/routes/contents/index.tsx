@@ -1,4 +1,5 @@
 import { useLocation } from "@tanstack/react-router";
+import { useMemo } from "react";
 import { useContentCollectionsQuery } from "../../features/contentCollectionList/hooks/useContentCollectionsQuery";
 import { useContentsQuery } from "../../features/contentList/hooks/useContentsQuery";
 import { ContentsPage } from "../../features/contentList/ui/ContentsPage/ContentsPage";
@@ -10,8 +11,9 @@ export function ContentsRoute() {
   const collectionSlug =
     new URLSearchParams(location.searchStr).get("collection") ?? "portfolio";
   const collection = collections.find((item) => item.slug === collectionSlug);
-  const filteredContents = data.filter(
-    (content) => content.contentType === collectionSlug
+  const filteredContents = useMemo(
+    () => data.filter((content) => content.contentType === collectionSlug),
+    [collectionSlug, data]
   );
 
   return (

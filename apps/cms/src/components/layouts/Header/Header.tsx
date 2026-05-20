@@ -1,4 +1,6 @@
 import { Link } from "@tanstack/react-router";
+import { useMemo } from "react";
+import type { ContentCollection } from "../../../domain/contentCollection/contentCollection";
 import { useContentCollectionsQuery } from "../../../features/contentCollectionList/hooks/useContentCollectionsQuery";
 import { HeaderAuth } from "./HeaderAuth/HeaderAuth";
 import styles from "./Header.module.css";
@@ -26,19 +28,35 @@ export function Header() {
           </div>
           <div className={styles.stack}>
             {collections.map((collection) => (
-              <Link
-                className={`${styles.link} ${styles.linkActive}`}
-                key={collection.id}
-                search={{ collection: collection.slug }}
-                to="/contents"
-              >
-                <span className={styles.linkMark} />
-                {collection.name}
-              </Link>
+              <ContentCollectionLink collection={collection} key={collection.id} />
             ))}
           </div>
         </section>
       </nav>
     </div>
+  );
+}
+
+type ContentCollectionLinkProps = {
+  collection: ContentCollection;
+};
+
+function ContentCollectionLink({ collection }: ContentCollectionLinkProps) {
+  const search = useMemo(
+    () => ({
+      collection: collection.slug,
+    }),
+    [collection.slug],
+  );
+
+  return (
+    <Link
+      className={`${styles.link} ${styles.linkActive}`}
+      search={search}
+      to="/contents"
+    >
+      <span className={styles.linkMark} />
+      {collection.name}
+    </Link>
   );
 }

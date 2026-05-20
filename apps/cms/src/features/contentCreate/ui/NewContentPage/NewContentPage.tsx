@@ -1,4 +1,5 @@
 import type { CmsPageCreateRequest } from "@repo/types";
+import { useMemo } from "react";
 import { ContentEditorPage } from "../../../../components/content/editor/ContentEditorPage/ContentEditorPage";
 import { ContentForm } from "../../../../components/content/editor/ContentForm/ContentForm";
 
@@ -17,16 +18,21 @@ export function NewContentPage({
   isSubmitting = false,
   onSubmit
 }: NewContentPageProps) {
+  const defaultValue = useMemo(
+    () => ({
+      slug: "new-content",
+      title: "",
+      body: "",
+      contentType,
+      status: "draft" as const
+    }),
+    [contentType]
+  );
+
   return (
     <ContentEditorPage title={`${collectionName} のコンテンツ追加`}>
       <ContentForm
-        defaultValue={{
-          slug: "new-content",
-          title: "",
-          body: "",
-          contentType,
-          status: "draft"
-        }}
+        defaultValue={defaultValue}
         description={`${collectionName} に表示するコンテンツを作成します。`}
         endpoint="/contents"
         errorMessage={errorMessage}

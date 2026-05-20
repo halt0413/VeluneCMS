@@ -6,9 +6,9 @@ export class Slug {
   static create(input: string): Slug {
     const value = input
       .trim()
-      .replace(/[\s_]+/g, "-")
-      .replace(/-+/g, "-")
-      .replace(/^\/+|\/+$/g, "");
+      .replaceAll(/[\s_]+/g, "-")
+      .replaceAll(/-+/g, "-")
+      .replaceAll(/^\/+|\/+$/g, "");
 
     if (!value) {
       throw new Error("Slug is required");
