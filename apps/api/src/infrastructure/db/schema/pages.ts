@@ -10,6 +10,8 @@ export const pages = sqliteTable(
     createdByGitHubLogin: text("created_by_github_login"),
     createdAt: text("created_at").notNull(),
     id: text("id").primaryKey(),
+    ownerGitHubId: integer("owner_github_id"),
+    ownerGitHubLogin: text("owner_github_login"),
     publishedAt: text("published_at"),
     slug: text("slug").notNull(),
     status: text("status").notNull(),

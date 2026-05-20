@@ -1,0 +1,13 @@
+{
+  "name": "@velune-cms/cli",
+  "version": "0.1.0",
+  "private": false,
+  "type": "module",
+  "bin": {
+    "velune": "./src/velune.js"
+  },
+  "files": ["src"],
+  "scripts": {
+    "start": "node src/velune.js"
+  }
+}

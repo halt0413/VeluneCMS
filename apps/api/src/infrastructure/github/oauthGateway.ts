@@ -77,7 +77,8 @@ export class GitHubOAuthApi implements GitHubOAuthGateway {
       method: "POST",
       headers: {
         Accept: "application/json",
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "User-Agent": "VeluneCMS"
       },
       body: JSON.stringify({
         client_id: clientId,
@@ -108,12 +109,15 @@ export class GitHubOAuthApi implements GitHubOAuthGateway {
       headers: {
         Authorization: `Bearer ${accessToken}`,
         Accept: "application/vnd.github+json",
+        "User-Agent": "VeluneCMS",
         "X-GitHub-Api-Version": "2022-11-28"
       }
     });
 
     if (!response.ok) {
-      throw new BadGatewayError("Failed to fetch GitHub user");
+      throw new BadGatewayError(
+        `Failed to fetch GitHub user: ${response.status} ${await response.text()}`
+      );
     }
 
     const data = (await response.json()) as GitHubUserResponse;
