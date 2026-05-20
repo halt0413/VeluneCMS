@@ -11,8 +11,8 @@ export function createContentsRouter({
 }) {
   const router = new Hono();
 
-  router.get("/", controller.list);
-  router.get("/:id", controller.get);
+  router.get("/", auth, controller.list);
+  router.get("/:id", auth, controller.get);
   router.get("/:id/preview", auth, controller.preview);
   router.post("/", auth, controller.create);
   router.patch("/:id", auth, controller.update);

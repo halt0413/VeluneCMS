@@ -7,6 +7,7 @@
     "dev:api": "pnpm --filter @velune-cms/api dev",
     "dev:api:worker": "pnpm --filter @velune-cms/api dev:worker",
     "dev:api:prod-db": "pnpm --filter @velune-cms/api dev:prod-db",
+    "velune": "pnpm --filter @velune-cms/cli start --",
     "start:api": "pnpm --filter @velune-cms/api start",
     "build": "pnpm -r build",
     "lint": "pnpm lint:eslint && pnpm lint:ox",

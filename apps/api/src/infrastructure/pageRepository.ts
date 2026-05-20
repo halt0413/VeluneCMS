@@ -14,6 +14,8 @@ type PageRow = {
   created_by_github_login: string | null;
   created_at: string;
   id: string;
+  owner_github_id: number | null;
+  owner_github_login: string | null;
   published_at: string | null;
   slug: string;
   status: "draft" | "published";
@@ -61,6 +63,7 @@ export class D1PageRepository implements PageRepository {
         `
           select id, slug, title, body, status, published_at, created_at, updated_at, content_type,
                  created_by_github_id, created_by_github_login,
+                 owner_github_id, owner_github_login,
                  updated_by_github_id, updated_by_github_login
           from pages
           where id = ?
@@ -79,6 +82,7 @@ export class D1PageRepository implements PageRepository {
         `
           select id, slug, title, body, status, published_at, created_at, updated_at, content_type,
                  created_by_github_id, created_by_github_login,
+                 owner_github_id, owner_github_login,
                  updated_by_github_id, updated_by_github_login
           from pages
           where slug = ?
@@ -95,6 +99,7 @@ export class D1PageRepository implements PageRepository {
       `
         select id, slug, title, body, status, published_at, created_at, updated_at, content_type,
                created_by_github_id, created_by_github_login,
+               owner_github_id, owner_github_login,
                updated_by_github_id, updated_by_github_login
         from pages
         order by updated_at desc
@@ -118,13 +123,15 @@ export class D1PageRepository implements PageRepository {
             content_type,
             created_by_github_id,
             created_by_github_login,
+            owner_github_id,
+            owner_github_login,
             updated_by_github_id,
             updated_by_github_login,
             status,
             published_at,
             created_at,
             updated_at
-          ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+          ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
           on conflict(id) do update set
             slug = excluded.slug,
             title = excluded.title,
@@ -132,6 +139,8 @@ export class D1PageRepository implements PageRepository {
             content_type = excluded.content_type,
             created_by_github_id = excluded.created_by_github_id,
             created_by_github_login = excluded.created_by_github_login,
+            owner_github_id = coalesce(pages.owner_github_id, excluded.owner_github_id),
+            owner_github_login = coalesce(pages.owner_github_login, excluded.owner_github_login),
             updated_by_github_id = excluded.updated_by_github_id,
             updated_by_github_login = excluded.updated_by_github_login,
             status = excluded.status,
@@ -148,6 +157,8 @@ export class D1PageRepository implements PageRepository {
         snapshot.contentType,
         snapshot.createdBy?.id ?? null,
         snapshot.createdBy?.login ?? null,
+        snapshot.owner?.id ?? null,
+        snapshot.owner?.login ?? null,
         snapshot.updatedBy?.id ?? null,
         snapshot.updatedBy?.login ?? null,
         snapshot.status,
@@ -169,6 +180,7 @@ export class D1PageRepository implements PageRepository {
         body: row.body,
         contentType: row.content_type,
         createdBy: toGitHubUser(row.created_by_github_id, row.created_by_github_login),
+        owner: toGitHubUser(row.owner_github_id, row.owner_github_login),
         status: "published",
         updatedBy: toGitHubUser(row.updated_by_github_id, row.updated_by_github_login),
         publishedAt: row.published_at,
@@ -184,6 +196,7 @@ export class D1PageRepository implements PageRepository {
       body: row.body,
       contentType: row.content_type,
       createdBy: toGitHubUser(row.created_by_github_id, row.created_by_github_login),
+      owner: toGitHubUser(row.owner_github_id, row.owner_github_login),
       status: "draft",
       updatedBy: toGitHubUser(row.updated_by_github_id, row.updated_by_github_login),
       createdAt: row.created_at,

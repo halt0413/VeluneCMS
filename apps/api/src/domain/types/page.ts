@@ -20,6 +20,7 @@ export type CmsPagePatch = Partial<CmsPageInput>;
 export type CmsPageRecord = CmsPageInput & {
   createdBy?: CmsPageUser;
   id: CmsPageId;
+  owner?: CmsPageUser;
   updatedBy?: CmsPageUser;
   createdAt: string;
   updatedAt: string;

@@ -42,7 +42,9 @@ import {
 type RuntimeDependencies = {
   createId: () => string;
   getNow: () => string;
+  oAuthStateRepository?: InMemoryOAuthStateRepository;
   pageRepository?: PageRepository;
+  sessionRepository?: InMemorySessionRepository;
   contentCollectionRepository?: ContentCollectionRepository;
 };
 
@@ -52,12 +54,12 @@ export function createApiDependencies(
     contentCollectionRepository = new InMemoryContentCollectionRepository(),
     createId,
     getNow,
-    pageRepository = new InMemoryPageRepository()
+    oAuthStateRepository = new InMemoryOAuthStateRepository(),
+    pageRepository = new InMemoryPageRepository(),
+    sessionRepository = new InMemorySessionRepository()
   }: RuntimeDependencies
 ): CreateAppDependencies {
   // Infrastructureの実装をここで束ねて、Presentation層へはusecaseだけを渡す
-  const sessionRepository = new InMemorySessionRepository();
-  const oAuthStateRepository = new InMemoryOAuthStateRepository();
   const gitHubIssueGateway = new OctokitGitHubIssueGateway(env.github);
   const gitHubOAuthGateway = new GitHubOAuthApi(env.githubOAuth);
 

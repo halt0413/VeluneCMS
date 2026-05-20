@@ -15,6 +15,7 @@ type PageProps = {
   createdBy?: CmsPageUser;
   createdAt: string;
   id: CmsPageId;
+  owner?: CmsPageUser;
   publishedAt?: string;
   slug: string;
   status: CmsContentStatus;
@@ -42,6 +43,8 @@ export class Page {
       body: normalizeRequiredText(input.body, "Body"),
       contentType: normalizeRequiredText(input.contentType, "Content type"),
       createdBy: actor,
+      // ownerは「このコンテンツの所属ユーザー」。更新者とは違い、編集では変更しない。
+      owner: actor,
       status: input.status,
       updatedBy: actor,
       createdAt: now,
@@ -59,6 +62,7 @@ export class Page {
       body: normalizeRequiredText(snapshot.body, "Body"),
       contentType: normalizeRequiredText(snapshot.contentType, "Content type"),
       createdBy: snapshot.createdBy,
+      owner: snapshot.owner,
       status: snapshot.status,
       updatedBy: snapshot.updatedBy,
       createdAt: snapshot.createdAt,
@@ -118,6 +122,7 @@ export class Page {
       createdBy: this.props.createdBy,
       createdAt: this.props.createdAt,
       updatedBy: this.props.updatedBy,
+      owner: this.props.owner,
       updatedAt: this.props.updatedAt
     };
 

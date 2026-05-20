@@ -1,5 +1,9 @@
 import { createApiApp } from "./app/createDependencies";
 import { getApiEnv, type ApiEnvSource } from "./config/env";
+import {
+  InMemoryOAuthStateRepository,
+  InMemorySessionRepository
+} from "./infrastructure/authRepository";
 import type { D1Database } from "./infrastructure/db/d1";
 import { D1ContentCollectionRepository } from "./infrastructure/contentCollectionRepository";
 import { D1PageRepository } from "./infrastructure/pageRepository";
@@ -30,6 +34,9 @@ type WorkerExecutionContext = {
   props: unknown;
   waitUntil(promise: Promise<unknown>): void;
 };
+
+const oAuthStateRepository = new InMemoryOAuthStateRepository();
+const sessionRepository = new InMemorySessionRepository();
 
 function toApiEnvSource(env: CloudflareBindings): ApiEnvSource {
   return {
@@ -64,7 +71,9 @@ export default {
       createId: () => crypto.randomUUID(),
       getNow: () => new Date().toISOString(),
       contentCollectionRepository: new D1ContentCollectionRepository(env.CONTENT_DB),
-      pageRepository: new D1PageRepository(env.CONTENT_DB)
+      oAuthStateRepository,
+      pageRepository: new D1PageRepository(env.CONTENT_DB),
+      sessionRepository
     });
 
     return app.fetch(request, env, executionContext);

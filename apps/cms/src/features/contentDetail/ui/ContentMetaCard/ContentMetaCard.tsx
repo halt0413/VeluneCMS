@@ -26,6 +26,11 @@ export function ContentMetaCard({ content }: ContentMetaCardProps) {
       <ContentInfoRow label="status">
         <ContentStatus status={content.status} />
       </ContentInfoRow>
+      {content.owner ? (
+        <ContentInfoRow label="owner">
+          <span>{content.owner.login}</span>
+        </ContentInfoRow>
+      ) : null}
       <ContentInfoRow label="createdAt">
         <span>{formatDate(content.createdAt)}</span>
       </ContentInfoRow>

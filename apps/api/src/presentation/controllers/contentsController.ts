@@ -9,6 +9,7 @@ import type {
 } from "@repo/types";
 import type { Context } from "hono";
 import { getCookie } from "hono/cookie";
+import { NotFoundError } from "../../lib/errors/AppError";
 import { requireRouteParam } from "../params";
 import type { ContentsControllerHandlers } from "../types";
 
@@ -26,7 +27,20 @@ export function createContentsController({
 }: ContentsControllerHandlers & { sessionCookieName: string }) {
   return {
     async list(c: Context) {
-      const items = await listContents();
+      const contentType = c.req.query("contentType");
+      const sessionId = getCookie(c, sessionCookieName);
+      const currentUser = sessionId ? getCurrentUser(sessionId) : undefined;
+      const items = (await listContents()).filter((content) => {
+        if (contentType && content.contentType !== contentType) {
+          return false;
+        }
+
+        if (currentUser && content.owner?.id !== currentUser.id) {
+          return false;
+        }
+
+        return true;
+      });
       const response: CmsPageListResponse = {
         items,
         total: items.length
@@ -35,7 +49,14 @@ export function createContentsController({
       return c.json(response);
     },
     async get(c: Context) {
+      const sessionId = getCookie(c, sessionCookieName);
+      const currentUser = sessionId ? getCurrentUser(sessionId) : undefined;
       const item = await getContent(requireRouteParam(c, "id"));
+
+      if (currentUser && item.owner?.id !== currentUser.id) {
+        throw new NotFoundError("Page not found");
+      }
+
       const response: CmsPageItemResponse = {
         item
       };
