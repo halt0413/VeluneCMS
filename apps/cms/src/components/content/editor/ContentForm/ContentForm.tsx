@@ -1,5 +1,5 @@
 import type { CmsPageInput } from "@repo/types";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { ContentFormSidebar } from "../ContentFormSidebar/ContentFormSidebar";
 import styles from "./ContentForm.module.css";
 
@@ -28,50 +28,56 @@ export function ContentForm({
   errorMessage,
   isDeleting = false,
   isSubmitting = false,
-  method,
   onDelete,
   onSubmit,
   showDelete = false,
   showStatus = true,
-  submitLabel
+  submitLabel,
 }: ContentFormProps) {
-  const [submittingIntent, setSubmittingIntent] = useState<"draft" | "save" | null>(
-    null
-  );
+  const [submittingIntent, setSubmittingIntent] = useState<
+    "draft" | "save" | null
+  >(null);
   const pendingIntent = isSubmitting ? submittingIntent : null;
 
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+  const handleSubmit = useCallback(
+    async (event: React.SyntheticEvent<HTMLFormElement, SubmitEvent>) => {
+      event.preventDefault();
 
-    if (!onSubmit) {
-      return;
-    }
+      if (!onSubmit) {
+        return;
+      }
 
-    const submitter = (event.nativeEvent as SubmitEvent).submitter;
-    const intent =
-      submitter instanceof HTMLButtonElement && submitter.value === "draft"
-        ? "draft"
-        : "save";
-    const formData = new FormData(event.currentTarget);
-    setSubmittingIntent(intent);
+      const submitter = event.nativeEvent.submitter;
+      const intent =
+        submitter instanceof HTMLButtonElement && submitter.value === "draft"
+          ? "draft"
+          : "save";
+      const formData = new FormData(event.currentTarget);
+      setSubmittingIntent(intent);
 
-    try {
-      await onSubmit({
-        body: String(formData.get("body") ?? ""),
-        contentType: String(formData.get("contentType") ?? defaultValue.contentType),
-        slug: String(formData.get("slug") ?? ""),
-        status:
-          intent === "draft"
-            ? "draft"
-            : showStatus
-              ? (String(formData.get("status") ?? defaultValue.status) as CmsPageInput["status"])
-              : "published",
-        title: String(formData.get("title") ?? "")
-      });
-    } finally {
-      setSubmittingIntent(null);
-    }
-  }
+      try {
+        await onSubmit({
+          body: String(formData.get("body") ?? ""),
+          contentType: String(
+            formData.get("contentType") ?? defaultValue.contentType,
+          ),
+          slug: String(formData.get("slug") ?? ""),
+          status:
+            intent === "draft"
+              ? "draft"
+              : showStatus
+                ? (String(
+                    formData.get("status") ?? defaultValue.status,
+                  ) as CmsPageInput["status"])
+                : "published",
+          title: String(formData.get("title") ?? ""),
+        });
+      } finally {
+        setSubmittingIntent(null);
+      }
+    },
+    [defaultValue.contentType, defaultValue.status, onSubmit, showStatus],
+  );
 
   return (
     <section className={styles.formLayout}>
@@ -88,21 +94,37 @@ export function ContentForm({
         ) : null}
 
         <div className={styles.fieldGrid}>
-          <label className={styles.field}>
+          <label className={styles.field} htmlFor="content-title">
             <span className={styles.fieldLabel}>タイトル</span>
-            <input defaultValue={defaultValue.title} name="title" required type="text" />
+            <input
+              aria-label="タイトル"
+              defaultValue={defaultValue.title}
+              id="content-title"
+              name="title"
+              required
+              type="text"
+            />
           </label>
 
-          <label className={styles.field}>
+          <label className={styles.field} htmlFor="content-slug">
             <span className={styles.fieldLabel}>slug</span>
-            <input defaultValue={defaultValue.slug} name="slug" required type="text" />
+            <input
+              aria-label="slug"
+              defaultValue={defaultValue.slug}
+              id="content-slug"
+              name="slug"
+              required
+              type="text"
+            />
           </label>
         </div>
 
-        <label className={styles.field}>
+        <label className={styles.field} htmlFor="content-type">
           <span className={styles.fieldLabel}>種別</span>
           <input
+            aria-label="種別"
             defaultValue={defaultValue.contentType}
+            id="content-type"
             name="contentType"
             required
             type="text"
@@ -110,18 +132,29 @@ export function ContentForm({
         </label>
 
         {showStatus ? (
-          <label className={styles.field}>
+          <label className={styles.field} htmlFor="content-status">
             <span className={styles.fieldLabel}>ステータス</span>
-            <select defaultValue={defaultValue.status} name="status">
+            <select
+              defaultValue={defaultValue.status}
+              id="content-status"
+              name="status"
+            >
               <option value="draft">draft</option>
               <option value="published">published</option>
             </select>
           </label>
         ) : null}
 
-        <label className={styles.field}>
+        <label className={styles.field} htmlFor="content-body">
           <span className={styles.fieldLabel}>本文</span>
-          <textarea defaultValue={defaultValue.body} name="body" required rows={10} />
+          <textarea
+            aria-label="本文"
+            defaultValue={defaultValue.body}
+            id="content-body"
+            name="body"
+            required
+            rows={10}
+          />
         </label>
 
         <div className={styles.formActions}>
@@ -139,9 +172,9 @@ export function ContentForm({
           </div>
           <div className={styles.formActionsRight}>
             {pendingIntent === "draft" ? (
-              <span className={styles.pendingMessage} role="status">
+              <output className={styles.pendingMessage}>
                 下書きを保存しています...
-              </span>
+              </output>
             ) : null}
             <button
               className={styles.secondaryButton}

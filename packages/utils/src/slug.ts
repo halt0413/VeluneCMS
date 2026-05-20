@@ -1,7 +1,7 @@
 export function normalizeSlug(input: string): string {
   return input
     .trim()
-    .replace(/[\s_]+/g, "-")
-    .replace(/-+/g, "-")
-    .replace(/^\/+|\/+$/g, "");
+    .replaceAll(/[\s_]+/g, "-")
+    .replaceAll(/-+/g, "-")
+    .replaceAll(/^\/+|\/+$/g, "");
 }

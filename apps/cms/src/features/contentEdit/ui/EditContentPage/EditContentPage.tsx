@@ -1,5 +1,5 @@
 import type { CmsPageUpdateRequest } from "@repo/types";
-import { useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { ContentEditorPage } from "../../../../components/content/editor/ContentEditorPage/ContentEditorPage";
 import { ContentForm } from "../../../../components/content/editor/ContentForm/ContentForm";
 import type { Content } from "../../../../domain/content/content";
@@ -23,37 +23,50 @@ export function EditContentPage({
   onSubmit
 }: EditContentPageProps) {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const defaultValue = useMemo(
+    () =>
+      content
+        ? {
+            slug: content.slug,
+            title: content.title,
+            body: content.body,
+            contentType: content.contentType,
+            status: content.status
+          }
+        : null,
+    [content]
+  );
+  const openDeleteModal = useCallback(() => {
+    setIsDeleteModalOpen(true);
+  }, []);
+  const closeDeleteModal = useCallback(() => {
+    setIsDeleteModalOpen(false);
+  }, []);
 
-  async function handleDelete() {
+  const handleDelete = useCallback(async () => {
     if (!onDelete) {
       return;
     }
 
     await onDelete();
     setIsDeleteModalOpen(false);
-  }
+  }, [onDelete]);
 
   return (
     <ContentEditorPage
       subtitle={content ? `ID: ${content.id}` : "対象コンテンツが見つかりません。"}
       title="コンテンツ編集"
     >
-      {content ? (
+      {content && defaultValue ? (
         <ContentForm
-          defaultValue={{
-            slug: content.slug,
-            title: content.title,
-            body: content.body,
-            contentType: content.contentType,
-            status: content.status
-          }}
+          defaultValue={defaultValue}
           description="既存コンテンツを更新するための編集フォームです。"
           endpoint={`/contents/${content.id}`}
           errorMessage={errorMessage}
           isDeleting={isDeleting}
           isSubmitting={isSubmitting}
           method="PATCH"
-          onDelete={() => setIsDeleteModalOpen(true)}
+          onDelete={openDeleteModal}
           onSubmit={onSubmit}
           showDelete
           showStatus={false}
@@ -68,11 +81,10 @@ export function EditContentPage({
       )}
       {content && isDeleteModalOpen ? (
         <div className={styles.modalBackdrop} role="presentation">
-          <section
+          <dialog
             aria-labelledby="delete-content-title"
-            aria-modal="true"
             className={styles.modal}
-            role="dialog"
+            open
           >
             <div className={styles.modalHeader}>
               <h2 className={styles.modalTitle} id="delete-content-title">
@@ -82,7 +94,7 @@ export function EditContentPage({
                 aria-label="閉じる"
                 className={styles.iconButton}
                 disabled={isDeleting}
-                onClick={() => setIsDeleteModalOpen(false)}
+                onClick={closeDeleteModal}
                 type="button"
               >
                 ×
@@ -95,7 +107,7 @@ export function EditContentPage({
               <button
                 className={styles.secondaryButton}
                 disabled={isDeleting}
-                onClick={() => setIsDeleteModalOpen(false)}
+                onClick={closeDeleteModal}
                 type="button"
               >
                 キャンセル
@@ -109,7 +121,7 @@ export function EditContentPage({
                 {isDeleting ? "削除中..." : "削除"}
               </button>
             </div>
-          </section>
+          </dialog>
         </div>
       ) : null}
     </ContentEditorPage>

@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { useMemo } from "react";
 import { PageHeader } from "../../../../components/content/PageHeader/PageHeader";
 import type { Content } from "../../../../domain/content/content";
 import { ContentBodyCard } from "../ContentBodyCard/ContentBodyCard";
@@ -10,6 +11,13 @@ type ContentDetailPageProps = {
 };
 
 export function ContentDetailPage({ content }: ContentDetailPageProps) {
+  const editParams = useMemo(
+    () => ({
+      id: content?.id ?? ""
+    }),
+    [content?.id]
+  );
+
   if (!content) {
     return (
       <main className={styles.page}>
@@ -27,7 +35,11 @@ export function ContentDetailPage({ content }: ContentDetailPageProps) {
     <main className={styles.page}>
       <PageHeader
         actions={
-          <Link className={styles.ghostButton} params={{ id: content.id }} to="/contents/$id/edit">
+          <Link
+            className={styles.ghostButton}
+            params={editParams}
+            to="/contents/$id/edit"
+          >
             編集する
           </Link>
         }
