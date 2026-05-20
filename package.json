@@ -1,13 +1,20 @@
 {
-  "name": "my-cms-admin",
+  "name": "velune-cms",
   "private": true,
   "packageManager": "pnpm@10.16.1",
   "scripts": {
-    "dev:cms": "pnpm --filter cms dev",
-    "dev:api": "pnpm --filter api dev",
-    "start:api": "pnpm --filter api start",
+    "dev:cms": "pnpm --filter @velune-cms/console dev",
+    "dev:api": "pnpm --filter @velune-cms/api dev",
+    "dev:api:worker": "pnpm --filter @velune-cms/api dev:worker",
+    "dev:api:prod-db": "pnpm --filter @velune-cms/api dev:prod-db",
+    "start:api": "pnpm --filter @velune-cms/api start",
     "build": "pnpm -r build",
-    "lint": "pnpm -r lint",
+    "lint": "pnpm lint:eslint && pnpm lint:ox",
+    "lint:eslint": "pnpm -r lint",
+    "lint:ox": "oxlint .",
     "typecheck": "pnpm -r typecheck"
+  },
+  "devDependencies": {
+    "oxlint": "^1.65.0"
   }
 }

@@ -1,0 +1,83 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": [
+    "import",
+    "jsx-a11y",
+    "node",
+    "promise",
+    "react",
+    "react-perf",
+    "typescript",
+    "unicorn"
+  ],
+  "env": {
+    "browser": true,
+    "es2024": true,
+    "node": true
+  },
+  "settings": {
+    "react": {
+      "version": "19.2.4"
+    }
+  },
+  "ignorePatterns": [
+    "node_modules/**",
+    "dist/**",
+    "apps/**/dist/**",
+    "packages/**/dist/**",
+    "apps/api/.wrangler/**"
+  ],
+  "rules": {
+    "eqeqeq": "error",
+    "no-console": "warn",
+    "no-debugger": "error",
+    "no-var": "error",
+    "prefer-const": "error",
+    "import/no-cycle": "error",
+    "jsx-a11y/alt-text": "error",
+    "jsx-a11y/anchor-is-valid": "warn",
+    "promise/always-return": "warn",
+    "promise/no-return-wrap": "error",
+    "react/exhaustive-deps": "warn",
+    "react/jsx-key": "error",
+    "react/jsx-no-target-blank": "error",
+    "react/no-array-index-key": "warn",
+    "react/no-danger": "warn",
+    "react/rules-of-hooks": "error",
+    "react/self-closing-comp": "warn",
+    "react-perf/jsx-no-new-array-as-prop": "warn",
+    "react-perf/jsx-no-new-function-as-prop": "warn",
+    "react-perf/jsx-no-new-object-as-prop": "warn",
+    "unicorn/no-useless-undefined": "warn",
+    "unicorn/prefer-string-replace-all": "warn"
+  },
+  "overrides": [
+    {
+      "files": ["apps/api/**/*.ts"],
+      "env": {
+        "browser": false,
+        "node": true
+      },
+      "rules": {
+        "no-console": "off",
+        "node/global-require": "error",
+        "node/no-exports-assign": "error",
+        "import/no-nodejs-modules": "off"
+      }
+    },
+    {
+      "files": ["apps/cms/**/*.ts", "apps/cms/**/*.tsx"],
+      "env": {
+        "browser": true,
+        "node": false
+      }
+    },
+    {
+      "files": ["*.stories.ts", "*.stories.tsx"],
+      "rules": {
+        "import/no-default-export": "off",
+        "react-perf/jsx-no-new-array-as-prop": "off"
+      }
+    }
+  ]
+}

@@ -14,7 +14,7 @@ export function createSystemController({
   return {
     health(c: Context) {
       return c.json({
-        name: "cms-api",
+        name: "velune-cms-api",
         status: "ok"
       });
     },
