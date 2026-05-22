@@ -16,6 +16,7 @@ export function EditContentRoute() {
   const updateMutation = useUpdateContentMutation(id);
   const handleDelete = useCallback(async () => {
     await deleteMutation.mutateAsync();
+    // 削除後は元のcollection一覧に戻す contentが取れない場合だけ既定のportfolioへ戻る
     await navigate({
       search: { collection: content?.contentType ?? "portfolio" },
       to: "/contents"

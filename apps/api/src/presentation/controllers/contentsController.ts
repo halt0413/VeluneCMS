@@ -35,6 +35,7 @@ export function createContentsController({
           return false;
         }
 
+        // ログインユーザーの存在しないコンテンツとして返し、他ユーザーのID推測を防ぐ
         if (currentUser && content.owner?.id !== currentUser.id) {
           return false;
         }
@@ -53,6 +54,7 @@ export function createContentsController({
       const currentUser = sessionId ? getCurrentUser(sessionId) : undefined;
       const item = await getContent(requireRouteParam(c, "id"));
 
+      // 権限エラーではなくNotFoundにして、コンテンツの存在自体を漏らさない
       if (currentUser && item.owner?.id !== currentUser.id) {
         throw new NotFoundError("Page not found");
       }

@@ -48,6 +48,7 @@ export function ContentForm({
       }
 
       const submitter = event.nativeEvent.submitter;
+      // 同じformで「下書き保存」と「更新」を分けるため、押されたsubmit buttonのvalueを保存意図として扱う
       const intent =
         submitter instanceof HTMLButtonElement && submitter.value === "draft"
           ? "draft"

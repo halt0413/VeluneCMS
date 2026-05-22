@@ -12,6 +12,7 @@ import { toContent, type Content } from "../../domain/content/content";
 
 const CONTENT_PATH = "/contents";
 
+// infrastructure層ではHTTP responseを画面用domain型へ変換し、featuresにはAPI shapeを漏らさない
 export const contentApi = {
   async list(): Promise<Content[]> {
     const response = await cmsFetch<CmsPageListResponse>(CONTENT_PATH);

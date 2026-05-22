@@ -12,6 +12,7 @@ export function NewContentRoute() {
   const { isCheckingAuth } = useRequireCurrentUser("/contents/new");
   const { data: collections = [] } = useContentCollectionsQuery();
   const createMutation = useCreateContentMutation();
+  // 「コンテンツ追加」は選択中collection配下に作るため、URL queryからcontentTypeを決める
   const collectionSlug =
     new URLSearchParams(location.searchStr).get("collection") ?? "portfolio";
   const collection = collections.find((item) => item.slug === collectionSlug);

@@ -13,6 +13,7 @@ export function createCollectionClient({
   http
 }: CreateCollectionClientInput): CollectionClient {
   async function listContentCollections(): Promise<ContentCollection[]> {
+    // SDK利用側にはHTTP response wrapperを見せず、resource配列だけ返す
     const response = await http.get<ContentCollectionListResponse>(
       "content-collections"
     );

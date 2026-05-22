@@ -27,6 +27,7 @@ export type CmsPageRecord = CmsPageInput & {
 
 export type CmsDraftPage = CmsPageRecord & {
   status: "draft";
+  // draftにpublishedAtを持たせないことで、公開状態の判定をstatusだけに閉じ込める
   publishedAt?: never;
 };
 

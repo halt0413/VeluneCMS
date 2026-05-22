@@ -73,7 +73,7 @@
       }
     },
     {
-      "files": ["packages/cli/**/*.js"],
+      "files": ["packages/cli/**/*.ts"],
       "rules": {
         "no-console": "off"
       }

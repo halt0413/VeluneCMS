@@ -8,7 +8,7 @@ import type {
 } from "../types/page";
 import { Slug } from "../valueObjects/Slug";
 
-// DomainEntity ページとして守るルールを持つ
+// PageはDB行ではなくドメイン上のコンテンツ　slug/status/ownerなどの不変条件をここに集める
 type PageProps = {
   body: string;
   contentType: string;
@@ -31,7 +31,6 @@ type CreatePageParams = {
   now: string;
 };
 
-// ページの入力チェックと公開状態の扱いはここで見る
 export class Page {
   private constructor(private readonly props: PageProps) {}
 
@@ -43,7 +42,7 @@ export class Page {
       body: normalizeRequiredText(input.body, "Body"),
       contentType: normalizeRequiredText(input.contentType, "Content type"),
       createdBy: actor,
-      // ownerは「このコンテンツの所属ユーザー」。更新者とは違い、編集では変更しない。
+      // ownerは「このコンテンツの所属ユーザー」 更新者とは違い、編集では変更しない
       owner: actor,
       status: input.status,
       updatedBy: actor,
@@ -53,7 +52,7 @@ export class Page {
     });
   }
 
-  // 保存済みのデータもそのまま信用せずPageとして組み直す
+  // 保存済みのデータもそのまま信用せず、slug正規化やstatus整合性を通してから復元する
   static reconstitute(snapshot: CmsPage): Page {
     return new Page({
       id: snapshot.id,
@@ -140,7 +139,7 @@ export class Page {
     };
   }
 
-  // publishedAtは初回公開時だけ 下書きに戻したら消す
+  // publishedAtは初回公開時だけ入れる 下書きに戻した場合は公開状態ではないので消す
   private changeStatus(status: CmsContentStatus, now: string): void {
     if (status === "published") {
       this.props.status = "published";

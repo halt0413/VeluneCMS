@@ -59,6 +59,7 @@ export function createContentClient({
     slug: string,
     options: ListContentsOptions = {}
   ): Promise<CmsPage | null> {
+    // APIのslug取得endpointを公開するまでは、owner/session filter済みの一覧からSDK側で解決する
     const contents = await listContents(options);
     return contents.find((content) => content.slug === slug) ?? null;
   }

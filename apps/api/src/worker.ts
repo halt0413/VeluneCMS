@@ -13,6 +13,7 @@ type CloudflareBindings = {
   API_URL: string;
   CMS_URL: string;
   CONTENT_DB: D1Database;
+  PORT?: string;
   GITHUB_OAUTH_ACCESS_TOKEN_URL: string;
   GITHUB_OAUTH_AUTHORIZE_URL: string;
   GITHUB_OAUTH_CALLBACK_PATH: string;
@@ -39,8 +40,9 @@ const oAuthStateRepository = new InMemoryOAuthStateRepository();
 const sessionRepository = new InMemorySessionRepository();
 
 function toApiEnvSource(env: CloudflareBindings): ApiEnvSource {
+  // Worker bindingsはprocess.envでは読めないため、API共通のenv形式へここで寄せる
   return {
-    PORT: "8787",
+    PORT: env.PORT,
     ADMIN_API_TOKEN: env.ADMIN_API_TOKEN,
     API_URL: env.API_URL,
     CMS_URL: env.CMS_URL,
@@ -67,6 +69,7 @@ export default {
     env: CloudflareBindings,
     executionContext: WorkerExecutionContext
   ) {
+    // OAuth stateとsessionはリクエストごとに作り直すとcallbackで失われるため、module scopeのRepositoryを使う
     const app = createApiApp(getApiEnv(toApiEnvSource(env)), {
       createId: () => crypto.randomUUID(),
       getNow: () => new Date().toISOString(),

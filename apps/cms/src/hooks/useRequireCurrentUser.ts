@@ -7,6 +7,7 @@ export function useRequireCurrentUser(redirectTo: string) {
   const loginHref = getLoginHref(redirectTo);
 
   useEffect(() => {
+    // 未ログイン時だけGitHub OAuthへ送る 確認中にredirectするとログイン済みユーザーも弾いてしまう
     if (currentUserQuery.isPending || currentUserQuery.data || !loginHref) {
       return;
     }

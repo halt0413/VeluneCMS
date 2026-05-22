@@ -96,6 +96,7 @@ export function createApp({
     cors({
       origin: webOrigin,
       allowHeaders: ["Content-Type", "Authorization"],
+      // 管理画面のCRUDはpreflight対象なので、実装済みmethodをここにも必ず反映する
       allowMethods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
       credentials: true
     })

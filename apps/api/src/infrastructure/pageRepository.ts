@@ -112,6 +112,7 @@ export class D1PageRepository implements PageRepository {
   async save(page: Page): Promise<Page> {
     const snapshot = page.toSnapshot();
 
+    // ownerはコンテンツの所属ユーザーなので、既存行の更新では上書きしない
     await this.database
       .prepare(
         `
@@ -172,6 +173,7 @@ export class D1PageRepository implements PageRepository {
   }
 
   private toPage(row: PageRow): Page {
+    // DBのnull表現をドメインのoptional userへ戻し、公開日時の整合性はPage.reconstituteに任せる
     if (row.status === "published" && row.published_at) {
       return Page.reconstitute({
         id: row.id,

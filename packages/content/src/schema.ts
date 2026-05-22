@@ -11,5 +11,6 @@ export const cmsPageSchema = z.object({
 
 export type CmsPageSchema = z.infer<typeof cmsPageSchema>;
 
+// zod schemaと共有型がズレたらTypeScript上で検知するための型チェック専用代入
 const _cmsPageInputCheck: CmsPageInput = {} as CmsPageSchema;
 void _cmsPageInputCheck;

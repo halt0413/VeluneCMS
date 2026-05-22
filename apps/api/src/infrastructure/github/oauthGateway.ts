@@ -78,6 +78,7 @@ export class GitHubOAuthApi implements GitHubOAuthGateway {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        // GitHub APIはUser-Agentなしのリクエストを拒否することがある
         "User-Agent": "VeluneCMS"
       },
       body: JSON.stringify({
@@ -109,6 +110,7 @@ export class GitHubOAuthApi implements GitHubOAuthGateway {
       headers: {
         Authorization: `Bearer ${accessToken}`,
         Accept: "application/vnd.github+json",
+        // OAuth callbackの失敗原因を環境差で潰さないため、GitHub推奨headerを明示する
         "User-Agent": "VeluneCMS",
         "X-GitHub-Api-Version": "2022-11-28"
       }

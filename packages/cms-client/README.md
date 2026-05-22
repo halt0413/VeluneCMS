@@ -29,14 +29,20 @@ const drafts = await cms.listContents({
 
 設定ファイルは CLI で生成できます。
 
+`.env` に API URL を置くと、CLI はその値を使います。
+
 ```bash
-pnpm velune init --api-url http://localhost:8787
+VELUNE_API_URL=http://localhost:8787
+```
+
+```bash
+pnpm velune init
 ```
 
 ログイン URL を開く場合:
 
 ```bash
-pnpm velune login --api-url http://localhost:8787
+pnpm velune login
 ```
 
 ```ts

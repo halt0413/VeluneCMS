@@ -2,6 +2,7 @@ import { getApiConfig } from "./getApiConfig";
 
 export async function cmsFetch<T>(path: string, init?: RequestInit): Promise<T> {
   const config = getApiConfig();
+  // GitHubログインのsession cookieでユーザーを判定するため、管理画面のAPI呼び出しはcookie送信を既定にする
   const response = await fetch(new URL(path, config.baseUrl), {
     ...init,
     credentials: init?.credentials ?? "include",

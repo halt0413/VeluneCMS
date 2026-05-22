@@ -10,6 +10,7 @@ export function useUpdateContentMutation(id: string) {
     mutationFn: (payload: CmsPageUpdateRequest) =>
       updateContentUseCase({ id, payload }),
     onSuccess: async (updated) => {
+      // 一覧・現在ID・更新後IDをまとめて無効化し、slug/id変更後の画面遷移にも追従する
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: ["contents"] }),
         queryClient.invalidateQueries({ queryKey: ["contents", id] }),

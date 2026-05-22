@@ -10,6 +10,7 @@ export function createCmsClient({
   fetch: fetcher = fetch,
   headers
 }: CmsClientConfig): CmsClient {
+  // 公開SDKはresource clientを合成して返す 内部構成を増やしても利用側の入口はここだけにする
   const http = createHttpClient({
     baseUrl,
     credentials,

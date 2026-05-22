@@ -11,6 +11,7 @@ import {
 
 const CONTENT_COLLECTION_PATH = "/content-collections";
 
+// content collectionの通信詳細はここに閉じ、features側はuse case経由で呼び出す
 export const contentCollectionApi = {
   async list(): Promise<ContentCollection[]> {
     const response = await cmsFetch<ContentCollectionListResponse>(
