@@ -1,10 +1,17 @@
-export { createCmsClient } from "./client/createCmsClient.js";
-export { CmsClientError } from "./core/errors.js";
+export { createVeluneClient } from "./client/createVeluneClient.js";
+export {
+  getContent,
+  getContentBySlug,
+  listContentCollections,
+  listContents,
+  loadVeluneContent
+} from "./content/staticContent.js";
 export type {
-  CmsClient,
-  CmsClientConfig
+  StaticVeluneClient,
+  VeluneClientConfig
 } from "./client/types.js";
 export type {
+  ContentCollection,
   CmsContentStatus,
   CmsDraftPage,
   CmsPage,
@@ -12,6 +19,6 @@ export type {
   CmsPageUser,
   CmsPublishedPage,
   GetContentOptions,
-  ListContentsOptions
+  ListContentsOptions,
+  VeluneContentFile
 } from "./content/types.js";
-export type { ContentCollection } from "./collection/types.js";

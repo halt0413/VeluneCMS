@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import { initCommand } from "./commands/init.js";
 import { loginCommand } from "./commands/login.js";
+import { pullCommand } from "./commands/pull.js";
 import { loadNearestEnvFile } from "./config/env.js";
 import { parseOptions } from "./lib/args.js";
 
@@ -22,6 +23,8 @@ try {
     loginCommand(parseOptions(args));
   } else if (command === "init") {
     initCommand(parseOptions(args));
+  } else if (command === "pull") {
+    await pullCommand(parseOptions(args));
   } else {
     throw new Error(`Unknown command: ${command}`);
   }
@@ -36,9 +39,11 @@ function printHelp(): void {
 Usage:
   velune login [--api-url <url>] [--redirect-to <path-or-url>] [--print]
   velune init [--api-url <url>] [--output <file>] [--force]
+  velune pull [--api-url <url>] [--output <file>] [--token <token>]
 
 Examples:
   velune login --api-url http://localhost:8787
   velune init --api-url http://localhost:8787
+  velune pull --api-url http://localhost:8787
 `);
 }
