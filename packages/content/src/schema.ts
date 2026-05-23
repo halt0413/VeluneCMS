@@ -1,5 +1,5 @@
 import { z } from "zod";
-import type { CmsPageInput } from "@repo/types";
+import type { CmsPageInput } from "./types";
 
 export const cmsPageSchema = z.object({
   slug: z.string().min(1),

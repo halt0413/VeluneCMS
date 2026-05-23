@@ -6,7 +6,7 @@ import type {
   CmsPageListResponse,
   CmsPageUpdateResponse,
   CmsPreviewResponse
-} from "@repo/types";
+} from "../contracts";
 import type { Context } from "hono";
 import { getCookie } from "hono/cookie";
 import { NotFoundError } from "../../lib/errors/AppError";

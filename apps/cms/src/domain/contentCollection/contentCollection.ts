@@ -1,10 +1,21 @@
-import type { ContentCollection } from "@repo/types";
+import type { ContentCollectionResource } from "../../infrastructure/contentCollection/types";
 
-export type { ContentCollection };
+export type ContentCollection = {
+  createdAt: string;
+  id: string;
+  name: string;
+  slug: string;
+  updatedAt: string;
+};
 
 export function toContentCollection(
-  collection: ContentCollection
+  collection: ContentCollectionResource
 ): ContentCollection {
-  // collectionもdomain境界を通しておき、API shape変更時にfeatures側へ影響を広げない
-  return collection;
+  return {
+    createdAt: collection.createdAt,
+    id: collection.id,
+    name: collection.name,
+    slug: collection.slug,
+    updatedAt: collection.updatedAt
+  };
 }

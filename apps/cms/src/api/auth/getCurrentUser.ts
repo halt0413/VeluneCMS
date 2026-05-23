@@ -1,4 +1,4 @@
-import type { AuthUser, MeResponse } from "@repo/types";
+import type { AuthUser, MeResponse } from "./types";
 import { getCmsApiBaseUrl } from "../../api/cms/getApiConfig";
 
 export async function getCurrentUser(): Promise<AuthUser | null> {

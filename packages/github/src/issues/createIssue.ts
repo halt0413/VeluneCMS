@@ -1,5 +1,5 @@
 import { createGitHubClient } from "../client/createGitHubClient";
-import type { GitHubIssueCreateParams } from "@repo/types";
+import type { GitHubIssueCreateParams } from "../types/github";
 
 export async function createIssue({
   owner,

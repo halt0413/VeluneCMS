@@ -1,4 +1,4 @@
-import type { LogoutResponse } from "@repo/types";
+import type { LogoutResponse } from "../presentation/contracts";
 import type { AuthUser } from "../domain";
 import {
   isOAuthStateExpired,

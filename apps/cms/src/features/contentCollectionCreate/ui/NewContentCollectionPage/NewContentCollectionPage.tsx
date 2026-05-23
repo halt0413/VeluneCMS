@@ -1,4 +1,4 @@
-import type { ContentCollectionCreateRequest } from "@repo/types";
+import type { ContentCollectionCreateRequest } from "../../../../infrastructure/contentCollection/types";
 import { useCallback } from "react";
 import { PageHeader } from "../../../../components/content/PageHeader/PageHeader";
 import styles from "./NewContentCollectionPage.module.css";

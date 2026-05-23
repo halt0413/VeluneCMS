@@ -2,7 +2,7 @@ import type {
   ContentCollectionCreateRequest,
   ContentCollectionCreateResponse,
   ContentCollectionListResponse
-} from "@repo/types";
+} from "./types";
 import { cmsFetch } from "../../api/cms/client";
 import {
   toContentCollection,

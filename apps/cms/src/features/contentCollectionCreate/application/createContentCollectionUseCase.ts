@@ -1,4 +1,4 @@
-import type { ContentCollectionCreateRequest } from "@repo/types";
+import type { ContentCollectionCreateRequest } from "../../../infrastructure/contentCollection/types";
 import { contentCollectionApi } from "../../../infrastructure/contentCollection/contentCollectionApi";
 
 export async function createContentCollectionUseCase(

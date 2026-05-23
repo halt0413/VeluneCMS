@@ -1,8 +1,5 @@
-import type {
-  ContentCollection,
-  ContentCollectionInput,
-  LogoutResponse
-} from "@repo/types";
+import type { LogoutResponse } from "./contracts";
+import type { ContentCollectionInput, ContentCollectionSnapshot } from "../domain";
 import type { CompleteGitHubLoginResult } from "../usecase/auth";
 import type { PagePreview, SyncPageToGitHubResult } from "../usecase/page";
 import type {
@@ -47,8 +44,8 @@ export type ContentsControllerHandlers = {
 export type ContentCollectionsControllerHandlers = {
   createContentCollection: (
     payload: ContentCollectionInput
-  ) => Promise<ContentCollection>;
-  listContentCollections: () => Promise<ContentCollection[]>;
+  ) => Promise<ContentCollectionSnapshot>;
+  listContentCollections: () => Promise<ContentCollectionSnapshot[]>;
 };
 
 export type GitHubControllerHandlers = {

@@ -1,10 +1,11 @@
-import type { CmsPageInput, GitHubRepoRef } from "@repo/types";
-import { toGitHubIssueInput } from "@repo/utils";
 import { createIssue } from "./createIssue";
+import { toGitHubIssueInput } from "./toGitHubIssueInput";
+import type { CmsPageIssueInput } from "./types";
+import type { GitHubRepoRef } from "../types/github";
 
 type CreateIssueFromCmsPageParams = GitHubRepoRef & {
   token: string;
-  page: CmsPageInput;
+  page: CmsPageIssueInput;
 };
 
 export async function createIssueFromCmsPage({

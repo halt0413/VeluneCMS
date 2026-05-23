@@ -1,4 +1,4 @@
-import type { MeResponse } from "@repo/types";
+import type { MeResponse } from "../contracts";
 import type { Context } from "hono";
 import { getCookie } from "hono/cookie";
 import type { MeControllerHandler } from "../types";

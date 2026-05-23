@@ -1,7 +1,8 @@
-import type { CmsPageInput, GitHubIssueInput } from "@repo/types";
-import { normalizeSlug } from "./slug";
+import { normalizeSlug } from "@repo/utils";
+import type { CmsPageIssueInput } from "./types";
+import type { GitHubIssueInput } from "../types/github";
 
-export function toGitHubIssueInput(input: CmsPageInput): GitHubIssueInput {
+export function toGitHubIssueInput(input: CmsPageIssueInput): GitHubIssueInput {
   const slug = normalizeSlug(input.slug);
   const title = input.title.trim();
   const labels = ["cms", input.status];

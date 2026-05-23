@@ -1,5 +1,5 @@
-import type { CmsPageInput, PublicContent } from "@repo/types";
-import { normalizeSlug } from "./slug";
+import { normalizeSlug } from "@repo/utils";
+import type { CmsPageInput, PublicContent } from "./types";
 
 export function toPublicContent(input: CmsPageInput): PublicContent {
   return {

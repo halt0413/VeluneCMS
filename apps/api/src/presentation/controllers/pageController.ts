@@ -5,7 +5,7 @@ import type {
   CmsPageListResponse,
   CmsPreviewResponse,
   GitHubSyncResponse
-} from "@repo/types";
+} from "../contracts";
 import type { Context } from "hono";
 import { BadRequestError } from "../../lib/errors/AppError";
 import { requireRouteParam } from "../params";

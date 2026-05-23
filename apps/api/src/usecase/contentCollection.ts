@@ -1,4 +1,4 @@
-import type { ContentCollection as ApiContentCollection } from "@repo/types";
+import type { ContentCollectionSnapshot } from "../domain";
 import {
   ContentCollection,
   type ContentCollectionInput,
@@ -18,7 +18,7 @@ export async function createContentCollection(
     createId,
     getNow
   }: CreateContentCollectionDependencies
-): Promise<ApiContentCollection> {
+): Promise<ContentCollectionSnapshot> {
   const collection = ContentCollection.create({
     id: createId(),
     input,
@@ -31,7 +31,7 @@ export async function createContentCollection(
 
 export async function listContentCollections(
   contentCollectionRepository: ContentCollectionRepository
-): Promise<ApiContentCollection[]> {
+): Promise<ContentCollectionSnapshot[]> {
   const collections = await contentCollectionRepository.list();
 
   return collections.map((collection) => collection.toSnapshot());

@@ -4,10 +4,7 @@
     "outDir": "dist",
     "rootDir": "src",
     "declaration": true,
-    "emitDeclarationOnly": true,
-    "paths": {
-      "@repo/types": ["../types/dist/index.d.ts"]
-    }
+    "emitDeclarationOnly": true
   },
   "include": ["src"]
 }

@@ -1,4 +1,4 @@
-import type { GitHubIssueUpdateParams } from "@repo/types";
+import type { GitHubIssueUpdateParams } from "../types/github";
 import { createGitHubClient } from "../client/createGitHubClient";
 
 export async function updateIssue({

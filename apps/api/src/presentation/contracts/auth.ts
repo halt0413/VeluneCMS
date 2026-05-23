@@ -1,4 +1,4 @@
-import type { AuthUser } from "../models/auth";
+import type { AuthUser } from "../../domain";
 
 export type MeResponse = {
   user: AuthUser;

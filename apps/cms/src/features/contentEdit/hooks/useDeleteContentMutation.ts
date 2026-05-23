@@ -1,4 +1,4 @@
-import type { CmsPageDeleteResponse } from "@repo/types";
+import type { CmsPageDeleteResponse } from "../../../infrastructure/content/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteContentUseCase } from "../application/deleteContentUseCase";
 

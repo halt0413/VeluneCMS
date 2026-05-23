@@ -2,7 +2,7 @@ import type {
   GitHubIssue,
   GitHubIssueInput,
   GitHubIssueLabel
-} from "../models/github";
+} from "../../domain";
 import type { ApiItemResponse, ApiListResponse } from "./common";
 
 export type IssueCreateRequest = GitHubIssueInput;

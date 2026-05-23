@@ -13,7 +13,6 @@
       "@repo/github": ["./packages/github/src/index.ts"],
       "@repo/content": ["./packages/content/src/index.ts"],
       "@velune-cms/client": ["./packages/cms-client/src/index.ts"],
-      "@repo/types": ["./packages/types/src/index.ts"],
       "@repo/utils": ["./packages/utils/src/index.ts"]
     }
   }

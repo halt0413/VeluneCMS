@@ -6,7 +6,7 @@ import type {
   CmsPageListResponse,
   CmsPageUpdateRequest,
   CmsPageUpdateResponse
-} from "@repo/types";
+} from "./types";
 import { cmsFetch } from "../../api/cms/client";
 import { toContent, type Content } from "../../domain/content/content";
 

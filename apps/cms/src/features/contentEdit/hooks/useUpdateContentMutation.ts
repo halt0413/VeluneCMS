@@ -1,4 +1,4 @@
-import type { CmsPageUpdateRequest } from "@repo/types";
+import type { CmsPageUpdateRequest } from "../../../infrastructure/content/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { Content } from "../../../domain/content/content";
 import { updateContentUseCase } from "../application/updateContentUseCase";

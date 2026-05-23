@@ -23,9 +23,6 @@ importers:
       '@repo/github':
         specifier: workspace:*
         version: link:../../packages/github
-      '@repo/types':
-        specifier: workspace:*
-        version: link:../../packages/types
       '@repo/utils':
         specifier: workspace:*
         version: link:../../packages/utils
@@ -66,9 +63,6 @@ importers:
 
   apps/cms:
     dependencies:
-      '@repo/types':
-        specifier: workspace:*
-        version: link:../../packages/types
       '@repo/utils':
         specifier: workspace:*
         version: link:../../packages/utils
@@ -120,9 +114,6 @@ importers:
 
   packages/content:
     dependencies:
-      '@repo/types':
-        specifier: workspace:*
-        version: link:../types
       '@repo/utils':
         specifier: workspace:*
         version: link:../utils
@@ -132,9 +123,6 @@ importers:
 
   packages/github:
     dependencies:
-      '@repo/types':
-        specifier: workspace:*
-        version: link:../types
       '@repo/utils':
         specifier: workspace:*
         version: link:../utils
@@ -142,13 +130,7 @@ importers:
         specifier: ^4.0.2
         version: 4.1.4
 
-  packages/types: {}
-
-  packages/utils:
-    dependencies:
-      '@repo/types':
-        specifier: workspace:*
-        version: link:../types
+  packages/utils: {}
 
 packages:
 

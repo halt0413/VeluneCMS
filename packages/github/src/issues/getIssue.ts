@@ -1,4 +1,4 @@
-import type { GitHubIssueGetParams } from "@repo/types";
+import type { GitHubIssueGetParams } from "../types/github";
 import { createGitHubClient } from "../client/createGitHubClient";
 
 export async function getIssue({

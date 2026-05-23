@@ -1,4 +1,4 @@
-import type { CmsPageUpdateRequest } from "@repo/types";
+import type { CmsPageUpdateRequest } from "../../../infrastructure/content/types";
 import { contentApi } from "../../../infrastructure/content/contentApi";
 
 type UpdateContentUseCaseInput = {

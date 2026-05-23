@@ -6,7 +6,6 @@
     "declaration": true,
     "emitDeclarationOnly": true,
     "paths": {
-      "@repo/types": ["../types/dist/index.d.ts"],
       "@repo/utils": ["../utils/dist/index.d.ts"]
     }
   },

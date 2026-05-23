@@ -1,7 +1,7 @@
 import type {
   ContentCollectionCreateResponse,
   ContentCollectionListResponse
-} from "@repo/types";
+} from "../contracts";
 import type { Context } from "hono";
 import type { ContentCollectionsControllerHandlers } from "../types";
 

@@ -1,4 +1,4 @@
-import type { CmsPageUpdateRequest } from "@repo/types";
+import type { CmsPageUpdateRequest } from "../../../../infrastructure/content/types";
 import { useCallback, useMemo, useState } from "react";
 import { ContentEditorPage } from "../../../../components/content/editor/ContentEditorPage/ContentEditorPage";
 import { ContentForm } from "../../../../components/content/editor/ContentForm/ContentForm";

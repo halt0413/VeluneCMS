@@ -1,4 +1,4 @@
-import type { AuthUser } from "@repo/types";
+import type { AuthUser } from "../../../../api/auth/types";
 import styles from "./HeaderAuthView.module.css";
 
 type HeaderAuthViewProps = {

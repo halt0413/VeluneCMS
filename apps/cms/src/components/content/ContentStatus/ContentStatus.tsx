@@ -1,8 +1,8 @@
-import type { CmsContentStatus } from "@repo/types";
+import type { ContentStatus as ContentStatusValue } from "../../../domain/content/content";
 import styles from "./ContentStatus.module.css";
 
 type ContentStatusProps = {
-  status: CmsContentStatus;
+  status: ContentStatusValue;
 };
 
 export function ContentStatus({ status }: ContentStatusProps) {

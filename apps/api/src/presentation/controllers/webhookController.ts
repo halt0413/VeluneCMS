@@ -1,5 +1,5 @@
 import { createHmac, timingSafeEqual } from "node:crypto";
-import type { WebhookResponse } from "@repo/types";
+import type { WebhookResponse } from "../contracts";
 import type { Context } from "hono";
 import {
   BadRequestError,

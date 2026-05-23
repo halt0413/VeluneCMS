@@ -65,18 +65,6 @@ const cms = createCmsClient({
 });
 ```
 
-ローカルテスト:
-
-```bash
-pnpm --filter @velune-cms/client test
-```
-
-root から実行する場合:
-
-```bash
-pnpm test:client
-```
-
 ## 内部構成
 
 公開 API は `src/index.ts` からだけ export します。内部は resource ごとに分け、機能が増えても同じ単位で足せるようにしています。

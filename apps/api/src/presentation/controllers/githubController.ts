@@ -7,7 +7,7 @@ import type {
   IssuesListResponse,
   IssueUpdateRequest,
   IssueUpdateResponse
-} from "@repo/types";
+} from "../contracts";
 import type { Context } from "hono";
 import { requireIssueNumber } from "../params";
 import type { GitHubControllerHandlers } from "../types";

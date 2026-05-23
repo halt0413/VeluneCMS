@@ -1,4 +1,4 @@
-import type { CmsPageCreateRequest } from "@repo/types";
+import type { CmsPageCreateRequest } from "../../../../infrastructure/content/types";
 import { useMemo } from "react";
 import { ContentEditorPage } from "../../../../components/content/editor/ContentEditorPage/ContentEditorPage";
 import { ContentForm } from "../../../../components/content/editor/ContentForm/ContentForm";

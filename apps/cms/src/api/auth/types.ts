@@ -1,8 +1,12 @@
 export type AuthUser = {
+  avatarUrl: string;
+  email: string | null;
   id: number;
   login: string;
   name: string | null;
-  email: string | null;
-  avatarUrl: string;
   profileUrl: string;
+};
+
+export type MeResponse = {
+  user: AuthUser;
 };

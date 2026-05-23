@@ -1,4 +1,4 @@
-import type { CmsPageInput } from "@repo/types";
+import type { CmsPageInput } from "../../../../infrastructure/content/types";
 import { useCallback, useState } from "react";
 import { ContentFormSidebar } from "../ContentFormSidebar/ContentFormSidebar";
 import styles from "./ContentForm.module.css";
