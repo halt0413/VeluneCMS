@@ -38,12 +38,12 @@ function printHelp(): void {
 
 Usage:
   velune login [--api-url <url>] [--redirect-to <path-or-url>] [--print]
-  velune init [--api-url <url>] [--output <file>] [--force]
+  velune init [--output <file>] [--force]
   velune pull [--api-url <url>] [--output <file>] [--token <token>]
 
 Examples:
   velune login --api-url http://localhost:8787
-  velune init --api-url http://localhost:8787
+  velune init
   velune pull --api-url http://localhost:8787
 `);
 }
