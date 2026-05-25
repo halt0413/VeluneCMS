@@ -39,20 +39,20 @@ export type GetContentOptions = {
   includeDrafts?: boolean;
 };
 
-export type ContentClient = {
-  getContent(id: string, options?: GetContentOptions): Promise<CmsPage | null>;
-  getContentBySlug(
-    slug: string,
-    options?: ListContentsOptions
-  ): Promise<CmsPage | null>;
-  listContents(options?: ListContentsOptions): Promise<CmsPage[]>;
+export type ReadContentOptions = {
+  includeDrafts?: boolean;
 };
 
-export type CmsPageItemResponse = {
-  item: CmsPage;
+export type ContentCollection = {
+  createdAt: string;
+  id: string;
+  name: string;
+  slug: string;
+  updatedAt: string;
 };
 
-export type CmsPageListResponse = {
-  items: CmsPage[];
-  total: number;
+export type VeluneContentFile = {
+  collections: ContentCollection[];
+  contents: CmsPage[];
+  generatedAt?: string;
 };

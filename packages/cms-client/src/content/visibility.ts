@@ -1,14 +1,13 @@
 import type { CmsPage } from "./types.js";
 
-type ReadContentOptions = {
+type RequiredReadContentOptions = {
   includeDrafts: boolean;
 };
 
 export function canReadContent(
   content: CmsPage,
-  { includeDrafts }: ReadContentOptions
+  { includeDrafts }: RequiredReadContentOptions
 ): boolean {
-  // ログインユーザーの絞り込みはAPI側で行い、SDK側ではdraftの可視性だけを守る
   if (!includeDrafts && content.status !== "published") {
     return false;
   }
