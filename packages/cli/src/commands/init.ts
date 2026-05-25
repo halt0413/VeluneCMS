@@ -1,9 +1,11 @@
 import { existsSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
-import type { CliOptions } from "../lib/args.js";
+import { getOptionalStringOption, type CliOptions } from "../lib/args.js";
 
 export function initCommand(options: CliOptions): void {
-  const output = resolve(String(options.output ?? "velune.config.ts"));
+  const output = resolve(
+    getOptionalStringOption(options, "output") ?? "velune.config.ts"
+  );
 
   if (existsSync(output) && !options.force) {
     throw new Error(`${output} already exists. Use --force to overwrite.`);

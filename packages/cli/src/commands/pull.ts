@@ -1,7 +1,7 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { getApiUrl } from "../config/env.js";
-import type { CliOptions } from "../lib/args.js";
+import { getOptionalStringOption, type CliOptions } from "../lib/args.js";
 
 type CmsPageListResponse = {
   items: unknown[];
@@ -21,7 +21,9 @@ type VeluneContentFile = {
 
 export async function pullCommand(options: CliOptions): Promise<void> {
   const apiUrl = getApiUrl(options);
-  const output = resolve(String(options.output ?? ".velune/content.json"));
+  const output = resolve(
+    getOptionalStringOption(options, "output") ?? ".velune/content.json"
+  );
   const token = getApiToken(options);
   const [contents, collections] = await Promise.all([
     cmsFetch<CmsPageListResponse>(apiUrl, "/contents", token),
@@ -67,11 +69,12 @@ async function cmsFetch<T>(
 }
 
 function getApiToken(options: CliOptions): string | undefined {
+  const cliToken = getOptionalStringOption(options, "token");
   const token =
-    options.token ??
+    cliToken ??
     process.env.VELUNE_API_TOKEN ??
     process.env.CMS_API_TOKEN ??
     process.env.ADMIN_API_TOKEN;
 
-  return token && token !== true ? token : undefined;
+  return token;
 }

@@ -1,5 +1,18 @@
 export type CliOptions = Record<string, string | true>;
 
+export function getOptionalStringOption(
+  options: CliOptions,
+  key: string
+): string | undefined {
+  const value = options[key];
+
+  if (value === true) {
+    throw new Error(`--${key} requires a value.`);
+  }
+
+  return value;
+}
+
 export function parseOptions(args: string[]): CliOptions {
   const options: CliOptions = {};
 
