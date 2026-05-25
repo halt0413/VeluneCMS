@@ -1,11 +1,12 @@
 import { getApiUrl } from "../config/env.js";
-import type { CliOptions } from "../lib/args.js";
+import { getOptionalStringOption, type CliOptions } from "../lib/args.js";
 import { openUrl } from "../lib/openUrl.js";
+import { createApiUrl } from "../lib/url.js";
 
 export function loginCommand(options: CliOptions): void {
   const apiUrl = getApiUrl(options);
-  const redirectTo = String(options["redirect-to"] ?? "/contents");
-  const loginUrl = new URL("/auth/github/login", apiUrl);
+  const redirectTo = getOptionalStringOption(options, "redirect-to") ?? "/contents";
+  const loginUrl = createApiUrl(apiUrl, "auth/github/login");
   // 認証後に管理画面へ戻すため、API側OAuth endpointへredirect先を渡す
   loginUrl.searchParams.set("redirectTo", redirectTo);
 

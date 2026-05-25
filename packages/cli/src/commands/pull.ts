@@ -2,6 +2,7 @@ import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { getApiUrl } from "../config/env.js";
 import { getOptionalStringOption, type CliOptions } from "../lib/args.js";
+import { createApiUrl } from "../lib/url.js";
 
 type CmsPageListResponse = {
   items: unknown[];
@@ -26,10 +27,10 @@ export async function pullCommand(options: CliOptions): Promise<void> {
   );
   const token = getApiToken(options);
   const [contents, collections] = await Promise.all([
-    cmsFetch<CmsPageListResponse>(apiUrl, "/contents", token),
+    cmsFetch<CmsPageListResponse>(apiUrl, "contents", token),
     cmsFetch<ContentCollectionListResponse>(
       apiUrl,
-      "/content-collections",
+      "content-collections",
       token
     )
   ]);
@@ -57,7 +58,7 @@ async function cmsFetch<T>(
     headers.Authorization = `Bearer ${token}`;
   }
 
-  const response = await fetch(new URL(path, apiUrl), {
+  const response = await fetch(createApiUrl(apiUrl, path), {
     headers
   });
 
