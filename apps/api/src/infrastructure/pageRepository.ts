@@ -3,6 +3,7 @@ import {
   Slug,
   type CmsPageId,
   type CmsPageInput,
+  type CmsPageUser,
   type PageRepository
 } from "../domain";
 import type { D1Database } from "./db/d1";
@@ -111,6 +112,10 @@ export class D1PageRepository implements PageRepository {
 
   async save(page: Page): Promise<Page> {
     const snapshot = page.toSnapshot();
+    const createdByColumns = toGitHubUserColumns(snapshot.createdBy);
+    const ownerColumns = toGitHubUserColumns(snapshot.owner);
+    const updatedByColumns = toGitHubUserColumns(snapshot.updatedBy);
+    const publishedAt = toPublishedAtColumn(snapshot);
 
     // ownerはコンテンツの所属ユーザーなので、既存行の更新では上書きしない
     await this.database
@@ -156,14 +161,11 @@ export class D1PageRepository implements PageRepository {
         snapshot.title,
         snapshot.body,
         snapshot.contentType,
-        snapshot.createdBy?.id ?? null,
-        snapshot.createdBy?.login ?? null,
-        snapshot.owner?.id ?? null,
-        snapshot.owner?.login ?? null,
-        snapshot.updatedBy?.id ?? null,
-        snapshot.updatedBy?.login ?? null,
+        ...createdByColumns,
+        ...ownerColumns,
+        ...updatedByColumns,
         snapshot.status,
-        snapshot.status === "published" ? snapshot.publishedAt : null,
+        publishedAt,
         snapshot.createdAt,
         snapshot.updatedAt
       )
@@ -205,6 +207,14 @@ export class D1PageRepository implements PageRepository {
       updatedAt: row.updated_at
     });
   }
+}
+
+function toGitHubUserColumns(user: CmsPageUser | undefined): [number | null, string | null] {
+  return user ? [user.id, user.login] : [null, null];
+}
+
+function toPublishedAtColumn(snapshot: ReturnType<Page["toSnapshot"]>): string | null {
+  return snapshot.status === "published" ? snapshot.publishedAt : null;
 }
 
 function toGitHubUser(id: number | null, login: string | null) {
