@@ -4,12 +4,7 @@ import { getApiUrl } from "../config/env.js";
 import { getOptionalStringOption, type CliOptions } from "../lib/args.js";
 import { createApiUrl } from "../lib/url.js";
 
-type CmsPageListResponse = {
-  items: unknown[];
-  total: number;
-};
-
-type ContentCollectionListResponse = {
+type CmsListResponse = {
   items: unknown[];
   total: number;
 };
@@ -27,12 +22,8 @@ export async function pullCommand(options: CliOptions): Promise<void> {
   );
   const token = getApiToken(options);
   const [contents, collections] = await Promise.all([
-    cmsFetch<CmsPageListResponse>(apiUrl, "contents", token),
-    cmsFetch<ContentCollectionListResponse>(
-      apiUrl,
-      "content-collections",
-      token
-    )
+    cmsFetch(apiUrl, "contents", token),
+    cmsFetch(apiUrl, "content-collections", token)
   ]);
   const payload: VeluneContentFile = {
     collections: collections.items,
@@ -45,11 +36,11 @@ export async function pullCommand(options: CliOptions): Promise<void> {
   console.log(`Pulled ${contents.items.length} contents to ${output}`);
 }
 
-async function cmsFetch<T>(
+async function cmsFetch(
   apiUrl: string,
   path: string,
   token: string | undefined
-): Promise<T> {
+): Promise<CmsListResponse> {
   const headers: Record<string, string> = {
     Accept: "application/json"
   };
@@ -66,7 +57,25 @@ async function cmsFetch<T>(
     throw new Error(`VeluneCMS pull failed: ${response.status}`);
   }
 
-  return (await response.json()) as T;
+  const body: unknown = await response.json();
+
+  if (!isCmsListResponse(body)) {
+    throw new Error("VeluneCMS pull failed: invalid response body");
+  }
+
+  return body;
+}
+
+function isCmsListResponse(value: unknown): value is CmsListResponse {
+  if (!isRecord(value)) {
+    return false;
+  }
+
+  return Array.isArray(value.items) && typeof value.total === "number";
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null;
 }
 
 function getApiToken(options: CliOptions): string | undefined {
