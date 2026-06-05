@@ -1,5 +1,5 @@
 import type { ContentCollectionCreateRequest } from "../../../../infrastructure/contentCollection/types";
-import { useCallback } from "react";
+import { memo, useCallback } from "react";
 import { PageHeader } from "../../../../components/content/PageHeader/PageHeader";
 import {
   FormField,
@@ -13,7 +13,7 @@ type NewContentCollectionPageProps = {
   onSubmit?: (payload: ContentCollectionCreateRequest) => void | Promise<void>;
 };
 
-export function NewContentCollectionPage({
+export const NewContentCollectionPage = memo(function NewContentCollectionPage({
   isSubmitting = false,
   onSubmit
 }: NewContentCollectionPageProps) {
@@ -67,4 +67,4 @@ export function NewContentCollectionPage({
       </form>
     </main>
   );
-}
+});

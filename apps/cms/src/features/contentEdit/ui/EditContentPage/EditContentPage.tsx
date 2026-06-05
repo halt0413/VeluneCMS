@@ -1,9 +1,9 @@
 import type { CmsPageUpdateRequest } from "../../../../infrastructure/content/types";
-import { useCallback, useMemo, useState } from "react";
+import { memo, useMemo, useState } from "react";
 import { ContentEditorPage } from "../../../../components/content/editor/ContentEditorPage/ContentEditorPage";
 import { ContentForm } from "../../../../components/content/editor/ContentForm/ContentForm";
-import { Button } from "../../../../components/ui/Button/Button";
 import type { Content } from "../../../../domain/content";
+import { DeleteConfirmModal } from "../DeleteConfirmModal/DeleteConfirmModal";
 import styles from "./EditContentPage.module.css";
 
 type EditContentPageProps = {
@@ -15,7 +15,7 @@ type EditContentPageProps = {
   onSubmit?: (payload: CmsPageUpdateRequest) => void | Promise<void>;
 };
 
-export function EditContentPage({
+export const EditContentPage = memo(function EditContentPage({
   content,
   errorMessage,
   isDeleting = false,
@@ -37,21 +37,25 @@ export function EditContentPage({
         : null,
     [content]
   );
-  const openDeleteModal = useCallback(() => {
-    setIsDeleteModalOpen(true);
-  }, []);
-  const closeDeleteModal = useCallback(() => {
-    setIsDeleteModalOpen(false);
-  }, []);
+  const deleteModalActions = useMemo(
+    () => ({
+      close() {
+        setIsDeleteModalOpen(false);
+      },
+      async confirm() {
+        if (!onDelete) {
+          return;
+        }
 
-  const handleDelete = useCallback(async () => {
-    if (!onDelete) {
-      return;
-    }
-
-    await onDelete();
-    setIsDeleteModalOpen(false);
-  }, [onDelete]);
+        await onDelete();
+        setIsDeleteModalOpen(false);
+      },
+      open() {
+        setIsDeleteModalOpen(true);
+      }
+    }),
+    [onDelete]
+  );
 
   return (
     <ContentEditorPage
@@ -67,7 +71,7 @@ export function EditContentPage({
           isDeleting={isDeleting}
           isSubmitting={isSubmitting}
           method="PATCH"
-          onDelete={openDeleteModal}
+          onDelete={deleteModalActions.open}
           onSubmit={onSubmit}
           showDelete
           showStatus={false}
@@ -81,49 +85,13 @@ export function EditContentPage({
         </section>
       )}
       {content && isDeleteModalOpen ? (
-        <div className={styles.modalBackdrop} role="presentation">
-          <dialog
-            aria-labelledby="delete-content-title"
-            className={styles.modal}
-            open
-          >
-            <div className={styles.modalHeader}>
-              <h2 className={styles.modalTitle} id="delete-content-title">
-                コンテンツを削除
-              </h2>
-              <Button
-                aria-label="閉じる"
-                disabled={isDeleting}
-                onClick={closeDeleteModal}
-                type="button"
-                variant="icon"
-              >
-                ×
-              </Button>
-            </div>
-            <p className={styles.modalBody}>
-              「{content.title}」を削除します。この操作は取り消せません。
-            </p>
-            <div className={styles.modalActions}>
-              <Button
-                disabled={isDeleting}
-                onClick={closeDeleteModal}
-                type="button"
-              >
-                キャンセル
-              </Button>
-              <Button
-                disabled={isDeleting}
-                onClick={handleDelete}
-                type="button"
-                variant="danger"
-              >
-                {isDeleting ? "削除中..." : "削除"}
-              </Button>
-            </div>
-          </dialog>
-        </div>
+        <DeleteConfirmModal
+          isDeleting={isDeleting}
+          onCancel={deleteModalActions.close}
+          onConfirm={deleteModalActions.confirm}
+          title={content.title}
+        />
       ) : null}
     </ContentEditorPage>
   );
-}
+});

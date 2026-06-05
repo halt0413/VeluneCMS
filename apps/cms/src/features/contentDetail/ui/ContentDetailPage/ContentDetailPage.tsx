@@ -10,7 +10,9 @@ type ContentDetailPageProps = {
   content: Content | null;
 };
 
-export function ContentDetailPage({ content }: ContentDetailPageProps) {
+export function ContentDetailPage({
+  content
+}: ContentDetailPageProps) {
   const editParams = useMemo(
     () => ({
       id: content?.id ?? ""

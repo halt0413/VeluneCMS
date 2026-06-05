@@ -7,7 +7,11 @@ type FormFieldProps = {
   label: string;
 };
 
-export function FormField({ children, htmlFor, label }: FormFieldProps) {
+export function FormField({
+  children,
+  htmlFor,
+  label
+}: FormFieldProps) {
   return (
     <label className={styles.field} htmlFor={htmlFor}>
       <span className={styles.label}>{label}</span>

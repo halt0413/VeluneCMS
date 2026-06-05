@@ -6,7 +6,10 @@ type ContentInfoRowProps = {
   label: ReactNode;
 };
 
-export function ContentInfoRow({ children, label }: ContentInfoRowProps) {
+export function ContentInfoRow({
+  children,
+  label
+}: ContentInfoRowProps) {
   return (
     <div className={styles.infoRow}>
       <span className={styles.infoLabel}>{label}</span>

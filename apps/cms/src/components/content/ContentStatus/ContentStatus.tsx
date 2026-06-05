@@ -5,7 +5,9 @@ type ContentStatusProps = {
   status: ContentStatusValue;
 };
 
-export function ContentStatus({ status }: ContentStatusProps) {
+export function ContentStatus({
+  status
+}: ContentStatusProps) {
   const label = status === "draft" ? "下書き" : "公開中";
   const dotClassName =
     status === "draft"
