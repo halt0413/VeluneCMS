@@ -1,6 +1,6 @@
 import { formatDate } from "@repo/utils";
 import { Link } from "@tanstack/react-router";
-import { useMemo } from "react";
+import { memo, useMemo } from "react";
 import { ContentStatus } from "../../../../components/content/ContentStatus/ContentStatus";
 import type { Content } from "../../../../domain/content";
 import styles from "./ContentCard.module.css";
@@ -9,7 +9,9 @@ type ContentCardProps = {
   content: Content;
 };
 
-export function ContentCard({ content }: ContentCardProps) {
+export const ContentCard = memo(function ContentCard({
+  content
+}: ContentCardProps) {
   const params = useMemo(
     () => ({
       id: content.id
@@ -59,4 +61,4 @@ export function ContentCard({ content }: ContentCardProps) {
       </div>
     </article>
   );
-}
+});

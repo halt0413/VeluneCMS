@@ -1,5 +1,5 @@
 import type { CmsPageCreateRequest } from "../../../../infrastructure/content/types";
-import { useMemo } from "react";
+import { memo, useMemo } from "react";
 import { ContentEditorPage } from "../../../../components/content/editor/ContentEditorPage/ContentEditorPage";
 import { ContentForm } from "../../../../components/content/editor/ContentForm/ContentForm";
 
@@ -11,7 +11,7 @@ type NewContentPageProps = {
   onSubmit?: (payload: CmsPageCreateRequest) => void | Promise<void>;
 };
 
-export function NewContentPage({
+export const NewContentPage = memo(function NewContentPage({
   collectionName = "portfolio",
   contentType = "portfolio",
   errorMessage,
@@ -44,4 +44,4 @@ export function NewContentPage({
       />
     </ContentEditorPage>
   );
-}
+});

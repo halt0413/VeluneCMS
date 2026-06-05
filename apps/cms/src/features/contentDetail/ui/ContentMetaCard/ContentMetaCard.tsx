@@ -8,7 +8,9 @@ type ContentMetaCardProps = {
   content: Content;
 };
 
-export function ContentMetaCard({ content }: ContentMetaCardProps) {
+export function ContentMetaCard({
+  content
+}: ContentMetaCardProps) {
   const publishedAt =
     content.status === "published" ? formatDate(content.publishedAt) : null;
 

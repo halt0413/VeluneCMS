@@ -5,7 +5,9 @@ type ContentBodyCardProps = {
   content: Content;
 };
 
-export function ContentBodyCard({ content }: ContentBodyCardProps) {
+export function ContentBodyCard({
+  content
+}: ContentBodyCardProps) {
   return (
     <article className={styles.detailCard}>
       <p className={styles.eyebrow}>本文</p>

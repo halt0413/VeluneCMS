@@ -1,5 +1,5 @@
 import type { CmsPageInput } from "../../../../infrastructure/content/types";
-import { useCallback, useState } from "react";
+import { memo, useCallback, useState } from "react";
 import {
   FormField,
   getFormControlClassName,
@@ -28,7 +28,7 @@ type ContentFormProps = {
   submitLabel: string;
 };
 
-export function ContentForm({
+export const ContentForm = memo(function ContentForm({
   defaultValue,
   description,
   errorMessage,
@@ -205,4 +205,4 @@ export function ContentForm({
       <ContentFormSidebar description={description} showStatus={showStatus} />
     </section>
   );
-}
+});

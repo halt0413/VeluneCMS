@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { useMemo } from "react";
+import { memo, useMemo } from "react";
 import { PageHeader } from "../../../../components/content/PageHeader/PageHeader";
 import { getButtonClassName } from "../../../../components/ui/Button/Button";
 import type { Content } from "../../../../domain/content";
@@ -13,7 +13,7 @@ type ContentsPageProps = {
   contents: Content[];
 };
 
-export function ContentsPage({
+export const ContentsPage = memo(function ContentsPage({
   collectionName,
   collectionSlug,
   contents
@@ -62,4 +62,4 @@ export function ContentsPage({
       </section>
     </main>
   );
-}
+});
