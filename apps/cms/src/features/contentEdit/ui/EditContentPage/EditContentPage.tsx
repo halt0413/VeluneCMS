@@ -2,8 +2,8 @@ import type { CmsPageUpdateRequest } from "../../../../infrastructure/content/ty
 import { memo, useMemo, useState } from "react";
 import { ContentEditorPage } from "../../../../components/content/editor/ContentEditorPage/ContentEditorPage";
 import { ContentForm } from "../../../../components/content/editor/ContentForm/ContentForm";
+import { DeleteConfirmModal } from "../../../../components/feedback/DeleteConfirmModal/DeleteConfirmModal";
 import type { Content } from "../../../../domain/content";
-import { DeleteConfirmModal } from "../DeleteConfirmModal/DeleteConfirmModal";
 import styles from "./EditContentPage.module.css";
 
 type EditContentPageProps = {
@@ -86,10 +86,11 @@ export const EditContentPage = memo(function EditContentPage({
       )}
       {content && isDeleteModalOpen ? (
         <DeleteConfirmModal
+          description={`「${content.title}」を削除します。この操作は取り消せません。`}
           isDeleting={isDeleting}
           onCancel={deleteModalActions.close}
           onConfirm={deleteModalActions.confirm}
-          title={content.title}
+          title="コンテンツを削除"
         />
       ) : null}
     </ContentEditorPage>
