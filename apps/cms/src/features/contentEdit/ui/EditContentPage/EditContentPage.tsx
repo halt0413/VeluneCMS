@@ -3,7 +3,7 @@ import { useCallback, useMemo, useState } from "react";
 import { ContentEditorPage } from "../../../../components/content/editor/ContentEditorPage/ContentEditorPage";
 import { ContentForm } from "../../../../components/content/editor/ContentForm/ContentForm";
 import { Button } from "../../../../components/ui/Button/Button";
-import type { Content } from "../../../../domain/content/content";
+import type { Content } from "../../../../domain/content";
 import styles from "./EditContentPage.module.css";
 
 type EditContentPageProps = {

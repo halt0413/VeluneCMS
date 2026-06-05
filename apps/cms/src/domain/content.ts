@@ -1,4 +1,4 @@
-import type { CmsPageResource } from "../../infrastructure/content/types";
+import type { CmsPageResource } from "../infrastructure/content/types";
 
 export type ContentStatus = "draft" | "published";
 

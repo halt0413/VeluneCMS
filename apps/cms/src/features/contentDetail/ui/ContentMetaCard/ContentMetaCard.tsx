@@ -1,6 +1,6 @@
 import { formatDate } from "@repo/utils";
 import { ContentStatus } from "../../../../components/content/ContentStatus/ContentStatus";
-import type { Content } from "../../../../domain/content/content";
+import type { Content } from "../../../../domain/content";
 import { ContentInfoRow } from "../ContentInfoRow/ContentInfoRow";
 import styles from "./ContentMetaCard.module.css";
 

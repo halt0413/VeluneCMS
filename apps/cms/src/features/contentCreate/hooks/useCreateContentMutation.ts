@@ -1,6 +1,6 @@
 import type { CmsPageCreateRequest } from "../../../infrastructure/content/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import type { Content } from "../../../domain/content/content";
+import type { Content } from "../../../domain/content";
 import { createContentUseCase } from "../application/createContentUseCase";
 
 export function useCreateContentMutation() {

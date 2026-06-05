@@ -1,4 +1,4 @@
-import type { ContentStatus as ContentStatusValue } from "../../../domain/content/content";
+import type { ContentStatus as ContentStatusValue } from "../../../domain/content";
 import styles from "./ContentStatus.module.css";
 
 type ContentStatusProps = {

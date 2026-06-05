@@ -1,5 +1,10 @@
 import type { CmsPageInput } from "../../../../infrastructure/content/types";
 import { useCallback, useState } from "react";
+import {
+  FormField,
+  getFormControlClassName,
+  getTextareaClassName,
+} from "../../../form/FormField/FormField";
 import { Button } from "../../../ui/Button/Button";
 import { ContentFormSidebar } from "../ContentFormSidebar/ContentFormSidebar";
 import styles from "./ContentForm.module.css";
@@ -49,7 +54,7 @@ export function ContentForm({
       }
 
       const submitter = event.nativeEvent.submitter;
-      // 同じformで「下書き保存」と「更新」を分けるため、押されたsubmit buttonのvalueを保存意図として扱う
+      // 同じformで下書き保存と更新を分けるため、押されたsubmit buttonのvalueを保存意図として扱う
       const intent =
         submitter instanceof HTMLButtonElement && submitter.value === "draft"
           ? "draft"
@@ -96,47 +101,47 @@ export function ContentForm({
         ) : null}
 
         <div className={styles.fieldGrid}>
-          <label className={styles.field} htmlFor="content-title">
-            <span className={styles.fieldLabel}>タイトル</span>
+          <FormField htmlFor="content-title" label="タイトル">
             <input
               aria-label="タイトル"
+              className={getFormControlClassName()}
               defaultValue={defaultValue.title}
               id="content-title"
               name="title"
               required
               type="text"
             />
-          </label>
+          </FormField>
 
-          <label className={styles.field} htmlFor="content-slug">
-            <span className={styles.fieldLabel}>slug</span>
+          <FormField htmlFor="content-slug" label="slug">
             <input
               aria-label="slug"
+              className={getFormControlClassName()}
               defaultValue={defaultValue.slug}
               id="content-slug"
               name="slug"
               required
               type="text"
             />
-          </label>
+          </FormField>
         </div>
 
-        <label className={styles.field} htmlFor="content-type">
-          <span className={styles.fieldLabel}>種別</span>
+        <FormField htmlFor="content-type" label="種別">
           <input
             aria-label="種別"
+            className={getFormControlClassName()}
             defaultValue={defaultValue.contentType}
             id="content-type"
             name="contentType"
             required
             type="text"
           />
-        </label>
+        </FormField>
 
         {showStatus ? (
-          <label className={styles.field} htmlFor="content-status">
-            <span className={styles.fieldLabel}>ステータス</span>
+          <FormField htmlFor="content-status" label="ステータス">
             <select
+              className={getFormControlClassName()}
               defaultValue={defaultValue.status}
               id="content-status"
               name="status"
@@ -144,20 +149,20 @@ export function ContentForm({
               <option value="draft">draft</option>
               <option value="published">published</option>
             </select>
-          </label>
+          </FormField>
         ) : null}
 
-        <label className={styles.field} htmlFor="content-body">
-          <span className={styles.fieldLabel}>本文</span>
+        <FormField htmlFor="content-body" label="本文">
           <textarea
             aria-label="本文"
+            className={getTextareaClassName()}
             defaultValue={defaultValue.body}
             id="content-body"
             name="body"
             required
             rows={10}
           />
-        </label>
+        </FormField>
 
         <div className={styles.formActions}>
           <div className={styles.formActionsLeft}>

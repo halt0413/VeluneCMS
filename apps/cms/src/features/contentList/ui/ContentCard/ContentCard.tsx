@@ -2,7 +2,7 @@ import { formatDate } from "@repo/utils";
 import { Link } from "@tanstack/react-router";
 import { useMemo } from "react";
 import { ContentStatus } from "../../../../components/content/ContentStatus/ContentStatus";
-import type { Content } from "../../../../domain/content/content";
+import type { Content } from "../../../../domain/content";
 import styles from "./ContentCard.module.css";
 
 type ContentCardProps = {
