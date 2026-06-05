@@ -2,6 +2,7 @@ import type { CmsPageUpdateRequest } from "../../../../infrastructure/content/ty
 import { useCallback, useMemo, useState } from "react";
 import { ContentEditorPage } from "../../../../components/content/editor/ContentEditorPage/ContentEditorPage";
 import { ContentForm } from "../../../../components/content/editor/ContentForm/ContentForm";
+import { Button } from "../../../../components/ui/Button/Button";
 import type { Content } from "../../../../domain/content/content";
 import styles from "./EditContentPage.module.css";
 
@@ -90,36 +91,35 @@ export function EditContentPage({
               <h2 className={styles.modalTitle} id="delete-content-title">
                 コンテンツを削除
               </h2>
-              <button
+              <Button
                 aria-label="閉じる"
-                className={styles.iconButton}
                 disabled={isDeleting}
                 onClick={closeDeleteModal}
                 type="button"
+                variant="icon"
               >
                 ×
-              </button>
+              </Button>
             </div>
             <p className={styles.modalBody}>
               「{content.title}」を削除します。この操作は取り消せません。
             </p>
             <div className={styles.modalActions}>
-              <button
-                className={styles.secondaryButton}
+              <Button
                 disabled={isDeleting}
                 onClick={closeDeleteModal}
                 type="button"
               >
                 キャンセル
-              </button>
-              <button
-                className={styles.deleteButton}
+              </Button>
+              <Button
                 disabled={isDeleting}
                 onClick={handleDelete}
                 type="button"
+                variant="danger"
               >
                 {isDeleting ? "削除中..." : "削除"}
-              </button>
+              </Button>
             </div>
           </dialog>
         </div>

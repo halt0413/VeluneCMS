@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { useMemo } from "react";
 import { PageHeader } from "../../../../components/content/PageHeader/PageHeader";
+import { getButtonClassName } from "../../../../components/ui/Button/Button";
 import type { Content } from "../../../../domain/content/content";
 import { ContentCard } from "../ContentCard/ContentCard";
 import { ContentTypeFilter } from "../ContentTypeFilter/ContentTypeFilter";
@@ -33,7 +34,7 @@ export function ContentsPage({
       <PageHeader
         actions={
           <Link
-            className={styles.primaryButton}
+            className={getButtonClassName("primary")}
             search={newContentSearch}
             to="/contents/new"
           >
