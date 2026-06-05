@@ -1,6 +1,7 @@
 import type { ContentCollectionCreateRequest } from "../../../../infrastructure/contentCollection/types";
 import { useCallback } from "react";
 import { PageHeader } from "../../../../components/content/PageHeader/PageHeader";
+import { Button } from "../../../../components/ui/Button/Button";
 import styles from "./NewContentCollectionPage.module.css";
 
 type NewContentCollectionPageProps = {
@@ -41,13 +42,14 @@ export function NewContentCollectionPage({
           <span className={styles.fieldLabel}>slug</span>
           <input aria-label="slug" id="collection-slug" name="slug" type="text" />
         </label>
-        <button
-          className={styles.primaryButton}
+        <Button
+          className={styles.submitButton}
           disabled={isSubmitting}
           type="submit"
+          variant="primary"
         >
           追加
-        </button>
+        </Button>
       </form>
     </main>
   );

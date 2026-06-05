@@ -1,5 +1,6 @@
 import type { CmsPageInput } from "../../../../infrastructure/content/types";
 import { useCallback, useState } from "react";
+import { Button } from "../../../ui/Button/Button";
 import { ContentFormSidebar } from "../ContentFormSidebar/ContentFormSidebar";
 import styles from "./ContentForm.module.css";
 
@@ -161,14 +162,14 @@ export function ContentForm({
         <div className={styles.formActions}>
           <div className={styles.formActionsLeft}>
             {showDelete ? (
-              <button
-                className={`${styles.secondaryButton} ${styles.deleteButton}`}
+              <Button
                 disabled={!onDelete || isSubmitting || isDeleting}
                 onClick={onDelete}
                 type="button"
+                variant="danger"
               >
                 {isDeleting ? "削除中..." : "削除"}
-              </button>
+              </Button>
             ) : null}
           </div>
           <div className={styles.formActionsRight}>
@@ -177,22 +178,21 @@ export function ContentForm({
                 下書きを保存しています...
               </output>
             ) : null}
-            <button
-              className={styles.secondaryButton}
+            <Button
               disabled={!onSubmit || isSubmitting}
               type="submit"
               value="draft"
             >
               {pendingIntent === "draft" ? "保存中..." : "下書き保存"}
-            </button>
-            <button
-              className={styles.primaryButton}
+            </Button>
+            <Button
               disabled={!onSubmit || isSubmitting}
               type="submit"
               value="save"
+              variant="primary"
             >
               {pendingIntent === "save" ? "保存中..." : submitLabel}
-            </button>
+            </Button>
           </div>
         </div>
       </form>
