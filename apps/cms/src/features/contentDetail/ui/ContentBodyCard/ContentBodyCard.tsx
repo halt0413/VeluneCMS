@@ -1,4 +1,4 @@
-import type { Content } from "../../../../domain/content/content";
+import type { Content } from "../../../../domain/content";
 import styles from "./ContentBodyCard.module.css";
 
 type ContentBodyCardProps = {

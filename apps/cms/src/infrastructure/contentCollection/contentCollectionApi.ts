@@ -1,13 +1,13 @@
 import type {
   ContentCollectionCreateRequest,
   ContentCollectionCreateResponse,
-  ContentCollectionListResponse
+  ContentCollectionListResponse,
 } from "./types";
 import { cmsFetch } from "../../api/cms/client";
 import {
   toContentCollection,
-  type ContentCollection
-} from "../../domain/contentCollection/contentCollection";
+  type ContentCollection,
+} from "../../domain/contentCollection";
 
 const CONTENT_COLLECTION_PATH = "/content-collections";
 
@@ -15,22 +15,22 @@ const CONTENT_COLLECTION_PATH = "/content-collections";
 export const contentCollectionApi = {
   async list(): Promise<ContentCollection[]> {
     const response = await cmsFetch<ContentCollectionListResponse>(
-      CONTENT_COLLECTION_PATH
+      CONTENT_COLLECTION_PATH,
     );
     return response.items.map(toContentCollection);
   },
 
   async create(
-    payload: ContentCollectionCreateRequest
+    payload: ContentCollectionCreateRequest,
   ): Promise<ContentCollection> {
     const response = await cmsFetch<ContentCollectionCreateResponse>(
       CONTENT_COLLECTION_PATH,
       {
         body: JSON.stringify(payload),
-        method: "POST"
-      }
+        method: "POST",
+      },
     );
 
     return toContentCollection(response.created);
-  }
+  },
 };

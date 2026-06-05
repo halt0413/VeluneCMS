@@ -1,6 +1,10 @@
 import type { ContentCollectionCreateRequest } from "../../../../infrastructure/contentCollection/types";
 import { useCallback } from "react";
 import { PageHeader } from "../../../../components/content/PageHeader/PageHeader";
+import {
+  FormField,
+  getFormControlClassName
+} from "../../../../components/form/FormField/FormField";
 import { Button } from "../../../../components/ui/Button/Button";
 import styles from "./NewContentCollectionPage.module.css";
 
@@ -34,14 +38,24 @@ export function NewContentCollectionPage({
     <main className={styles.page}>
       <PageHeader title="コンテンツ種別を追加" />
       <form className={styles.formCard} onSubmit={handleSubmit}>
-        <label className={styles.field} htmlFor="collection-name">
-          <span className={styles.fieldLabel}>名前</span>
-          <input aria-label="名前" id="collection-name" name="name" type="text" />
-        </label>
-        <label className={styles.field} htmlFor="collection-slug">
-          <span className={styles.fieldLabel}>slug</span>
-          <input aria-label="slug" id="collection-slug" name="slug" type="text" />
-        </label>
+        <FormField htmlFor="collection-name" label="名前">
+          <input
+            aria-label="名前"
+            className={getFormControlClassName()}
+            id="collection-name"
+            name="name"
+            type="text"
+          />
+        </FormField>
+        <FormField htmlFor="collection-slug" label="slug">
+          <input
+            aria-label="slug"
+            className={getFormControlClassName()}
+            id="collection-slug"
+            name="slug"
+            type="text"
+          />
+        </FormField>
         <Button
           className={styles.submitButton}
           disabled={isSubmitting}

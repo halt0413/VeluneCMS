@@ -8,7 +8,7 @@ import type {
   CmsPageUpdateResponse
 } from "./types";
 import { cmsFetch } from "../../api/cms/client";
-import { toContent, type Content } from "../../domain/content/content";
+import { toContent, type Content } from "../../domain/content";
 
 const CONTENT_PATH = "/contents";
 

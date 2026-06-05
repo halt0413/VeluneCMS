@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { useMemo } from "react";
 import { PageHeader } from "../../../../components/content/PageHeader/PageHeader";
 import { getButtonClassName } from "../../../../components/ui/Button/Button";
-import type { Content } from "../../../../domain/content/content";
+import type { Content } from "../../../../domain/content";
 import { ContentCard } from "../ContentCard/ContentCard";
 import { ContentTypeFilter } from "../ContentTypeFilter/ContentTypeFilter";
 import styles from "./ContentsPage.module.css";

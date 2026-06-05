@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { useMemo } from "react";
-import type { ContentCollection } from "../../../domain/contentCollection/contentCollection";
+import type { ContentCollection } from "../../../domain/contentCollection";
 import { useContentCollectionsQuery } from "../../../features/contentCollectionList/hooks/useContentCollectionsQuery";
 import { HeaderAuth } from "./HeaderAuth/HeaderAuth";
 import styles from "./Header.module.css";
@@ -28,7 +28,10 @@ export function Header() {
           </div>
           <div className={styles.stack}>
             {collections.map((collection) => (
-              <ContentCollectionLink collection={collection} key={collection.id} />
+              <ContentCollectionLink
+                collection={collection}
+                key={collection.id}
+              />
             ))}
           </div>
         </section>

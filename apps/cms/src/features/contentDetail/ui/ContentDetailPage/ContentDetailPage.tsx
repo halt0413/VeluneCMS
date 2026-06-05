@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { useMemo } from "react";
 import { PageHeader } from "../../../../components/content/PageHeader/PageHeader";
-import type { Content } from "../../../../domain/content/content";
+import type { Content } from "../../../../domain/content";
 import { ContentBodyCard } from "../ContentBodyCard/ContentBodyCard";
 import { ContentMetaCard } from "../ContentMetaCard/ContentMetaCard";
 import styles from "./ContentDetailPage.module.css";

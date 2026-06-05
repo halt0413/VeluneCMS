@@ -1,4 +1,4 @@
-import type { ContentCollectionResource } from "../../infrastructure/contentCollection/types";
+import type { ContentCollectionResource } from "../infrastructure/contentCollection/types";
 
 export type ContentCollection = {
   createdAt: string;
@@ -9,13 +9,13 @@ export type ContentCollection = {
 };
 
 export function toContentCollection(
-  collection: ContentCollectionResource
+  collection: ContentCollectionResource,
 ): ContentCollection {
   return {
     createdAt: collection.createdAt,
     id: collection.id,
     name: collection.name,
     slug: collection.slug,
-    updatedAt: collection.updatedAt
+    updatedAt: collection.updatedAt,
   };
 }
