@@ -5,7 +5,10 @@ import {
   getFormControlClassName,
   getTextareaClassName,
 } from "../../../form/FormField/FormField";
-import { Button } from "../../../ui/Button/Button";
+import {
+  ContentFormActions,
+  type ContentFormSubmitIntent
+} from "../ContentFormActions/ContentFormActions";
 import { ContentFormSidebar } from "../ContentFormSidebar/ContentFormSidebar";
 import styles from "./ContentForm.module.css";
 
@@ -40,9 +43,8 @@ export const ContentForm = memo(function ContentForm({
   showStatus = true,
   submitLabel,
 }: ContentFormProps) {
-  const [submittingIntent, setSubmittingIntent] = useState<
-    "draft" | "save" | null
-  >(null);
+  const [submittingIntent, setSubmittingIntent] =
+    useState<ContentFormSubmitIntent | null>(null);
   const pendingIntent = isSubmitting ? submittingIntent : null;
 
   const handleSubmit = useCallback(
@@ -164,42 +166,15 @@ export const ContentForm = memo(function ContentForm({
           />
         </FormField>
 
-        <div className={styles.formActions}>
-          <div className={styles.formActionsLeft}>
-            {showDelete ? (
-              <Button
-                disabled={!onDelete || isSubmitting || isDeleting}
-                onClick={onDelete}
-                type="button"
-                variant="danger"
-              >
-                {isDeleting ? "削除中..." : "削除"}
-              </Button>
-            ) : null}
-          </div>
-          <div className={styles.formActionsRight}>
-            {pendingIntent === "draft" ? (
-              <output className={styles.pendingMessage}>
-                下書きを保存しています...
-              </output>
-            ) : null}
-            <Button
-              disabled={!onSubmit || isSubmitting}
-              type="submit"
-              value="draft"
-            >
-              {pendingIntent === "draft" ? "保存中..." : "下書き保存"}
-            </Button>
-            <Button
-              disabled={!onSubmit || isSubmitting}
-              type="submit"
-              value="save"
-              variant="primary"
-            >
-              {pendingIntent === "save" ? "保存中..." : submitLabel}
-            </Button>
-          </div>
-        </div>
+        <ContentFormActions
+          canSubmit={Boolean(onSubmit)}
+          isDeleting={isDeleting}
+          isSubmitting={isSubmitting}
+          onDelete={onDelete}
+          pendingIntent={pendingIntent}
+          showDelete={showDelete}
+          submitLabel={submitLabel}
+        />
       </form>
 
       <ContentFormSidebar description={description} showStatus={showStatus} />
