@@ -8,6 +8,8 @@ import {
 } from "../../../../components/form/FormField/FormField";
 import { Button } from "../../../../components/ui/Button/Button";
 import type { ContentCollection } from "../../../../domain/contentCollection";
+import { getValidationErrorMessage } from "../../../../lib/validation";
+import { contentCollectionInputSchema } from "../../../../infrastructure/contentCollection/schema";
 import styles from "./EditContentCollectionPage.module.css";
 
 type EditContentCollectionPageProps = {
@@ -28,6 +30,7 @@ export const EditContentCollectionPage = memo(function EditContentCollectionPage
   onSubmit
 }: EditContentCollectionPageProps) {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [validationError, setValidationError] = useState<string | null>(null);
   const deleteModalActions = useMemo(
     () => ({
       close() {
@@ -57,10 +60,18 @@ export const EditContentCollectionPage = memo(function EditContentCollectionPage
       }
 
       const formData = new FormData(event.currentTarget);
-      await onSubmit({
+      const parsed = contentCollectionInputSchema.safeParse({
         name: String(formData.get("name") ?? ""),
         slug: String(formData.get("slug") ?? "")
       });
+
+      if (!parsed.success) {
+        setValidationError(getValidationErrorMessage(parsed.error));
+        return;
+      }
+
+      setValidationError(null);
+      await onSubmit(parsed.data);
     },
     [onSubmit]
   );
@@ -73,8 +84,10 @@ export const EditContentCollectionPage = memo(function EditContentCollectionPage
       />
       {collection ? (
         <form className={styles.formCard} onSubmit={handleSubmit}>
-          {errorMessage ? (
-            <p className={styles.errorMessage}>{errorMessage}</p>
+          {errorMessage || validationError ? (
+            <p className={styles.errorMessage}>
+              {errorMessage ?? validationError}
+            </p>
           ) : null}
           <FormField htmlFor="collection-name" label="名前">
             <input

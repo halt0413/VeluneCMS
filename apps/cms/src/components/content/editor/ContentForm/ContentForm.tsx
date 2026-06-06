@@ -1,5 +1,7 @@
 import type { CmsPageInput } from "../../../../infrastructure/content/types";
 import { memo, useCallback, useState } from "react";
+import { getValidationErrorMessage } from "../../../../lib/validation";
+import { cmsPageInputSchema } from "../../../../infrastructure/content/schema";
 import {
   FormField,
   getFormControlClassName,
@@ -45,6 +47,7 @@ export const ContentForm = memo(function ContentForm({
 }: ContentFormProps) {
   const [submittingIntent, setSubmittingIntent] =
     useState<ContentFormSubmitIntent | null>(null);
+  const [validationError, setValidationError] = useState<string | null>(null);
   const pendingIntent = isSubmitting ? submittingIntent : null;
 
   const handleSubmit = useCallback(
@@ -62,25 +65,32 @@ export const ContentForm = memo(function ContentForm({
           ? "draft"
           : "save";
       const formData = new FormData(event.currentTarget);
+      const payload = {
+        body: String(formData.get("body") ?? ""),
+        contentType: String(
+          formData.get("contentType") ?? defaultValue.contentType,
+        ),
+        slug: String(formData.get("slug") ?? ""),
+        status:
+          intent === "draft"
+            ? "draft"
+            : showStatus
+              ? String(formData.get("status") ?? defaultValue.status)
+              : "published",
+        title: String(formData.get("title") ?? ""),
+      };
+      const parsed = cmsPageInputSchema.safeParse(payload);
+
+      if (!parsed.success) {
+        setValidationError(getValidationErrorMessage(parsed.error));
+        return;
+      }
+
+      setValidationError(null);
       setSubmittingIntent(intent);
 
       try {
-        await onSubmit({
-          body: String(formData.get("body") ?? ""),
-          contentType: String(
-            formData.get("contentType") ?? defaultValue.contentType,
-          ),
-          slug: String(formData.get("slug") ?? ""),
-          status:
-            intent === "draft"
-              ? "draft"
-              : showStatus
-                ? (String(
-                    formData.get("status") ?? defaultValue.status,
-                  ) as CmsPageInput["status"])
-                : "published",
-          title: String(formData.get("title") ?? ""),
-        });
+        await onSubmit(parsed.data);
       } finally {
         setSubmittingIntent(null);
       }
@@ -98,8 +108,10 @@ export const ContentForm = memo(function ContentForm({
         </div>
 
         <p className={styles.formDescription}>{description}</p>
-        {errorMessage ? (
-          <p className={styles.errorMessage}>{errorMessage}</p>
+        {errorMessage || validationError ? (
+          <p className={styles.errorMessage}>
+            {errorMessage ?? validationError}
+          </p>
         ) : null}
 
         <div className={styles.fieldGrid}>
