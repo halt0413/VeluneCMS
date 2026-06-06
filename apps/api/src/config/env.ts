@@ -4,11 +4,6 @@ export type ApiEnv = {
   apiUrl: string;
   adminApiToken: string;
   cmsUrl: string;
-  github: {
-    owner?: string;
-    repo?: string;
-    token?: string;
-  };
   githubOAuth: {
     accessTokenUrl: string;
     authorizeUrl: string;
@@ -19,7 +14,6 @@ export type ApiEnv = {
     stateTtlSeconds: number;
     userUrl: string;
   };
-  githubWebhookSecret?: string;
   port: number;
   session: {
     cookieName: string;
@@ -40,11 +34,6 @@ export function getApiEnv(env: ApiEnvSource = process.env): ApiEnv {
     apiUrl,
     adminApiToken: requireEnv(env, "ADMIN_API_TOKEN"),
     cmsUrl,
-    github: {
-      owner: env.GITHUB_OWNER,
-      repo: env.GITHUB_REPO,
-      token: env.GITHUB_TOKEN
-    },
     githubOAuth: {
       accessTokenUrl: requireEnv(env, "GITHUB_OAUTH_ACCESS_TOKEN_URL"),
       authorizeUrl: requireEnv(env, "GITHUB_OAUTH_AUTHORIZE_URL"),
@@ -60,7 +49,6 @@ export function getApiEnv(env: ApiEnvSource = process.env): ApiEnv {
       ),
       userUrl: requireEnv(env, "GITHUB_OAUTH_USER_URL")
     },
-    githubWebhookSecret: env.GITHUB_WEBHOOK_SECRET,
     port,
     session: {
       cookieName: sessionCookieName,

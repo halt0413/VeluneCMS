@@ -6,7 +6,6 @@
     "types": ["node"],
     "paths": {
       "@repo/content": ["../../packages/content/dist/index.d.ts"],
-      "@repo/github": ["../../packages/github/dist/index.d.ts"],
       "@repo/utils": ["../../packages/utils/dist/index.d.ts"]
     }
   },

@@ -3,8 +3,7 @@ import type {
   CmsPageCreateResponse,
   CmsPageItemResponse,
   CmsPageListResponse,
-  CmsPreviewResponse,
-  GitHubSyncResponse
+  CmsPreviewResponse
 } from "../contracts";
 import type { Context } from "hono";
 import { BadRequestError } from "../../lib/errors/AppError";
@@ -18,8 +17,7 @@ export function createPagesController({
   createPage,
   getPage,
   getPagePreviewById,
-  listPages,
-  syncPageToGitHub
+  listPages
 }: PagesControllerHandlers) {
   return {
     async list(c: Context) {
@@ -58,17 +56,6 @@ export function createPagesController({
 
       return c.json(response);
     },
-    async syncGitHub(c: Context) {
-      const result = await syncPageToGitHub(requireRouteParam(c, "id"));
-      const response: GitHubSyncResponse = {
-        synced: {
-          pageId: result.pageId,
-          issue: result.issue
-        }
-      };
-
-      return c.json(response, 201);
-    }
   };
 }
 

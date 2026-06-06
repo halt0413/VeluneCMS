@@ -11,6 +11,7 @@ import { EditContentRoute } from "./routes/contents/$id.edit";
 import { ContentsRoute } from "./routes/contents";
 import { NewContentRoute } from "./routes/contents/new";
 import { NewContentCollectionRoute } from "./routes/content-collections/new";
+import { EditContentCollectionRoute } from "./routes/content-collections/$id.edit";
 
 const rootRoute = createRootRoute({
   component: RootRouteView
@@ -66,6 +67,12 @@ const newContentCollectionRoute = createRoute({
   path: "new"
 });
 
+const editContentCollectionRoute = createRoute({
+  component: EditContentCollectionRoute,
+  getParentRoute: () => contentCollectionsRoute,
+  path: "$id/edit"
+});
+
 const routeTree = rootRoute.addChildren([
   homeRoute,
   contentsRoute.addChildren([
@@ -74,7 +81,10 @@ const routeTree = rootRoute.addChildren([
     contentDetailRoute,
     editContentRoute
   ]),
-  contentCollectionsRoute.addChildren([newContentCollectionRoute])
+  contentCollectionsRoute.addChildren([
+    newContentCollectionRoute,
+    editContentCollectionRoute
+  ])
 ]);
 
 export const router = createRouter({

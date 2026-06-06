@@ -1,6 +1,5 @@
 import {
   Page,
-  type GitHubIssueGateway,
   type PageRepository,
   type AuthUser,
   type CmsPage,
@@ -12,11 +11,6 @@ import { NotFoundError } from "../lib/errors/AppError";
 
 export type PagePreview = CmsPage;
 
-export type SyncPageToGitHubResult = {
-  issue: Awaited<ReturnType<GitHubIssueGateway["createFromPage"]>>;
-  pageId: string;
-};
-
 type CreatePageDependencies = {
   createId: () => string;
   getNow: () => string;
@@ -25,11 +19,6 @@ type CreatePageDependencies = {
 
 type UpdatePageDependencies = {
   getNow: () => string;
-  pageRepository: PageRepository;
-};
-
-type SyncPageToGitHubDependencies = {
-  gitHubIssueGateway: GitHubIssueGateway;
   pageRepository: PageRepository;
 };
 
@@ -56,13 +45,16 @@ export async function createPage(
 
 export async function deletePage(
   pageRepository: PageRepository,
-  id: CmsPageId
+  id: CmsPageId,
+  actor?: AuthUser
 ): Promise<{ deleted: true; id: CmsPageId }> {
   const page = await pageRepository.findById(id);
 
   if (!page) {
     throw new NotFoundError("Page not found");
   }
+
+  assertPageOwner(page.toSnapshot(), actor);
 
   await pageRepository.delete(id);
 
@@ -119,25 +111,6 @@ export async function listPages(
   return pages.map((page) => page.toSnapshot());
 }
 
-export async function syncPageToGitHub(
-  pageId: string,
-  { gitHubIssueGateway, pageRepository }: SyncPageToGitHubDependencies
-): Promise<SyncPageToGitHubResult> {
-  const page = await pageRepository.findById(pageId);
-
-  if (!page) {
-    throw new NotFoundError("Page not found");
-  }
-
-  const snapshot = page.toSnapshot();
-  const issue = await gitHubIssueGateway.createFromPage(snapshot);
-
-  return {
-    pageId: snapshot.id,
-    issue
-  };
-}
-
 export async function updatePage(
   id: CmsPageId,
   patch: CmsPagePatch,
@@ -149,6 +122,8 @@ export async function updatePage(
   if (!current) {
     throw new NotFoundError("Page not found");
   }
+
+  assertPageOwner(current.toSnapshot(), actor);
 
   current.update(
     patch,
@@ -163,4 +138,14 @@ export async function updatePage(
   const updated = await pageRepository.save(current);
 
   return updated.toSnapshot();
+}
+
+function assertPageOwner(page: CmsPage, actor?: AuthUser): void {
+  if (!actor || !page.owner) {
+    return;
+  }
+
+  if (page.owner.id !== actor.id) {
+    throw new NotFoundError("Page not found");
+  }
 }

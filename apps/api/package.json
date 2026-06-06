@@ -7,19 +7,19 @@
     "dev": "env TSX_TSCONFIG_PATH=tsconfig.dev.json pnpm exec tsx watch cmd/main.ts",
     "dev:worker": "wrangler dev",
     "dev:prod-db": "wrangler dev --remote",
-    "build": "pnpm --filter @repo/utils build && pnpm --filter @repo/content build && pnpm --filter @repo/github build && tsc -p tsconfig.json",
+    "build": "pnpm --filter @repo/utils build && pnpm --filter @repo/content build && tsc -p tsconfig.json",
     "db:generate": "drizzle-kit generate",
     "start": "node dist/cmd/main.js",
     "lint": "eslint .",
-    "typecheck": "pnpm --filter @repo/utils build && pnpm --filter @repo/content build && pnpm --filter @repo/github build && tsc -p tsconfig.json --noEmit"
+    "typecheck": "pnpm --filter @repo/utils build && pnpm --filter @repo/content build && tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
     "@hono/node-server": "^1.19.6",
     "@repo/content": "workspace:*",
-    "@repo/github": "workspace:*",
     "@repo/utils": "workspace:*",
     "drizzle-orm": "^0.45.2",
-    "hono": "^4.10.6"
+    "hono": "^4.10.6",
+    "zod": "^3.24.1"
   },
   "devDependencies": {
     "@types/node": "^20",
