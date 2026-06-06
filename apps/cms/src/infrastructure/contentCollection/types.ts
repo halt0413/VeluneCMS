@@ -1,37 +1,43 @@
-export type ContentCollectionResource = {
-  createdAt: string;
-  id: string;
-  name: string;
-  slug: string;
-  updatedAt: string;
-};
+import type { z } from "zod";
+import type {
+  contentCollectionCreateResponseSchema,
+  contentCollectionDeleteResponseSchema,
+  contentCollectionInputSchema,
+  contentCollectionItemResponseSchema,
+  contentCollectionListResponseSchema,
+  contentCollectionPatchSchema,
+  contentCollectionResourceSchema,
+  contentCollectionUpdateResponseSchema
+} from "./schema";
 
-export type ContentCollectionCreateRequest = {
-  name: string;
-  slug: string;
-};
+export type ContentCollectionResource = z.infer<
+  typeof contentCollectionResourceSchema
+>;
 
-export type ContentCollectionUpdateRequest =
-  Partial<ContentCollectionCreateRequest>;
+export type ContentCollectionCreateRequest = z.infer<
+  typeof contentCollectionInputSchema
+>;
 
-export type ContentCollectionCreateResponse = {
-  created: ContentCollectionResource;
-};
+export type ContentCollectionUpdateRequest = z.infer<
+  typeof contentCollectionPatchSchema
+>;
 
-export type ContentCollectionUpdateResponse = {
-  updated: ContentCollectionResource;
-};
+export type ContentCollectionCreateResponse = z.infer<
+  typeof contentCollectionCreateResponseSchema
+>;
 
-export type ContentCollectionDeleteResponse = {
-  deleted: true;
-  id: string;
-};
+export type ContentCollectionUpdateResponse = z.infer<
+  typeof contentCollectionUpdateResponseSchema
+>;
 
-export type ContentCollectionItemResponse = {
-  item: ContentCollectionResource;
-};
+export type ContentCollectionDeleteResponse = z.infer<
+  typeof contentCollectionDeleteResponseSchema
+>;
 
-export type ContentCollectionListResponse = {
-  items: ContentCollectionResource[];
-  total: number;
-};
+export type ContentCollectionItemResponse = z.infer<
+  typeof contentCollectionItemResponseSchema
+>;
+
+export type ContentCollectionListResponse = z.infer<
+  typeof contentCollectionListResponseSchema
+>;

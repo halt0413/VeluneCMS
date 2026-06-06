@@ -17,3 +17,14 @@
 .submitButton {
   justify-self: end;
 }
+
+.errorMessage {
+  margin: 0;
+  border: 1px solid #f0c7c7;
+  border-radius: 12px;
+  padding: 10px 12px;
+  background: #fff4f4;
+  color: #c03535;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
