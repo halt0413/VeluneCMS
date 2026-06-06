@@ -6,10 +6,8 @@ import {
   createAuthController,
   createContentCollectionsController,
   createContentsController,
-  createGitHubController,
   createPreviewController,
-  createSystemController,
-  createWebhookController
+  createSystemController
 } from "./presentation/controllers";
 import { AppError } from "./lib/errors/AppError";
 import { createAuthMiddleware } from "./middleware/auth";
@@ -17,36 +15,31 @@ import {
   createAuthRouter,
   createContentCollectionsRouter,
   createContentsRouter,
-  createGitHubRouter,
   createPreviewRouter,
-  createSystemRouter,
-  createWebhookRouter
+  createSystemRouter
 } from "./presentation/routes";
 
 export function createApp({
   adminApiToken,
-  addIssueLabels,
   completeGitHubLogin,
   cookieSecure,
   createContentCollection,
   createContent,
-  createIssue,
+  deleteContentCollection,
   deleteContent,
   getContent,
+  getContentCollection,
   getContentPreviewById,
   getCurrentUser,
-  getIssue,
   getPagePreviewBySlug,
-  githubWebhookSecret,
   listContents,
   listContentCollections,
-  listIssues,
   logout,
   sessionCookieName,
   sessionRepository,
   startGitHubLogin,
   updateContent,
-  updateIssue,
+  updateContentCollection,
   webOrigin
 }: CreateAppDependencies) {
   const app = new Hono();
@@ -74,14 +67,10 @@ export function createApp({
   });
   const contentCollectionsController = createContentCollectionsController({
     createContentCollection,
+    deleteContentCollection,
+    getContentCollection,
+    updateContentCollection,
     listContentCollections
-  });
-  const gitHubController = createGitHubController({
-    addIssueLabels,
-    createIssue,
-    getIssue,
-    listIssues,
-    updateIssue
   });
   const previewController = createPreviewController({
     getPagePreviewBySlug
@@ -126,10 +115,8 @@ export function createApp({
   );
   app.route("/auth", createAuthRouter(authController));
 
-  // previewと内部GitHub操作は管理トークンまたはログインセッションを要求する
+  // previewは管理トークンまたはログインセッションを要求する
   app.use("/preview/*", auth);
-  app.use("/internal/github", auth);
-  app.use("/internal/github/*", auth);
 
   app.route(
     "/contents",
@@ -145,20 +132,7 @@ export function createApp({
       controller: contentCollectionsController
     })
   );
-  app.route("/internal/github", createGitHubRouter(gitHubController));
   app.route("/preview", createPreviewRouter(previewController));
-
-  if (githubWebhookSecret) {
-    // secret未設定の環境ではwebhook endpoint自体を公開しない
-    app.route(
-      "/webhooks/github",
-      createWebhookRouter(
-        createWebhookController({
-          secret: githubWebhookSecret
-        })
-      )
-    );
-  }
 
   return app;
 }

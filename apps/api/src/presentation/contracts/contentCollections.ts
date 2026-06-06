@@ -10,6 +10,18 @@ export type ContentCollectionCreateResponse = {
   created: ContentCollectionSnapshot;
 };
 
+export type ContentCollectionUpdateRequest =
+  Partial<ContentCollectionCreateRequest>;
+
+export type ContentCollectionUpdateResponse = {
+  updated: ContentCollectionSnapshot;
+};
+
+export type ContentCollectionDeleteResponse = {
+  deleted: true;
+  id: string;
+};
+
 export type ContentCollectionListResponse =
   ApiListResponse<ContentCollectionSnapshot>;
 

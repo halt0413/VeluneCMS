@@ -3,7 +3,6 @@ import type {
   AuthControllerHandlers,
   ContentCollectionsControllerHandlers,
   ContentsControllerHandlers,
-  GitHubControllerHandlers,
   MeControllerHandler,
   PreviewControllerHandlers
 } from "../presentation/controllers";
@@ -11,7 +10,6 @@ import type {
 export type AppHttpConfig = {
   adminApiToken: string;
   cookieSecure: boolean;
-  githubWebhookSecret?: string;
   sessionCookieName: string;
   webOrigin: string;
 };
@@ -24,7 +22,6 @@ export type CreateAppDependencies = AppHttpConfig &
   AuthControllerHandlers &
   ContentCollectionsControllerHandlers &
   ContentsControllerHandlers &
-  GitHubControllerHandlers &
   PreviewControllerHandlers &
   MeControllerHandler &
   AppHttpInfrastructure;

@@ -34,6 +34,28 @@ export class D1ContentCollectionRepository
 {
   constructor(private readonly database: D1Database) {}
 
+  async delete(id: string): Promise<void> {
+    await this.database
+      .prepare("delete from content_collections where id = ?")
+      .bind(id)
+      .run();
+  }
+
+  async findById(id: string): Promise<ContentCollection | undefined> {
+    const row = await this.database
+      .prepare(
+        `
+          select id, slug, name, created_at, updated_at
+          from content_collections
+          where id = ?
+        `
+      )
+      .bind(id)
+      .first<ContentCollectionRow>();
+
+    return row ? this.toContentCollection(row) : undefined;
+  }
+
   async findBySlug(slug: string): Promise<ContentCollection | undefined> {
     const normalizedSlug = Slug.create(slug).toString();
     const row = await this.database
@@ -117,6 +139,14 @@ export class InMemoryContentCollectionRepository
       const collection = ContentCollection.create(seed);
       this.collections.set(collection.id, collection);
     }
+  }
+
+  async delete(id: string): Promise<void> {
+    this.collections.delete(id);
+  }
+
+  async findById(id: string): Promise<ContentCollection | undefined> {
+    return this.collections.get(id);
   }
 
   async findBySlug(slug: string): Promise<ContentCollection | undefined> {

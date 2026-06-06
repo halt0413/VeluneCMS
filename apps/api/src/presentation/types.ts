@@ -1,16 +1,16 @@
 import type { LogoutResponse } from "./contracts";
-import type { ContentCollectionInput, ContentCollectionSnapshot } from "../domain";
+import type {
+  ContentCollectionInput,
+  ContentCollectionPatch,
+  ContentCollectionSnapshot
+} from "../domain";
 import type { CompleteGitHubLoginResult } from "../usecase/auth";
-import type { PagePreview, SyncPageToGitHubResult } from "../usecase/page";
+import type { PagePreview } from "../usecase/page";
 import type {
   AuthUser,
   CmsPage,
   CmsPageInput,
-  CmsPagePatch,
-  GitHubIssue,
-  GitHubIssueInput,
-  GitHubIssueLabel,
-  GitHubIssueUpdateInput
+  CmsPagePatch
 } from "../domain";
 
 export type AuthControllerHandlers = {
@@ -26,7 +26,7 @@ export type AuthControllerHandlers = {
 
 export type ContentsControllerHandlers = {
   createContent: (payload: CmsPageInput, actor?: AuthUser) => Promise<CmsPage>;
-  deleteContent: (id: string) => Promise<{
+  deleteContent: (id: string, actor?: AuthUser) => Promise<{
     deleted: true;
     id: string;
   }>;
@@ -45,21 +45,16 @@ export type ContentCollectionsControllerHandlers = {
   createContentCollection: (
     payload: ContentCollectionInput
   ) => Promise<ContentCollectionSnapshot>;
+  deleteContentCollection: (id: string) => Promise<{
+    deleted: true;
+    id: string;
+  }>;
+  getContentCollection: (id: string) => Promise<ContentCollectionSnapshot>;
   listContentCollections: () => Promise<ContentCollectionSnapshot[]>;
-};
-
-export type GitHubControllerHandlers = {
-  addIssueLabels: (
-    issueNumber: number,
-    labels: GitHubIssueLabel[]
-  ) => Promise<GitHubIssue>;
-  createIssue: (input: GitHubIssueInput) => Promise<GitHubIssue>;
-  getIssue: (issueNumber: number) => Promise<GitHubIssue>;
-  listIssues: () => Promise<GitHubIssue[]>;
-  updateIssue: (
-    issueNumber: number,
-    input: GitHubIssueUpdateInput
-  ) => Promise<GitHubIssue>;
+  updateContentCollection: (
+    id: string,
+    payload: ContentCollectionPatch
+  ) => Promise<ContentCollectionSnapshot>;
 };
 
 export type PagesControllerHandlers = {
@@ -67,7 +62,6 @@ export type PagesControllerHandlers = {
   getPage: (id: string) => Promise<CmsPage>;
   getPagePreviewById: (id: string) => Promise<PagePreview>;
   listPages: () => Promise<CmsPage[]>;
-  syncPageToGitHub: (id: string) => Promise<SyncPageToGitHubResult>;
 };
 
 export type PreviewControllerHandlers = {

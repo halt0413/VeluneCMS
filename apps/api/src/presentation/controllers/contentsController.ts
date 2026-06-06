@@ -93,8 +93,10 @@ export function createContentsController({
       return c.json(response);
     },
     async remove(c: Context) {
+      const sessionId = getCookie(c, sessionCookieName);
       const response: CmsPageDeleteResponse = await deleteContent(
-        requireRouteParam(c, "id")
+        requireRouteParam(c, "id"),
+        sessionId ? getCurrentUser(sessionId) : undefined
       );
 
       return c.json(response);

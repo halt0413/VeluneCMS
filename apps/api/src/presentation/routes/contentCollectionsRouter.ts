@@ -12,7 +12,10 @@ export function createContentCollectionsRouter({
   const router = new Hono();
 
   router.get("/", controller.list);
+  router.get("/:id", auth, controller.get);
   router.post("/", auth, controller.create);
+  router.patch("/:id", auth, controller.update);
+  router.delete("/:id", auth, controller.remove);
 
   return router;
 }

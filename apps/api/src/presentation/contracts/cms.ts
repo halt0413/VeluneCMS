@@ -4,7 +4,6 @@ import type {
   CmsPagePatch,
   PublicContent
 } from "../../domain";
-import type { GitHubIssueCreateResult } from "../../domain";
 import type { ApiItemResponse, ApiListResponse } from "./common";
 
 export type CmsPageCreateRequest = CmsPageInput;
@@ -33,13 +32,6 @@ export type PreviewResponse = {
 
 export type CmsPreviewResponse = PreviewResponse & {
   content: PublicContent;
-};
-
-export type GitHubSyncResponse = {
-  synced: {
-    pageId: CmsPage["id"];
-    issue: GitHubIssueCreateResult;
-  };
 };
 
 export type CmsPageItemResponse = ApiItemResponse<CmsPage>;

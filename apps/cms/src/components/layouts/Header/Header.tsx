@@ -51,15 +51,30 @@ function ContentCollectionLink({ collection }: ContentCollectionLinkProps) {
     }),
     [collection.slug],
   );
+  const editParams = useMemo(
+    () => ({
+      id: collection.id
+    }),
+    [collection.id]
+  );
 
   return (
-    <Link
-      className={`${styles.link} ${styles.linkActive}`}
-      search={search}
-      to="/contents"
-    >
-      <span className={styles.linkMark} />
-      {collection.name}
-    </Link>
+    <div className={styles.collectionRow}>
+      <Link
+        className={`${styles.link} ${styles.linkActive}`}
+        search={search}
+        to="/contents"
+      >
+        <span className={styles.linkMark} />
+        {collection.name}
+      </Link>
+      <Link
+        className={styles.editLink}
+        params={editParams}
+        to="/content-collections/$id/edit"
+      >
+        編集
+      </Link>
+    </div>
   );
 }

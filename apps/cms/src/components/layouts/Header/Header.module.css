@@ -19,6 +19,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
+  min-width: 0;
   border-radius: 14px;
   padding: 11px 12px;
   color: #4c5376;
@@ -76,6 +77,19 @@
 .stack {
   display: grid;
   gap: 10px;
+}
+
+.collectionRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+}
+
+.editLink {
+  color: #656b8a;
+  font-size: 0.78rem;
+  font-weight: 700;
 }
 
 .metaLink {

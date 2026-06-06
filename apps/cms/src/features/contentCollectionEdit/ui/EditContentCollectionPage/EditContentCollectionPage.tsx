@@ -1,0 +1,139 @@
+import type { ContentCollectionUpdateRequest } from "../../../../infrastructure/contentCollection/types";
+import { memo, useCallback, useMemo, useState } from "react";
+import { PageHeader } from "../../../../components/content/PageHeader/PageHeader";
+import { DeleteConfirmModal } from "../../../../components/feedback/DeleteConfirmModal/DeleteConfirmModal";
+import {
+  FormField,
+  getFormControlClassName
+} from "../../../../components/form/FormField/FormField";
+import { Button } from "../../../../components/ui/Button/Button";
+import type { ContentCollection } from "../../../../domain/contentCollection";
+import styles from "./EditContentCollectionPage.module.css";
+
+type EditContentCollectionPageProps = {
+  collection: ContentCollection | null;
+  errorMessage?: string;
+  isDeleting?: boolean;
+  isSubmitting?: boolean;
+  onDelete?: () => void | Promise<void>;
+  onSubmit?: (payload: ContentCollectionUpdateRequest) => void | Promise<void>;
+};
+
+export const EditContentCollectionPage = memo(function EditContentCollectionPage({
+  collection,
+  errorMessage,
+  isDeleting = false,
+  isSubmitting = false,
+  onDelete,
+  onSubmit
+}: EditContentCollectionPageProps) {
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const deleteModalActions = useMemo(
+    () => ({
+      close() {
+        setIsDeleteModalOpen(false);
+      },
+      async confirm() {
+        if (!onDelete) {
+          return;
+        }
+
+        await onDelete();
+        setIsDeleteModalOpen(false);
+      },
+      open() {
+        setIsDeleteModalOpen(true);
+      }
+    }),
+    [onDelete]
+  );
+
+  const handleSubmit = useCallback(
+    async (event: React.SyntheticEvent<HTMLFormElement, SubmitEvent>) => {
+      event.preventDefault();
+
+      if (!onSubmit) {
+        return;
+      }
+
+      const formData = new FormData(event.currentTarget);
+      await onSubmit({
+        name: String(formData.get("name") ?? ""),
+        slug: String(formData.get("slug") ?? "")
+      });
+    },
+    [onSubmit]
+  );
+
+  return (
+    <main className={styles.page}>
+      <PageHeader
+        subtitle={collection ? `ID: ${collection.id}` : undefined}
+        title="コンテンツ種別を編集"
+      />
+      {collection ? (
+        <form className={styles.formCard} onSubmit={handleSubmit}>
+          {errorMessage ? (
+            <p className={styles.errorMessage}>{errorMessage}</p>
+          ) : null}
+          <FormField htmlFor="collection-name" label="名前">
+            <input
+              aria-label="名前"
+              className={getFormControlClassName()}
+              defaultValue={collection.name}
+              id="collection-name"
+              name="name"
+              required
+              type="text"
+            />
+          </FormField>
+          <FormField htmlFor="collection-slug" label="slug">
+            <input
+              aria-label="slug"
+              className={getFormControlClassName()}
+              defaultValue={collection.slug}
+              id="collection-slug"
+              name="slug"
+              required
+              type="text"
+            />
+          </FormField>
+          <div className={styles.actions}>
+            <Button
+              disabled={!onDelete || isDeleting || isSubmitting}
+              onClick={deleteModalActions.open}
+              type="button"
+              variant="danger"
+            >
+              {isDeleting ? "削除中..." : "削除"}
+            </Button>
+            <div className={styles.primaryActions}>
+              <Button
+                disabled={!onSubmit || isSubmitting}
+                type="submit"
+                variant="primary"
+              >
+                {isSubmitting ? "保存中..." : "更新する"}
+              </Button>
+            </div>
+          </div>
+        </form>
+      ) : (
+        <section className={styles.detailCard}>
+          <p className={styles.body}>
+            指定したコンテンツ種別は存在しないか、取得できませんでした。
+          </p>
+        </section>
+      )}
+      {collection && isDeleteModalOpen ? (
+        <DeleteConfirmModal
+          description={`「${collection.name}」を削除します。この操作は取り消せません。`}
+          isDeleting={isDeleting}
+          onCancel={deleteModalActions.close}
+          onConfirm={deleteModalActions.confirm}
+          title="コンテンツ種別を削除"
+        />
+      ) : null}
+    </main>
+  );
+});

@@ -10,7 +10,6 @@ export function createPagesRouter(
   router.get("/:id", controller.get);
   router.post("/", controller.create);
   router.get("/:id/preview", controller.preview);
-  router.post("/:id/sync/github", controller.syncGitHub);
 
   return router;
 }

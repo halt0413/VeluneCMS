@@ -5,6 +5,8 @@ export type ContentCollectionInput = {
   slug: string;
 };
 
+export type ContentCollectionPatch = Partial<ContentCollectionInput>;
+
 export type ContentCollectionSnapshot = ContentCollectionInput & {
   id: ContentCollectionId;
   createdAt: string;

@@ -1,5 +1,6 @@
 import type {
   ContentCollectionInput,
+  ContentCollectionPatch,
   ContentCollectionSnapshot
 } from "../types/contentCollection";
 import { Slug } from "../valueObjects/Slug";
@@ -41,6 +42,18 @@ export class ContentCollection {
 
   get slug() {
     return this.props.slug;
+  }
+
+  update(patch: ContentCollectionPatch, now: string): void {
+    if (patch.name !== undefined) {
+      this.props.name = normalizeRequiredText(patch.name, "Name");
+    }
+
+    if (patch.slug !== undefined) {
+      this.props.slug = Slug.create(patch.slug).toString();
+    }
+
+    this.props.updatedAt = now;
   }
 
   toSnapshot(): ContentCollectionSnapshot {

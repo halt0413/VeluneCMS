@@ -5,7 +5,6 @@ import {
   InMemoryOAuthStateRepository,
   InMemorySessionRepository
 } from "../infrastructure/authRepository";
-import { OctokitGitHubIssueGateway } from "../infrastructure/github/issueGateway";
 import { GitHubOAuthApi } from "../infrastructure/github/oauthGateway";
 import { InMemoryPageRepository } from "../infrastructure/pageRepository";
 import {
@@ -19,13 +18,6 @@ import {
   startGitHubLogin
 } from "../usecase/auth";
 import {
-  createIssue,
-  getIssue,
-  listIssues,
-  updateIssue,
-  updateIssueLabels
-} from "../usecase/github";
-import {
   createPage,
   deletePage,
   getPage,
@@ -36,7 +28,10 @@ import {
 } from "../usecase/page";
 import {
   createContentCollection,
-  listContentCollections
+  deleteContentCollection,
+  getContentCollection,
+  listContentCollections,
+  updateContentCollection
 } from "../usecase/contentCollection";
 
 type RuntimeDependencies = {
@@ -60,7 +55,6 @@ export function createApiDependencies(
   }: RuntimeDependencies
 ): CreateAppDependencies {
   // Infrastructureの実装をここで束ねて、Presentation層へはusecaseだけを渡す
-  const gitHubIssueGateway = new OctokitGitHubIssueGateway(env.github);
   const gitHubOAuthGateway = new GitHubOAuthApi(env.githubOAuth);
 
   return {
@@ -91,19 +85,19 @@ export function createApiDependencies(
         createId,
         getNow
       }),
-    createIssue: (input) => createIssue(gitHubIssueGateway, input),
-    deleteContent: (id: string) => deletePage(pageRepository, id),
+    deleteContentCollection: (id) =>
+      deleteContentCollection(id, contentCollectionRepository),
+    getContentCollection: (id) =>
+      getContentCollection(id, contentCollectionRepository),
+    deleteContent: (id: string, actor) => deletePage(pageRepository, id, actor),
     getCurrentUser: (sessionId: string | undefined) =>
       getCurrentUser(sessionId, sessionRepository),
     getContent: (id: string) => getPage(pageRepository, id),
     getContentPreviewById: (id: string) => getPagePreviewById(pageRepository, id),
-    getIssue: (issueNumber: number) => getIssue(gitHubIssueGateway, issueNumber),
     getPagePreviewBySlug: (slug: string) => getPagePreview(pageRepository, slug),
-    githubWebhookSecret: env.githubWebhookSecret,
     listContents: () => listPages(pageRepository),
     listContentCollections: () =>
       listContentCollections(contentCollectionRepository),
-    listIssues: () => listIssues(gitHubIssueGateway),
     logout: (sessionId: string | undefined) => logout(sessionId, sessionRepository),
     sessionCookieName: env.session.cookieName,
     sessionRepository,
@@ -115,8 +109,11 @@ export function createApiDependencies(
         gitHubOAuthGateway,
         oAuthStateRepository
       }),
-    addIssueLabels: (issueNumber, labels) =>
-      updateIssueLabels(gitHubIssueGateway, issueNumber, labels),
+    updateContentCollection: (id, input) =>
+      updateContentCollection(id, input, {
+        contentCollectionRepository,
+        getNow
+      }),
     updateContent: (id, input, actor) =>
       updatePage(
         id,
@@ -127,8 +124,6 @@ export function createApiDependencies(
         },
         actor
       ),
-    updateIssue: (issueNumber, input) =>
-      updateIssue(gitHubIssueGateway, issueNumber, input),
     webOrigin: new URL(env.cmsUrl).origin
   };
 }
