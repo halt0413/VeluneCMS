@@ -10,6 +10,7 @@
     "build": "pnpm --filter @repo/utils build && pnpm --filter @repo/content build && tsc -p tsconfig.json",
     "db:generate": "drizzle-kit generate",
     "start": "node dist/cmd/main.js",
+    "test": "vitest run",
     "lint": "eslint .",
     "typecheck": "pnpm --filter @repo/utils build && pnpm --filter @repo/content build && tsc -p tsconfig.json --noEmit"
   },
@@ -30,6 +31,7 @@
     "tsx": "^4.20.6",
     "typescript": "^5",
     "typescript-eslint": "^8.58.0",
+    "vitest": "^4.0.15",
     "wrangler": "^4.81.1"
   }
 }

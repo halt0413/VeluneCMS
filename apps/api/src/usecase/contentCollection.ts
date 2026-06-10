@@ -6,7 +6,7 @@ import {
   type ContentCollectionPatch,
   type ContentCollectionRepository
 } from "../domain";
-import { NotFoundError } from "../lib/errors/AppError";
+import { InternalServerError, NotFoundError } from "../lib/errors/AppError";
 
 type CreateContentCollectionDependencies = {
   contentCollectionRepository: ContentCollectionRepository;
@@ -27,7 +27,9 @@ export async function createContentCollection(
     input,
     now: getNow()
   });
-  const saved = await contentCollectionRepository.save(collection);
+  const saved = await contentCollectionRepository.save(collection).catch(() => {
+    throw new InternalServerError("Failed to create content collection");
+  });
 
   return saved.toSnapshot();
 }
@@ -35,7 +37,9 @@ export async function createContentCollection(
 export async function listContentCollections(
   contentCollectionRepository: ContentCollectionRepository
 ): Promise<ContentCollectionSnapshot[]> {
-  const collections = await contentCollectionRepository.list();
+  const collections = await contentCollectionRepository.list().catch(() => {
+    throw new InternalServerError("Failed to list content collections");
+  });
 
   return collections.map((collection) => collection.toSnapshot());
 }
@@ -83,7 +87,9 @@ export async function deleteContentCollection(
     throw new NotFoundError("Content collection not found");
   }
 
-  await contentCollectionRepository.delete(id);
+  await contentCollectionRepository.delete(id).catch(() => {
+    throw new InternalServerError("Failed to delete content collection");
+  });
 
   return {
     deleted: true,
