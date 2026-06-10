@@ -7,7 +7,7 @@ import {
   type CmsPageInput,
   type CmsPagePatch
 } from "../domain";
-import { NotFoundError } from "../lib/errors/AppError";
+import { InternalServerError, NotFoundError } from "../lib/errors/AppError";
 
 export type PagePreview = CmsPage;
 
@@ -38,7 +38,9 @@ export async function createPage(
     input,
     now: getNow()
   });
-  const saved = await pageRepository.save(page);
+  const saved = await pageRepository.save(page).catch(() => {
+    throw new InternalServerError("Failed to create page");
+  });
 
   return saved.toSnapshot();
 }
@@ -56,7 +58,9 @@ export async function deletePage(
 
   assertPageOwner(page.toSnapshot(), actor);
 
-  await pageRepository.delete(id);
+  await pageRepository.delete(id).catch(() => {
+    throw new InternalServerError("Failed to delete page");
+  });
 
   return {
     deleted: true,
@@ -81,7 +85,9 @@ export async function getPagePreview(
   pageRepository: PageRepository,
   slug: string
 ): Promise<PagePreview> {
-  const page = await pageRepository.findBySlug(slug);
+  const page = await pageRepository.findBySlug(slug).catch(() => {
+    throw new InternalServerError("Failed to get page preview");
+  });
 
   if (!page) {
     throw new NotFoundError("Page not found");
@@ -94,7 +100,9 @@ export async function getPagePreviewById(
   pageRepository: PageRepository,
   id: string
 ): Promise<PagePreview> {
-  const page = await pageRepository.findById(id);
+  const page = await pageRepository.findById(id).catch(() => {
+    throw new InternalServerError("Failed to get page preview");
+  });
 
   if (!page) {
     throw new NotFoundError("Page not found");
@@ -106,7 +114,9 @@ export async function getPagePreviewById(
 export async function listPages(
   pageRepository: PageRepository
 ): Promise<CmsPage[]> {
-  const pages = await pageRepository.list();
+  const pages = await pageRepository.list().catch(() => {
+    throw new InternalServerError("Failed to list pages");
+  });
 
   return pages.map((page) => page.toSnapshot());
 }

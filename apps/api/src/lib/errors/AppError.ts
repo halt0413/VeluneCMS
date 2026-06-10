@@ -14,6 +14,12 @@ export class ConfigurationError extends AppError {
   }
 }
 
+export class InternalServerError extends AppError {
+  constructor(message: string) {
+    super(message, 500);
+  }
+}
+
 export class NotFoundError extends AppError {
   constructor(message: string) {
     super(message, 404);

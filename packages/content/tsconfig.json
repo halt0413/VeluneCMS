@@ -9,5 +9,6 @@
       "@repo/utils": ["../utils/dist/index.d.ts"]
     }
   },
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": ["test"]
 }
