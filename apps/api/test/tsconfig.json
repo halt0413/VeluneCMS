@@ -5,6 +5,6 @@
     "rootDir": "..",
     "types": ["node"]
   },
-  "include": ["unit/**/*.ts"],
+  "include": ["unit/**/*.ts", "integration/**/*.ts"],
   "exclude": []
 }
