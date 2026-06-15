@@ -12,10 +12,12 @@
     "build": "tsc -p tsconfig.json",
     "prepack": "pnpm build",
     "start": "pnpm build && node dist/index.js",
+    "test": "vitest run",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "devDependencies": {
     "@types/node": "^20",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^4.0.15"
   }
 }

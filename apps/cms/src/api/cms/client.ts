@@ -3,7 +3,7 @@ import { getApiConfig } from "./getApiConfig";
 export async function cmsFetch<T>(path: string, init?: RequestInit): Promise<T> {
   const config = getApiConfig();
   // GitHubログインのsession cookieでユーザーを判定するため、管理画面のAPI呼び出しはcookie送信を既定にする
-  const response = await fetch(new URL(path, config.baseUrl), {
+  const response = await fetch(createCmsApiUrl(config.baseUrl, path), {
     ...init,
     credentials: init?.credentials ?? "include",
     headers: {
@@ -24,4 +24,11 @@ export async function cmsFetch<T>(path: string, init?: RequestInit): Promise<T> 
   }
 
   return (await response.json()) as T;
+}
+
+function createCmsApiUrl(baseUrl: string, path: string): URL {
+  const normalizedBase = baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`;
+  const normalizedPath = path.startsWith("/") ? path.slice(1) : path;
+
+  return new URL(normalizedPath, normalizedBase);
 }

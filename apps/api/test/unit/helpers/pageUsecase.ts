@@ -37,9 +37,9 @@ export function createAuthUser(overrides: Partial<AuthUser> = {}): AuthUser {
     avatarUrl: "https://example.com/avatar.png",
     email: null,
     id: 1,
-    login: "othor",
+    login: "example-user",
     name: null,
-    profileUrl: "https://example.com/othor",
+    profileUrl: "https://example.com/example-user",
     ...overrides
   };
 }
