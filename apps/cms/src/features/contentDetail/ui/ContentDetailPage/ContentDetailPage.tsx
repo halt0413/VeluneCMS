@@ -1,5 +1,4 @@
 import { Link } from "@tanstack/react-router";
-import { useMemo } from "react";
 import { PageHeader } from "../../../../components/content/PageHeader/PageHeader";
 import type { Content } from "../../../../domain/content";
 import { ContentBodyCard } from "../ContentBodyCard/ContentBodyCard";
@@ -13,12 +12,9 @@ type ContentDetailPageProps = {
 export function ContentDetailPage({
   content
 }: ContentDetailPageProps) {
-  const editParams = useMemo(
-    () => ({
-      id: content?.id ?? ""
-    }),
-    [content?.id]
-  );
+  const editParams = {
+    id: content?.id ?? ""
+  };
 
   if (!content) {
     return (

@@ -1,5 +1,5 @@
 import type { ContentCollectionUpdateRequest } from "../../../../infrastructure/contentCollection/types";
-import { memo, useCallback, useMemo, useState } from "react";
+import { useState } from "react";
 import { PageHeader } from "../../../../components/content/PageHeader/PageHeader";
 import { DeleteConfirmModal } from "../../../../components/feedback/DeleteConfirmModal/DeleteConfirmModal";
 import {
@@ -21,7 +21,7 @@ type EditContentCollectionPageProps = {
   onSubmit?: (payload: ContentCollectionUpdateRequest) => void | Promise<void>;
 };
 
-export const EditContentCollectionPage = memo(function EditContentCollectionPage({
+export function EditContentCollectionPage({
   collection,
   errorMessage,
   isDeleting = false,
@@ -31,50 +31,47 @@ export const EditContentCollectionPage = memo(function EditContentCollectionPage
 }: EditContentCollectionPageProps) {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [validationError, setValidationError] = useState<string | null>(null);
-  const deleteModalActions = useMemo(
-    () => ({
-      close() {
-        setIsDeleteModalOpen(false);
-      },
-      async confirm() {
-        if (!onDelete) {
-          return;
-        }
 
-        await onDelete();
-        setIsDeleteModalOpen(false);
-      },
-      open() {
-        setIsDeleteModalOpen(true);
-      }
-    }),
-    [onDelete]
-  );
+  function openDeleteModal() {
+    setIsDeleteModalOpen(true);
+  }
 
-  const handleSubmit = useCallback(
-    async (event: React.SyntheticEvent<HTMLFormElement, SubmitEvent>) => {
-      event.preventDefault();
+  function closeDeleteModal() {
+    setIsDeleteModalOpen(false);
+  }
 
-      if (!onSubmit) {
-        return;
-      }
+  async function confirmDelete() {
+    if (!onDelete) {
+      return;
+    }
 
-      const formData = new FormData(event.currentTarget);
-      const parsed = contentCollectionInputSchema.safeParse({
-        name: String(formData.get("name") ?? ""),
-        slug: String(formData.get("slug") ?? "")
-      });
+    await onDelete();
+    setIsDeleteModalOpen(false);
+  }
 
-      if (!parsed.success) {
-        setValidationError(getValidationErrorMessage(parsed.error));
-        return;
-      }
+  async function handleSubmit(
+    event: React.SyntheticEvent<HTMLFormElement, SubmitEvent>
+  ) {
+    event.preventDefault();
 
-      setValidationError(null);
-      await onSubmit(parsed.data);
-    },
-    [onSubmit]
-  );
+    if (!onSubmit) {
+      return;
+    }
+
+    const formData = new FormData(event.currentTarget);
+    const parsed = contentCollectionInputSchema.safeParse({
+      name: String(formData.get("name") ?? ""),
+      slug: String(formData.get("slug") ?? "")
+    });
+
+    if (!parsed.success) {
+      setValidationError(getValidationErrorMessage(parsed.error));
+      return;
+    }
+
+    setValidationError(null);
+    await onSubmit(parsed.data);
+  }
 
   return (
     <main className={styles.page}>
@@ -114,7 +111,7 @@ export const EditContentCollectionPage = memo(function EditContentCollectionPage
           <div className={styles.actions}>
             <Button
               disabled={!onDelete || isDeleting || isSubmitting}
-              onClick={deleteModalActions.open}
+              onClick={openDeleteModal}
               type="button"
               variant="danger"
             >
@@ -142,11 +139,11 @@ export const EditContentCollectionPage = memo(function EditContentCollectionPage
         <DeleteConfirmModal
           description={`「${collection.name}」を削除します。この操作は取り消せません。`}
           isDeleting={isDeleting}
-          onCancel={deleteModalActions.close}
-          onConfirm={deleteModalActions.confirm}
+          onCancel={closeDeleteModal}
+          onConfirm={confirmDelete}
           title="コンテンツ種別を削除"
         />
       ) : null}
     </main>
   );
-});
+}

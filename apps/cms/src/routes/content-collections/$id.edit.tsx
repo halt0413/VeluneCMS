@@ -1,5 +1,4 @@
 import { useNavigate, useParams } from "@tanstack/react-router";
-import { useCallback } from "react";
 import { LoadingMessage } from "../../components/feedback/LoadingMessage/LoadingMessage";
 import { useDeleteContentCollectionMutation } from "../../features/contentCollectionEdit/hooks/useDeleteContentCollectionMutation";
 import { useContentCollectionQuery } from "../../features/contentCollectionEdit/hooks/useContentCollectionQuery";
@@ -16,20 +15,20 @@ export function EditContentCollectionRoute() {
   const { data: collection = null, isPending } = useContentCollectionQuery(id);
   const deleteMutation = useDeleteContentCollectionMutation(id);
   const updateMutation = useUpdateContentCollectionMutation(id);
-  const handleDelete = useCallback(async () => {
+  async function handleDelete() {
     await deleteMutation.mutateAsync();
     await navigate({ to: "/contents" });
-  }, [deleteMutation, navigate]);
-  const handleSubmit = useCallback(
-    async (payload: Parameters<typeof updateMutation.mutateAsync>[0]) => {
-      const updated = await updateMutation.mutateAsync(payload);
-      await navigate({
-        search: { collection: updated.slug },
-        to: "/contents"
-      });
-    },
-    [navigate, updateMutation]
-  );
+  }
+
+  async function handleSubmit(
+    payload: Parameters<typeof updateMutation.mutateAsync>[0]
+  ) {
+    const updated = await updateMutation.mutateAsync(payload);
+    await navigate({
+      search: { collection: updated.slug },
+      to: "/contents"
+    });
+  }
 
   if (isCheckingAuth) {
     return <LoadingMessage>GitHub ログインへ移動します...</LoadingMessage>;

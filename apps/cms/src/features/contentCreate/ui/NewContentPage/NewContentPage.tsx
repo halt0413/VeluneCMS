@@ -1,5 +1,4 @@
 import type { CmsPageCreateRequest } from "../../../../infrastructure/content/types";
-import { memo, useMemo } from "react";
 import { ContentEditorPage } from "../../../../components/content/editor/ContentEditorPage/ContentEditorPage";
 import { ContentForm } from "../../../../components/content/editor/ContentForm/ContentForm";
 
@@ -11,23 +10,20 @@ type NewContentPageProps = {
   onSubmit?: (payload: CmsPageCreateRequest) => void | Promise<void>;
 };
 
-export const NewContentPage = memo(function NewContentPage({
+export function NewContentPage({
   collectionName = "portfolio",
   contentType = "portfolio",
   errorMessage,
   isSubmitting = false,
   onSubmit
 }: NewContentPageProps) {
-  const defaultValue = useMemo(
-    () => ({
-      slug: "new-content",
-      title: "",
-      body: "",
-      contentType,
-      status: "draft" as const
-    }),
-    [contentType]
-  );
+  const defaultValue = {
+    slug: "new-content",
+    title: "",
+    body: "",
+    contentType,
+    status: "draft" as const
+  };
 
   return (
     <ContentEditorPage title={`${collectionName} のコンテンツ追加`}>
@@ -44,4 +40,4 @@ export const NewContentPage = memo(function NewContentPage({
       />
     </ContentEditorPage>
   );
-});
+}

@@ -1,5 +1,5 @@
 import type { ContentCollectionCreateRequest } from "../../../../infrastructure/contentCollection/types";
-import { memo, useCallback, useState } from "react";
+import { useState } from "react";
 import { PageHeader } from "../../../../components/content/PageHeader/PageHeader";
 import {
   FormField,
@@ -15,35 +15,35 @@ type NewContentCollectionPageProps = {
   onSubmit?: (payload: ContentCollectionCreateRequest) => void | Promise<void>;
 };
 
-export const NewContentCollectionPage = memo(function NewContentCollectionPage({
+export function NewContentCollectionPage({
   isSubmitting = false,
   onSubmit
 }: NewContentCollectionPageProps) {
   const [validationError, setValidationError] = useState<string | null>(null);
-  const handleSubmit = useCallback(
-    async (event: React.SyntheticEvent<HTMLFormElement, SubmitEvent>) => {
-      event.preventDefault();
 
-      if (!onSubmit) {
-        return;
-      }
+  async function handleSubmit(
+    event: React.SyntheticEvent<HTMLFormElement, SubmitEvent>
+  ) {
+    event.preventDefault();
 
-      const formData = new FormData(event.currentTarget);
-      const parsed = contentCollectionInputSchema.safeParse({
-        name: String(formData.get("name") ?? ""),
-        slug: String(formData.get("slug") ?? "")
-      });
+    if (!onSubmit) {
+      return;
+    }
 
-      if (!parsed.success) {
-        setValidationError(getValidationErrorMessage(parsed.error));
-        return;
-      }
+    const formData = new FormData(event.currentTarget);
+    const parsed = contentCollectionInputSchema.safeParse({
+      name: String(formData.get("name") ?? ""),
+      slug: String(formData.get("slug") ?? "")
+    });
 
-      setValidationError(null);
-      await onSubmit(parsed.data);
-    },
-    [onSubmit]
-  );
+    if (!parsed.success) {
+      setValidationError(getValidationErrorMessage(parsed.error));
+      return;
+    }
+
+    setValidationError(null);
+    await onSubmit(parsed.data);
+  }
 
   return (
     <main className={styles.page}>
@@ -81,4 +81,4 @@ export const NewContentCollectionPage = memo(function NewContentCollectionPage({
       </form>
     </main>
   );
-});
+}

@@ -1,5 +1,4 @@
 import { Link } from "@tanstack/react-router";
-import { useMemo } from "react";
 import type { ContentCollection } from "../../../domain/contentCollection";
 import { useContentCollectionsQuery } from "../../../features/contentCollectionList/hooks/useContentCollectionsQuery";
 import { HeaderAuth } from "./HeaderAuth/HeaderAuth";
@@ -45,18 +44,12 @@ type ContentCollectionLinkProps = {
 };
 
 function ContentCollectionLink({ collection }: ContentCollectionLinkProps) {
-  const search = useMemo(
-    () => ({
-      collection: collection.slug,
-    }),
-    [collection.slug],
-  );
-  const editParams = useMemo(
-    () => ({
-      id: collection.id
-    }),
-    [collection.id]
-  );
+  const search = {
+    collection: collection.slug,
+  };
+  const editParams = {
+    id: collection.id
+  };
 
   return (
     <div className={styles.collectionRow}>
