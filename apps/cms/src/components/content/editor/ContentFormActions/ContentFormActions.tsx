@@ -1,4 +1,3 @@
-import { memo } from "react";
 import { Button } from "../../../ui/Button/Button";
 import styles from "./ContentFormActions.module.css";
 
@@ -14,7 +13,7 @@ type ContentFormActionsProps = {
   submitLabel: string;
 };
 
-export const ContentFormActions = memo(function ContentFormActions({
+export function ContentFormActions({
   isDeleting,
   isSubmitting,
   canSubmit,
@@ -61,4 +60,4 @@ export const ContentFormActions = memo(function ContentFormActions({
       </div>
     </div>
   );
-});
+}

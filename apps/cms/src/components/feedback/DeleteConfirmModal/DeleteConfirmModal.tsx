@@ -1,4 +1,3 @@
-import { memo } from "react";
 import { Button } from "../../ui/Button/Button";
 import styles from "./DeleteConfirmModal.module.css";
 
@@ -12,7 +11,7 @@ type DeleteConfirmModalProps = {
   title: string;
 };
 
-export const DeleteConfirmModal = memo(function DeleteConfirmModal({
+export function DeleteConfirmModal({
   cancelLabel = "キャンセル",
   confirmLabel = "削除",
   description,
@@ -59,4 +58,4 @@ export const DeleteConfirmModal = memo(function DeleteConfirmModal({
       </dialog>
     </div>
   );
-});
+}

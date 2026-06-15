@@ -1,5 +1,4 @@
 import { useLocation, useNavigate } from "@tanstack/react-router";
-import { useCallback } from "react";
 import { LoadingMessage } from "../../components/feedback/LoadingMessage/LoadingMessage";
 import { useContentCollectionsQuery } from "../../features/contentCollectionList/hooks/useContentCollectionsQuery";
 import { useCreateContentMutation } from "../../features/contentCreate/hooks/useCreateContentMutation";
@@ -16,13 +15,12 @@ export function NewContentRoute() {
   const collectionSlug =
     new URLSearchParams(location.searchStr).get("collection") ?? "portfolio";
   const collection = collections.find((item) => item.slug === collectionSlug);
-  const handleSubmit = useCallback(
-    async (payload: Parameters<typeof createMutation.mutateAsync>[0]) => {
-      const created = await createMutation.mutateAsync(payload);
-      await navigate({ to: "/contents/$id", params: { id: created.id } });
-    },
-    [createMutation, navigate]
-  );
+  async function handleSubmit(
+    payload: Parameters<typeof createMutation.mutateAsync>[0]
+  ) {
+    const created = await createMutation.mutateAsync(payload);
+    await navigate({ to: "/contents/$id", params: { id: created.id } });
+  }
 
   if (isCheckingAuth) {
     return <LoadingMessage>GitHub ログインへ移動します...</LoadingMessage>;

@@ -1,5 +1,4 @@
 import { Link } from "@tanstack/react-router";
-import { memo, useMemo } from "react";
 import { PageHeader } from "../../../../components/content/PageHeader/PageHeader";
 import { getButtonClassName } from "../../../../components/ui/Button/Button";
 import type { Content } from "../../../../domain/content";
@@ -13,21 +12,17 @@ type ContentsPageProps = {
   contents: Content[];
 };
 
-export const ContentsPage = memo(function ContentsPage({
+export function ContentsPage({
   collectionName,
   collectionSlug,
   contents
 }: ContentsPageProps) {
-  const contentTypes = useMemo(
-    () => Array.from(new Set(contents.map((content) => content.contentType))),
-    [contents]
+  const contentTypes = Array.from(
+    new Set(contents.map((content) => content.contentType))
   );
-  const newContentSearch = useMemo(
-    () => ({
-      collection: collectionSlug
-    }),
-    [collectionSlug]
-  );
+  const newContentSearch = {
+    collection: collectionSlug
+  };
 
   return (
     <main className={styles.page}>
@@ -62,4 +57,4 @@ export const ContentsPage = memo(function ContentsPage({
       </section>
     </main>
   );
-});
+}

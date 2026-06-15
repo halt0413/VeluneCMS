@@ -1,4 +1,3 @@
-import { memo } from "react";
 import styles from "./ContentTypeFilter.module.css";
 
 type ContentTypeFilterProps = {
@@ -7,7 +6,7 @@ type ContentTypeFilterProps = {
   items: string[];
 };
 
-export const ContentTypeFilter = memo(function ContentTypeFilter({
+export function ContentTypeFilter({
   activeValue,
   allLabel = "すべて",
   items
@@ -39,4 +38,4 @@ export const ContentTypeFilter = memo(function ContentTypeFilter({
       ))}
     </div>
   );
-});
+}
