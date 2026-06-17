@@ -1,5 +1,6 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { getCmsApiBaseUrl } from "../../../src/api/cms/getApiConfig";
+import { cmsTestApiBaseUrl } from "../../helpers/testEnv";
 
 describe("getCmsApiBaseUrl", () => {
   afterEach(() => {
@@ -7,16 +8,16 @@ describe("getCmsApiBaseUrl", () => {
   });
 
   it("CMS_API_BASE_URLを返す", () => {
-    vi.stubEnv("CMS_API_BASE_URL", "http://localhost:8787");
-    vi.stubEnv("API_URL", "http://localhost:9999");
+    vi.stubEnv("CMS_API_BASE_URL", cmsTestApiBaseUrl);
+    vi.stubEnv("API_URL", `${cmsTestApiBaseUrl}/fallback`);
 
-    expect(getCmsApiBaseUrl()).toBe("http://localhost:8787");
+    expect(getCmsApiBaseUrl()).toBe(cmsTestApiBaseUrl);
   });
 
   it("API_URLをfallbackとして返す", () => {
-    vi.stubEnv("API_URL", "http://localhost:8787");
+    vi.stubEnv("API_URL", cmsTestApiBaseUrl);
 
-    expect(getCmsApiBaseUrl()).toBe("http://localhost:8787");
+    expect(getCmsApiBaseUrl()).toBe(cmsTestApiBaseUrl);
   });
 
   it("API URLが未設定ならエラーにする", () => {

@@ -7,15 +7,20 @@ import type {
   SessionRepository
 } from "../../../src/usecase/auth";
 import type { AuthUser } from "../../../src/domain";
+import {
+  apiTestAvatarUrl,
+  apiTestGitHubAuthorizeUrlWithState,
+  apiTestProfileUrl
+} from "../../helpers/testEnv";
 
 export function createAuthUser(overrides: Partial<AuthUser> = {}): AuthUser {
   return {
-    avatarUrl: "https://example.com/avatar.png",
+    avatarUrl: apiTestAvatarUrl(),
     email: null,
     id: 1,
     login: "example-user",
     name: null,
-    profileUrl: "https://example.com/example-user",
+    profileUrl: apiTestProfileUrl("example-user"),
     ...overrides
   };
 }
@@ -59,7 +64,7 @@ export class TestGitHubOAuthGateway implements GitHubOAuthGateway {
 
   createAuthorizationUrl(input: GitHubOAuthAuthorizeInput): string {
     this.authorizationInputs.push(input);
-    return `https://github.com/login/oauth/authorize?state=${input.state}`;
+    return apiTestGitHubAuthorizeUrlWithState(input.state);
   }
 
   async exchangeCodeForAccessToken(): Promise<string> {

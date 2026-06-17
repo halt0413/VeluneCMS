@@ -4,6 +4,6 @@
     "noEmit": true,
     "rootDir": ".."
   },
-  "include": ["unit/**/*.ts"],
+  "include": ["unit/**/*.ts", "helpers/**/*.ts"],
   "exclude": []
 }

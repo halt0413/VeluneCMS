@@ -6,6 +6,7 @@ import {
   createIntegrationUser,
   createSessionCookie
 } from "./helpers/apiApp";
+import { apiTestProfileUrl } from "../helpers/testEnv";
 
 describe("contents routes integration", () => {
   it("Bearer認証でcontentを作成、更新、preview、削除できる", async () => {
@@ -126,7 +127,7 @@ describe("contents routes integration", () => {
       createIntegrationUser({
         id: 2,
         login: "another-example-user",
-        profileUrl: "https://example.com/another-example-user"
+        profileUrl: apiTestProfileUrl("another-example-user")
       })
     );
 

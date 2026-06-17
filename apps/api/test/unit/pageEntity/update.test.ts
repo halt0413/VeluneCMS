@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { Page } from "../../../src/domain";
 import { createAuthUser, createPageInput } from "../helpers/pageUsecase";
+import { apiTestProfileUrl } from "../../helpers/testEnv";
 
 describe("Page.update", () => {
   it("ページ内容を更新して更新者を差し替える", () => {
@@ -8,7 +9,7 @@ describe("Page.update", () => {
     const editor = createAuthUser({
       id: 2,
       login: "editor",
-      profileUrl: "https://example.com/editor"
+      profileUrl: apiTestProfileUrl("editor")
     });
     const page = Page.create({
       actor: owner,

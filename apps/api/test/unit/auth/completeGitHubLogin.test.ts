@@ -5,6 +5,7 @@ import {
   TestOAuthStateRepository,
   TestSessionRepository
 } from "../helpers/authUsecase";
+import { apiTestContentListUrl } from "../../helpers/testEnv";
 
 describe("completeGitHubLogin", () => {
   it("GitHub userを取得してsessionを作成する", async () => {
@@ -13,7 +14,7 @@ describe("completeGitHubLogin", () => {
     oAuthStateRepository.create({
       createdAt: "2026-01-01T00:00:00.000Z",
       id: "state-1",
-      redirectUrl: "http://localhost:3000/contents"
+      redirectUrl: apiTestContentListUrl()
     });
 
     const result = await completeGitHubLogin(
@@ -28,7 +29,7 @@ describe("completeGitHubLogin", () => {
     );
 
     expect(result).toMatchObject({
-      redirectUrl: "http://localhost:3000/contents",
+      redirectUrl: apiTestContentListUrl(),
       sessionId: "session-1",
       user: {
         id: 1,
@@ -79,7 +80,7 @@ describe("completeGitHubLogin", () => {
     oAuthStateRepository.create({
       createdAt: "2025-12-31T23:00:00.000Z",
       id: "state-1",
-      redirectUrl: "http://localhost:3000/contents"
+      redirectUrl: apiTestContentListUrl()
     });
 
     await expect(

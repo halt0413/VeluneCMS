@@ -4,6 +4,6 @@
     "noEmit": true,
     "types": ["vite/client", "node"]
   },
-  "include": ["unit/**/*.ts", "integration/**/*.ts"],
+  "include": ["unit/**/*.ts", "integration/**/*.ts", "helpers/**/*.ts"],
   "exclude": []
 }

@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { updatePage } from "../../../src/usecase/page";
+import { apiTestProfileUrl } from "../../helpers/testEnv";
 import {
   createAuthUser,
   createRepositoryWithPage
@@ -41,7 +42,7 @@ describe("updatePage", () => {
     const otherActor = createAuthUser({
       id: 2,
       login: "other",
-      profileUrl: "https://example.com/other"
+      profileUrl: apiTestProfileUrl("other")
     });
 
     await expect(

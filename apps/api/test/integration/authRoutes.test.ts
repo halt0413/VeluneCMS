@@ -1,11 +1,11 @@
 import { describe, expect, it } from "vitest";
 import { UnauthorizedError } from "../../src/lib/errors/AppError";
+import { apiTestGitHubAuthorizeUrlWithRedirect } from "../helpers/testEnv";
 import {
   createIntegrationApi,
   createIntegrationUser,
   createSessionCookie,
   integrationContentListUrl,
-  integrationGitHubAuthorizeUrl,
   integrationSessionCookieName,
   integrationSessionIdFromCallback
 } from "./helpers/apiApp";
@@ -14,7 +14,7 @@ describe("auth routes integration", () => {
   it("GitHub loginは認可URLへredirectする", async () => {
     const { app } = createIntegrationApi({
       startGitHubLogin: (redirectTo) => ({
-        authorizationUrl: `${integrationGitHubAuthorizeUrl}?redirectTo=${redirectTo}`
+        authorizationUrl: apiTestGitHubAuthorizeUrlWithRedirect(redirectTo ?? "")
       })
     });
 
@@ -24,7 +24,7 @@ describe("auth routes integration", () => {
 
     expect(response.status).toBe(302);
     expect(response.headers.get("location")).toBe(
-      "https://github.com/login/oauth/authorize?redirectTo=/contents"
+      apiTestGitHubAuthorizeUrlWithRedirect("/contents")
     );
   });
 

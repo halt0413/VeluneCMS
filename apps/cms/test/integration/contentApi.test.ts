@@ -3,7 +3,8 @@ import { contentApi } from "../../src/infrastructure/content/contentApi";
 import {
   cmsApiBaseUrl,
   createJsonResponse,
-  createPageResource
+  createPageResource,
+  joinCmsTestApiUrl
 } from "./helpers/apiResponseFixture";
 
 describe("contentApi integration", () => {
@@ -65,7 +66,7 @@ describe("contentApi integration", () => {
       title: "Created Page"
     });
     expect(fetchMock).toHaveBeenCalledWith(
-      new URL("http://localhost:8787/api/contents"),
+      joinCmsTestApiUrl("contents"),
       expect.objectContaining({
         body: JSON.stringify({
           body: "本文",
@@ -80,7 +81,7 @@ describe("contentApi integration", () => {
   });
 
   it("壊れたAPI responseはschema errorにする", async () => {
-    vi.stubEnv("CMS_API_BASE_URL", "http://localhost:8787");
+    vi.stubEnv("CMS_API_BASE_URL", cmsApiBaseUrl);
     vi.stubGlobal(
       "fetch",
       vi.fn().mockResolvedValue(
