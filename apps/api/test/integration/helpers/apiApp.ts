@@ -25,13 +25,19 @@ import {
   type CompleteGitHubLoginResult
 } from "../../../src/usecase/auth";
 import type { AuthUser } from "../../../src/domain";
+import {
+  apiTestAvatarUrl,
+  apiTestCmsOrigin,
+  apiTestContentListUrl,
+  apiTestGitHubAuthorizeUrl,
+  apiTestProfileUrl
+} from "../../helpers/testEnv";
 
 export const integrationAdminApiToken = "integration-admin-token";
-export const integrationCmsOrigin = "http://localhost:3000";
-export const integrationContentListUrl = "http://localhost:3000/contents";
+export const integrationCmsOrigin = apiTestCmsOrigin;
+export const integrationContentListUrl = apiTestContentListUrl();
 export const integrationFixedNow = "2026-01-01T00:00:00.000Z";
-export const integrationGitHubAuthorizeUrl =
-  "https://github.com/login/oauth/authorize";
+export const integrationGitHubAuthorizeUrl = apiTestGitHubAuthorizeUrl;
 export const integrationSessionCookieName = "velune_session";
 export const integrationSessionIdFromCallback = "session-from-callback";
 
@@ -138,12 +144,12 @@ export function createIntegrationUser(
   overrides: Partial<AuthUser> = {}
 ): AuthUser {
   return {
-    avatarUrl: "https://example.com/avatar.png",
+    avatarUrl: apiTestAvatarUrl(),
     email: null,
     id: 1,
     login: "example-user",
     name: null,
-    profileUrl: "https://example.com/example-user",
+    profileUrl: apiTestProfileUrl("example-user"),
     ...overrides
   };
 }

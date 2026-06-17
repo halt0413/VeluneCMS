@@ -1,5 +1,10 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { cmsFetch } from "../../../src/api/cms/client";
+import {
+  cmsTestApiBasePathUrl,
+  cmsTestApiBaseUrl,
+  joinCmsTestApiUrl
+} from "../../helpers/testEnv";
 
 describe("cmsFetch", () => {
   afterEach(() => {
@@ -8,7 +13,7 @@ describe("cmsFetch", () => {
   });
 
   it("既定でcookieを含めてJSONを取得する", async () => {
-    vi.stubEnv("CMS_API_BASE_URL", "http://localhost:8787/api");
+    vi.stubEnv("CMS_API_BASE_URL", cmsTestApiBasePathUrl);
     const fetchMock = vi.fn().mockResolvedValue(
       new Response(JSON.stringify({ ok: true }), {
         headers: {
@@ -23,7 +28,7 @@ describe("cmsFetch", () => {
       ok: true
     });
     expect(fetchMock).toHaveBeenCalledWith(
-      new URL("http://localhost:8787/api/contents"),
+      joinCmsTestApiUrl("contents"),
       expect.objectContaining({
         cache: "no-store",
         credentials: "include",
@@ -35,7 +40,7 @@ describe("cmsFetch", () => {
   });
 
   it("initのcredentialsとheadersを優先する", async () => {
-    vi.stubEnv("CMS_API_BASE_URL", "http://localhost:8787");
+    vi.stubEnv("CMS_API_BASE_URL", cmsTestApiBaseUrl);
     const fetchMock = vi.fn().mockResolvedValue(
       new Response(JSON.stringify({ ok: true }), {
         status: 200
@@ -51,7 +56,7 @@ describe("cmsFetch", () => {
     });
 
     expect(fetchMock).toHaveBeenCalledWith(
-      new URL("http://localhost:8787/contents"),
+      new URL("/contents", cmsTestApiBaseUrl),
       expect.objectContaining({
         credentials: "omit",
         headers: {
@@ -63,7 +68,7 @@ describe("cmsFetch", () => {
   });
 
   it("APIがerror bodyを返した場合はそのmessageでエラーにする", async () => {
-    vi.stubEnv("CMS_API_BASE_URL", "http://localhost:8787");
+    vi.stubEnv("CMS_API_BASE_URL", cmsTestApiBaseUrl);
     vi.stubGlobal(
       "fetch",
       vi.fn().mockResolvedValue(
@@ -77,7 +82,7 @@ describe("cmsFetch", () => {
   });
 
   it("APIのerror bodyを読めない場合はstatus付きmessageでエラーにする", async () => {
-    vi.stubEnv("CMS_API_BASE_URL", "http://localhost:8787");
+    vi.stubEnv("CMS_API_BASE_URL", cmsTestApiBaseUrl);
     vi.stubGlobal(
       "fetch",
       vi.fn().mockResolvedValue(

@@ -3,7 +3,8 @@ import { contentCollectionApi } from "../../src/infrastructure/contentCollection
 import {
   cmsApiBaseUrl,
   createContentCollectionResource,
-  createJsonResponse
+  createJsonResponse,
+  joinCmsTestApiUrl
 } from "./helpers/apiResponseFixture";
 
 describe("contentCollectionApi integration", () => {
@@ -55,7 +56,7 @@ describe("contentCollectionApi integration", () => {
       name: "Updated Collection"
     });
     expect(fetchMock).toHaveBeenCalledWith(
-      new URL("http://localhost:8787/api/content-collections/collection-1"),
+      joinCmsTestApiUrl("content-collections/collection-1"),
       expect.objectContaining({
         body: JSON.stringify({
           name: "Updated Collection"
@@ -66,7 +67,7 @@ describe("contentCollectionApi integration", () => {
   });
 
   it("壊れたAPI responseはschema errorにする", async () => {
-    vi.stubEnv("CMS_API_BASE_URL", "http://localhost:8787");
+    vi.stubEnv("CMS_API_BASE_URL", cmsApiBaseUrl);
     vi.stubGlobal(
       "fetch",
       vi.fn().mockResolvedValue(

@@ -1,4 +1,10 @@
-export const cmsApiBaseUrl = "http://localhost:8787/api";
+import {
+  cmsTestApiBasePathUrl,
+  joinCmsTestApiUrl
+} from "../../helpers/testEnv";
+
+export const cmsApiBaseUrl = cmsTestApiBasePathUrl;
+export { joinCmsTestApiUrl };
 
 export function createPageResource(overrides = {}) {
   return {

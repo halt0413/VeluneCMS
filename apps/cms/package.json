@@ -5,8 +5,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "e2e": "playwright test",
     "start": "vite preview",
-    "test": "vitest run",
+    "test": "vitest run test",
     "lint": "eslint",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
@@ -22,6 +23,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@playwright/test": "^1.57.0",
     "@vitejs/plugin-react": "^6.0.1",
     "eslint": "^9",
     "typescript": "^5",

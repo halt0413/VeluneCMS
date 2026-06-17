@@ -1,5 +1,6 @@
 import { Page } from "../../../src/domain";
 import { createPage } from "../../../src/usecase/page";
+import { apiTestAvatarUrl, apiTestProfileUrl } from "../../helpers/testEnv";
 import type {
   AuthUser,
   CmsPageId,
@@ -34,12 +35,12 @@ export class TestPageRepository implements PageRepository {
 
 export function createAuthUser(overrides: Partial<AuthUser> = {}): AuthUser {
   return {
-    avatarUrl: "https://example.com/avatar.png",
+    avatarUrl: apiTestAvatarUrl(),
     email: null,
     id: 1,
     login: "example-user",
     name: null,
-    profileUrl: "https://example.com/example-user",
+    profileUrl: apiTestProfileUrl("example-user"),
     ...overrides
   };
 }

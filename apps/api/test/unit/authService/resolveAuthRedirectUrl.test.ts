@@ -1,12 +1,18 @@
 import { describe, expect, it } from "vitest";
 import { resolveAuthRedirectUrl } from "../../../src/domain";
+import {
+  apiTestCmsAppBaseUrl,
+  apiTestCmsOrigin,
+  apiTestContentListUrl,
+  apiTestContentQueryUrl
+} from "../../helpers/testEnv";
 
-const cmsUrl = "http://localhost:3000";
-const cmsAppUrl = "http://localhost:3000/app/";
+const cmsUrl = apiTestCmsOrigin;
+const cmsAppUrl = apiTestCmsAppBaseUrl;
 const contentsPath = "/contents";
-const contentsUrl = "http://localhost:3000/contents";
+const contentsUrl = apiTestContentListUrl();
 const contentsQueryPath = "contents?type=portfolio";
-const contentsQueryUrl = "http://localhost:3000/app/contents?type=portfolio";
+const contentsQueryUrl = apiTestContentQueryUrl();
 
 describe("resolveAuthRedirectUrl", () => {
   it("redirectToがない場合はCMS URLを返す", () => {

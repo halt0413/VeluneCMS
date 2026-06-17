@@ -1,10 +1,11 @@
 import { describe, expect, test } from "vitest";
 import { parseOptions } from "../../src/lib/args.js";
+import { cliTestCmsApiUrl } from "../helpers/testEnv.js";
 
 describe("parseOptions", () => {
   test("値ありオプションを読み取る", () => {
-    expect(parseOptions(["--api-url", "http://localhost:8787"])).toEqual({
-      "api-url": "http://localhost:8787"
+    expect(parseOptions(["--api-url", cliTestCmsApiUrl])).toEqual({
+      "api-url": cliTestCmsApiUrl
     });
   });
 
