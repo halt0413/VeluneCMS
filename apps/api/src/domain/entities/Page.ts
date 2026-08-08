@@ -42,7 +42,6 @@ export class Page {
       body: normalizeRequiredText(input.body, "Body"),
       contentType: normalizeRequiredText(input.contentType, "Content type"),
       createdBy: actor,
-      // ownerは「このコンテンツの所属ユーザー」 更新者とは違い、編集では変更しない
       owner: actor,
       status: input.status,
       updatedBy: actor,
